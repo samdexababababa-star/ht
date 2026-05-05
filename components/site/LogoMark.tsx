@@ -8,12 +8,15 @@
  *      Reads as an aura / halo, a literal nod to "Salma" (سلمى,
  *      peace / serenity) and to the soft glow around a star or moon.
  *
- *   2. Inner calligraphic stroke (5 dots): a diagonal trace running from
- *      the upper-right to the lower-left, radii sized in an arc
- *      (0.6, 1.2, 1.8, 1.2, 0.6). The middle dot sits exactly at the
- *      geometric center of the halo. Reads simultaneously as a meteor
- *      streaking through its aura, a calligraphic brushstroke, the spine
- *      of a stylised "S", and — significantly — a stroke whose direction
+ *   2. Inner calligraphic stroke (5 dots): an off-center diagonal trace
+ *      from the upper-right to the lower-left, with radii fading
+ *      monotonically (2.0, 1.5, 1.0, 0.6, 0.3). The stroke does NOT
+ *      pass through the geometric centre — it brushes past it on the
+ *      upper-right side, exactly the way a right-handed calligrapher
+ *      lays down ink: heavy pressure at the start, lifting away into
+ *      a fade. Reads simultaneously as a meteor entering the atmosphere
+ *      (brightest at impact, burning out as it descends), a calligraphic
+ *      brushstroke captured mid-gesture, and a stroke whose direction
  *      mirrors right-to-left Arabic reading flow.
  *
  * Why this works (psychology):
@@ -25,14 +28,17 @@
  *     direction of Arabic — a subliminal cue that the brand belongs to
  *     and "speaks" the user's culture, without resorting to literal
  *     calligraphy or folkloric ornament.
- *   - The bright center dot acts as an iris/pupil — universally
- *     attention-grabbing without aggression (a known fixation cue).
+ *   - The heavy head pulls visual weight to the upper-right quadrant,
+ *     anchoring the composition off-axis. This is the asymmetry that
+ *     breaks the diagonal mirror symmetry of v3 and gives the mark a
+ *     true sense of momentum and one-of-a-kindness.
  *   - Gestalt closure: the halo dot ring resolves into a continuous
- *     circle, evoking completeness and safety. The diagonal stroke
- *     resolves into a continuous gesture — two complete forms in one mark.
- *   - The fading-tips gradient (small → big → small) gives the stroke
- *     velocity: the eye reads it as motion, like a comet or signature
- *     stroke captured mid-gesture. This is what conveys "alive" / "ours".
+ *     circle, evoking completeness and safety. The off-centre stroke
+ *     resolves into a continuous gesture — two complete forms in one
+ *     mark, but with no shared axis of symmetry between them.
+ *   - The monotonic fade (heavy → light, head → tail) is read by the
+ *     eye as captured motion: a meteor or signature stroke caught
+ *     mid-gesture. This is what conveys "alive" / "unique" / "ours".
  *
  * Inspired by minimalist dot-halo languages (e.g. Serus) but uniquely
  * Salma's by the asymmetric calligraphic stroke. Stays legible down to
@@ -64,12 +70,12 @@ export function LogoMark({ className = "" }: { className?: string }) {
       <circle cx="11.7" cy="23.6" r="1.4" />
       <circle cx="16.4" cy="16.4" r="2" />
       <circle cx="23.6" cy="11.7" r="1.4" />
-      {/* Calligraphic stroke — diagonal upper-right → lower-left, fading tips. */}
-      <circle cx="38" cy="22" r="0.6" />
-      <circle cx="35" cy="27" r="1.2" />
-      <circle cx="32" cy="32" r="1.8" />
-      <circle cx="29" cy="37" r="1.2" />
-      <circle cx="26" cy="42" r="0.6" />
+      {/* Calligraphic stroke — off-centre diagonal, heavy head → fading tail. */}
+      <circle cx="42" cy="20" r="2.0" />
+      <circle cx="38" cy="25" r="1.5" />
+      <circle cx="34" cy="30" r="1.0" />
+      <circle cx="30" cy="35" r="0.6" />
+      <circle cx="26" cy="40" r="0.3" />
     </svg>
   );
 }
