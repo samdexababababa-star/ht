@@ -1,10 +1,14 @@
 /**
- * Salma brand mark — a refined 8-petal rosette built from a single path.
+ * Salma brand mark — a luminous 16-point halo.
  *
- * The shape is an alternating-radius 16-vertex star: long rays at the four
- * cardinal + four diagonal directions, gentle "shoulder" points between them.
- * Reads as a star at glance and as a soft flower / Maghreb-style rosette on
- * closer look. Designed to stay legible down to ~12px (favicons).
+ * Sixteen dots arranged on a perfect circle with alternating radii (2 / 1.4)
+ * create a subtle "breathing" rhythm: the eight cardinal + diagonal dots are
+ * slightly larger, the eight in-between dots smaller. Reads as an aura / halo
+ * — a literal nod to "Salma" (سلمى, peace / serenity) and to the soft glow
+ * around a star or moon. Stays legible down to ~12px (favicons).
+ *
+ * Inspired by minimalist dot-halo logo languages (e.g. Serus) but
+ * differentiated by the alternating-radius rhythm — unique to Salma.
  */
 export function LogoMark({ className = "" }: { className?: string }) {
   return (
@@ -14,7 +18,22 @@ export function LogoMark({ className = "" }: { className?: string }) {
       className={className}
       aria-hidden
     >
-      <path d="M32 8 L38 18 L49 15 L46 26 L56 32 L46 38 L49 49 L38 46 L32 56 L26 46 L15 49 L18 38 L8 32 L18 26 L15 15 L26 18 Z" />
+      <circle cx="32" cy="10" r="2" />
+      <circle cx="40.4" cy="11.7" r="1.4" />
+      <circle cx="47.6" cy="16.4" r="2" />
+      <circle cx="52.3" cy="23.6" r="1.4" />
+      <circle cx="54" cy="32" r="2" />
+      <circle cx="52.3" cy="40.4" r="1.4" />
+      <circle cx="47.6" cy="47.6" r="2" />
+      <circle cx="40.4" cy="52.3" r="1.4" />
+      <circle cx="32" cy="54" r="2" />
+      <circle cx="23.6" cy="52.3" r="1.4" />
+      <circle cx="16.4" cy="47.6" r="2" />
+      <circle cx="11.7" cy="40.4" r="1.4" />
+      <circle cx="10" cy="32" r="2" />
+      <circle cx="11.7" cy="23.6" r="1.4" />
+      <circle cx="16.4" cy="16.4" r="2" />
+      <circle cx="23.6" cy="11.7" r="1.4" />
     </svg>
   );
 }

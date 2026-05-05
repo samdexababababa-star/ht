@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice, safeJson } from "@/lib/utils";
 import { ShoppingBag, Sparkles, Clock } from "lucide-react";
+import { LogoMark } from "./LogoMark";
 
 type Variant = {
   id: string;
@@ -110,9 +111,7 @@ export function ProductDetail({ product }: { product: Product }) {
                 />
               ) : (
                 <div className="h-full w-full flex items-center justify-center text-primary/40">
-                  <svg viewBox="0 0 64 64" fill="currentColor" className="w-24 h-24 sparkle">
-                    <path d="M32 8 L38 18 L49 15 L46 26 L56 32 L46 38 L49 49 L38 46 L32 56 L26 46 L15 49 L18 38 L8 32 L18 26 L15 15 L26 18 Z" />
-                  </svg>
+                  <LogoMark className="w-24 h-24 sparkle" />
                 </div>
               )}
             </motion.div>

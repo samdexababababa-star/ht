@@ -2,6 +2,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { LogoMark } from "@/components/site/LogoMark";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,9 +34,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-muted-2 flex items-center justify-center px-5 py-12">
       <div className="card p-8 w-full max-w-sm">
         <Link href="/" className="text-foreground inline-flex items-center gap-2">
-          <svg viewBox="0 0 64 64" fill="currentColor" className="h-5 w-5">
-            <path d="M32 8 L38 18 L49 15 L46 26 L56 32 L46 38 L49 49 L38 46 L32 56 L26 46 L15 49 L18 38 L8 32 L18 26 L15 15 L26 18 Z" />
-          </svg>
+          <LogoMark className="h-5 w-5" />
           <span className="font-semibold">Salma admin</span>
         </Link>
         <h1 className="mt-6 text-2xl tracking-tight">Sign <span className="serif-italic text-primary">in</span></h1>

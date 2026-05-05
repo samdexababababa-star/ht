@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getSession, ensureBootstrapAdmin } from "@/lib/auth";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 import { AdminMobileNav } from "@/components/admin/AdminMobileNav";
+import { LogoMark } from "@/components/site/LogoMark";
 import {
   LayoutDashboard,
   Package,
@@ -38,9 +39,7 @@ export default async function AuthedAdminLayout({
     <div className="min-h-screen bg-muted-2">
       <aside className="fixed top-0 left-0 bottom-0 w-60 bg-white border-r border-border p-4 hidden md:block">
         <Link href="/admin" className="inline-flex items-center gap-2 px-2 py-1">
-          <svg viewBox="0 0 64 64" fill="currentColor" className="h-5 w-5 text-foreground">
-            <path d="M32 8 L38 18 L49 15 L46 26 L56 32 L46 38 L49 49 L38 46 L32 56 L26 46 L15 49 L18 38 L8 32 L18 26 L15 15 L26 18 Z" />
-          </svg>
+          <LogoMark className="h-5 w-5 text-foreground" />
           <span className="font-semibold tracking-tight">Salma admin</span>
         </Link>
         <nav className="mt-6 space-y-0.5">
@@ -63,9 +62,7 @@ export default async function AuthedAdminLayout({
       <div className="md:pl-60">
         <header className="md:hidden sticky top-0 z-30 bg-white border-b border-border px-4 h-14 flex items-center gap-2">
           <Link href="/admin" className="inline-flex items-center gap-2">
-            <svg viewBox="0 0 64 64" fill="currentColor" className="h-5 w-5 text-foreground">
-              <path d="M32 8 L38 18 L49 15 L46 26 L56 32 L46 38 L49 49 L38 46 L32 56 L26 46 L15 49 L18 38 L8 32 L18 26 L15 15 L26 18 Z" />
-            </svg>
+            <LogoMark className="h-5 w-5 text-foreground" />
             <span className="font-semibold tracking-tight">Salma admin</span>
           </Link>
           <AdminMobileNav
