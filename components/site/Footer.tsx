@@ -1,0 +1,37 @@
+import Link from "next/link";
+import { Logo } from "./Logo";
+import { getSettings } from "@/lib/settings";
+
+export async function Footer() {
+  const s = await getSettings();
+  const year = new Date().getFullYear();
+  return (
+    <footer className="border-t border-border mt-24">
+      <div className="max-w-6xl mx-auto px-5 py-12 grid gap-10 md:grid-cols-4">
+        <div className="md:col-span-2">
+          <Logo />
+          <p className="mt-3 text-sm text-muted max-w-sm">{s.tagline}</p>
+          <p className="mt-6 text-xs text-muted">
+            © {year} {s.brandName}. All rights reserved.
+          </p>
+        </div>
+        <div className="text-sm">
+          <p className="text-foreground font-medium mb-3">Shop</p>
+          <ul className="space-y-2 text-muted">
+            <li><Link href="/catalog" className="hover:text-foreground">All products</Link></li>
+            <li><Link href="/cart" className="hover:text-foreground">Cart</Link></li>
+            <li><Link href="/checkout" className="hover:text-foreground">Checkout</Link></li>
+          </ul>
+        </div>
+        <div className="text-sm">
+          <p className="text-foreground font-medium mb-3">Trust</p>
+          <ul className="space-y-2 text-muted">
+            <li>Instant or fast manual delivery</li>
+            <li>Refund within 24h if undelivered</li>
+            <li>Real human support</li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  );
+}
