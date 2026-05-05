@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-const CART_COOKIE = "soha_cart";
+const CART_COOKIE = "salma_cart";
 
 export type CartItem = {
   productId: string;

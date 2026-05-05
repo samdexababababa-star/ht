@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch {
     s = null;
   }
-  const brand = s?.brandName ?? "Soha";
+  const brand = s?.brandName ?? "Salma";
   const tagline = s?.tagline ?? "Premium digital subscriptions, services & boosts.";
   return {
     title: { default: `${brand} — ${tagline}`, template: `%s — ${brand}` },

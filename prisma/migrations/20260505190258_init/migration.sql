@@ -168,7 +168,7 @@ CREATE TABLE "Page" (
 -- CreateTable
 CREATE TABLE "Setting" (
     "id" TEXT NOT NULL PRIMARY KEY DEFAULT 'default',
-    "brandName" TEXT NOT NULL DEFAULT 'Soha',
+    "brandName" TEXT NOT NULL DEFAULT 'Salma',
     "tagline" TEXT NOT NULL DEFAULT 'Premium digital subscriptions, services & boosts.',
     "logoUrl" TEXT,
     "faviconUrl" TEXT,

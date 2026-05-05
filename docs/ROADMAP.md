@@ -97,7 +97,7 @@ The DB already has `Vendor` and `Product.vendorId`. To enable: flip
 
 ## Open questions for the operator (Madjid)
 
-- Final brand name: keep **Soha**, or pick another? (admin-configurable)
+- Final brand name: keep **Salma**, or pick another? (admin-configurable)
 - Production database: Postgres on Neon / Supabase / Railway?
 - Image hosting: Cloudinary / S3 / direct URLs?
 - LemonSqueezy live keys: when to plug in?

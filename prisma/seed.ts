@@ -14,10 +14,10 @@ async function main() {
   });
 
   const seedCats = [
-    { name: "Streaming", icon: "▷", description: "Netflix, Spotify, Disney+, more." },
-    { name: "AI tools", icon: "✱", description: "ChatGPT Plus, Midjourney, Claude, Cursor." },
-    { name: "Gaming", icon: "◇", description: "Xbox, PSN, Steam wallet, top-ups." },
-    { name: "Followers & growth", icon: "↗", description: "Instagram, TikTok, YouTube boosts." },
+    { name: "Streaming", icon: "streaming", description: "Netflix, Spotify, Disney+, more." },
+    { name: "AI tools", icon: "ai", description: "ChatGPT Plus, Midjourney, Claude, Cursor." },
+    { name: "Gaming", icon: "gaming", description: "Xbox, PSN, Steam wallet, top-ups." },
+    { name: "Followers & growth", icon: "followers", description: "Instagram, TikTok, YouTube boosts." },
   ];
 
   for (const c of seedCats) {

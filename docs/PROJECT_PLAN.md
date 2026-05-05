@@ -1,4 +1,4 @@
-# Soha — Project Plan
+# Salma — Project Plan
 
 > A premium digital subscription & services storefront, fully controllable
 > from an admin panel. Built for Algeria & Africa first, but deliberately
@@ -15,8 +15,8 @@ continue exactly where the previous one stopped.
 
 | Field        | Value |
 | ------------ | ----- |
-| Working name | **Soha** (سُهى — the name of a faint star in the Big Dipper). 4 letters, soft consonants, neutral globally, has subtle Arab heritage which is meaningful for Algeria but does not exclude anyone elsewhere. |
-| Logo mark    | A minimal asterisk / six-point star (`✱`), heavily inspired by Chatly's mark. SVG in `public/brand/`. |
+| Working name | **Salma** (سلمى — Arabic for "peaceful / serene"). Five letters, soft consonants, internationally pronounceable, with a quiet Maghreb resonance that grounds the brand in Algeria without being exclusive to it. |
+| Logo mark    | A refined 8-petal rosette / star — single SVG path, single colour. Reads as a star at glance and a soft Maghreb-style flower on closer look. SVG in `public/brand/`. |
 | Primary color| `#0047FF` — electric editorial blue, matches the Chatly aesthetic. |
 | Accent       | `#000000` for type, `#FFFFFF` for surfaces. |
 | Typography   | **Display** — `Instrument Serif` (italic) for editorial moments. **UI** — `Geist` for product UI. |
@@ -30,7 +30,7 @@ continue exactly where the previous one stopped.
 
 ## 2. What the product does
 
-Soha sells **digital products** in any of these flavours:
+Salma sells **digital products** in any of these flavours:
 
 1. **Subscriptions** — Netflix, Spotify, IPTV, AI tools, etc. Variants =
    durations (1m / 3m / 6m / 12m).
@@ -125,7 +125,7 @@ POST /api/webhooks/telegram    — (future) inbound bot commands
 ## 5. Conversion psychology (handled tastefully, never spammy)
 
 The reference (Chatly) succeeds with **zero pop-ups**. We respect that. The
-techniques used in Soha:
+techniques used in Salma:
 
 1. **Social proof in the hero**, single line: "Trusted by 11.6k+ customers".
 2. **Editorial scarcity** — products can carry a tiny ribbon

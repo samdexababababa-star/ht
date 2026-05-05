@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   if (!detected.ok) return NextResponse.json(detected, { status: 200 });
   if (save) {
     await updateSettings({ tgBotToken: String(token), tgChatId: detected.chatId, tgEnabled: true });
-    await tgSendMessage(String(token), detected.chatId!, "✱ Soha is now connected. New orders will appear here.");
+    await tgSendMessage(String(token), detected.chatId!, "✦ Salma is now connected. New orders will appear here.");
   }
   return NextResponse.json(detected);
 }

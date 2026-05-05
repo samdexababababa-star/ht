@@ -35,7 +35,7 @@ export function ProductCard({ p }: { p: ProductCardData }) {
           ) : (
             <div className="h-full w-full flex items-center justify-center text-primary/40">
               <svg viewBox="0 0 64 64" fill="currentColor" className="w-16 h-16 sparkle">
-                <path d="M32 4l3.6 22.4 21.4-7L40 32l21.4 12.6-21.4-7L32 60l-3.6-22.4-21.4 7L24 32 2.6 19.4l21.4 7L32 4z" />
+                <path d="M32 8 L38 18 L49 15 L46 26 L56 32 L46 38 L49 49 L38 46 L32 56 L26 46 L15 49 L18 38 L8 32 L18 26 L15 15 L26 18 Z" />
               </svg>
             </div>
           )}

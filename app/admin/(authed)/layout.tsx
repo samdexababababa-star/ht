@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession, ensureBootstrapAdmin } from "@/lib/auth";
 import { LogoutButton } from "@/components/admin/LogoutButton";
+import { AdminMobileNav } from "@/components/admin/AdminMobileNav";
 import {
   LayoutDashboard,
   Package,
@@ -38,9 +39,9 @@ export default async function AuthedAdminLayout({
       <aside className="fixed top-0 left-0 bottom-0 w-60 bg-white border-r border-border p-4 hidden md:block">
         <Link href="/admin" className="inline-flex items-center gap-2 px-2 py-1">
           <svg viewBox="0 0 64 64" fill="currentColor" className="h-5 w-5 text-foreground">
-            <path d="M32 4l3.6 22.4 21.4-7L40 32l21.4 12.6-21.4-7L32 60l-3.6-22.4-21.4 7L24 32 2.6 19.4l21.4 7L32 4z" />
+            <path d="M32 8 L38 18 L49 15 L46 26 L56 32 L46 38 L49 49 L38 46 L32 56 L26 46 L15 49 L18 38 L8 32 L18 26 L15 15 L26 18 Z" />
           </svg>
-          <span className="font-semibold tracking-tight">Soha admin</span>
+          <span className="font-semibold tracking-tight">Salma admin</span>
         </Link>
         <nav className="mt-6 space-y-0.5">
           {nav.map((n) => (
@@ -60,10 +61,19 @@ export default async function AuthedAdminLayout({
         </div>
       </aside>
       <div className="md:pl-60">
-        <header className="md:hidden bg-white border-b border-border p-3 flex items-center gap-2">
-          <Link href="/admin" className="font-semibold">Soha admin</Link>
+        <header className="md:hidden sticky top-0 z-30 bg-white border-b border-border px-4 h-14 flex items-center gap-2">
+          <Link href="/admin" className="inline-flex items-center gap-2">
+            <svg viewBox="0 0 64 64" fill="currentColor" className="h-5 w-5 text-foreground">
+              <path d="M32 8 L38 18 L49 15 L46 26 L56 32 L46 38 L49 49 L38 46 L32 56 L26 46 L15 49 L18 38 L8 32 L18 26 L15 15 L26 18 Z" />
+            </svg>
+            <span className="font-semibold tracking-tight">Salma admin</span>
+          </Link>
+          <AdminMobileNav
+            items={nav.map((n) => ({ href: n.href, label: n.label }))}
+            email={session.email}
+          />
         </header>
-        <main className="p-5 md:p-8 max-w-6xl">{children}</main>
+        <main className="p-4 md:p-8 max-w-6xl">{children}</main>
       </div>
     </div>
   );

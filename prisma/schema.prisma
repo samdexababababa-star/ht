@@ -1,4 +1,4 @@
-// Soha — admin-controlled subscription & digital services platform
+// Salma — admin-controlled subscription & digital services platform
 // All models below are designed to be admin-editable from /admin panel.
 
 generator client {
@@ -231,7 +231,7 @@ model Page {
 model Setting {
   id        String  @id @default("default")
   // brand
-  brandName String  @default("Soha")
+  brandName String  @default("Salma")
   tagline   String  @default("Premium digital subscriptions, services & boosts.")
   logoUrl   String?
   faviconUrl String?

@@ -99,7 +99,7 @@ export default async function HomePage() {
             <SectionTitle
               eyebrow="More"
               title="Fresh on"
-              italicTail="Soha"
+              italicTail="Salma"
             />
           </Reveal>
           <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">

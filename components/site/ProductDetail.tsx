@@ -89,7 +89,7 @@ export function ProductDetail({ product }: { product: Product }) {
   }
 
   return (
-    <div className="grid md:grid-cols-2 gap-10">
+    <div className="grid md:grid-cols-2 gap-8 md:gap-10 pb-24 md:pb-0">
       <div>
         <div className="aspect-[4/5] rounded-[18px] overflow-hidden bg-muted-2 relative">
           <AnimatePresence mode="wait">
@@ -111,7 +111,7 @@ export function ProductDetail({ product }: { product: Product }) {
               ) : (
                 <div className="h-full w-full flex items-center justify-center text-primary/40">
                   <svg viewBox="0 0 64 64" fill="currentColor" className="w-24 h-24 sparkle">
-                    <path d="M32 4l3.6 22.4 21.4-7L40 32l21.4 12.6-21.4-7L32 60l-3.6-22.4-21.4 7L24 32 2.6 19.4l21.4 7L32 4z" />
+                    <path d="M32 8 L38 18 L49 15 L46 26 L56 32 L46 38 L49 49 L38 46 L32 56 L26 46 L15 49 L18 38 L8 32 L18 26 L15 15 L26 18 Z" />
                   </svg>
                 </div>
               )}
@@ -143,19 +143,19 @@ export function ProductDetail({ product }: { product: Product }) {
           {product.badge ? <span className="chip chip-blue">{product.badge}</span> : null}
           {discount ? <span className="chip">−{discount}%</span> : null}
         </div>
-        <h1 className="mt-3 text-4xl md:text-5xl tracking-tight font-medium">
+        <h1 className="mt-3 text-3xl md:text-5xl tracking-tight font-medium leading-[1.1]">
           {product.name}
         </h1>
         {product.tagline ? (
-          <p className="mt-3 text-lg text-muted">{product.tagline}</p>
+          <p className="mt-3 text-base md:text-lg text-muted">{product.tagline}</p>
         ) : null}
 
-        <div className="mt-6 flex items-baseline gap-3">
-          <span className="text-3xl font-semibold">
+        <div className="mt-5 md:mt-6 flex items-baseline gap-3">
+          <span className="text-2xl md:text-3xl font-semibold">
             {formatPrice(price, product.currency)}
           </span>
           {compareAt && compareAt > price ? (
-            <span className="text-base text-muted line-through">
+            <span className="text-sm md:text-base text-muted line-through">
               {formatPrice(compareAt, product.currency)}
             </span>
           ) : null}
@@ -206,7 +206,7 @@ export function ProductDetail({ product }: { product: Product }) {
           </div>
         ) : null}
 
-        <div className="mt-8 flex gap-3">
+        <div className="mt-8 hidden md:flex gap-3">
           <button
             onClick={add}
             disabled={pending}
@@ -220,7 +220,7 @@ export function ProductDetail({ product }: { product: Product }) {
         </div>
 
         {product.description ? (
-          <div className="mt-10 prose prose-sm max-w-none text-muted whitespace-pre-line">
+          <div className="mt-8 md:mt-10 prose prose-sm max-w-none text-muted whitespace-pre-line">
             {product.description}
           </div>
         ) : null}
@@ -230,6 +230,28 @@ export function ProductDetail({ product }: { product: Product }) {
             {product.longDescription}
           </div>
         ) : null}
+      </div>
+
+      {/* Mobile-only sticky purchase bar so the CTA is always reachable */}
+      <div className="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-border px-4 py-3 flex items-center gap-3 [padding-bottom:calc(env(safe-area-inset-bottom)+12px)]">
+        <div className="flex-1 min-w-0">
+          <p className="text-[11px] uppercase tracking-wider text-muted">Total</p>
+          <p className="text-lg font-semibold leading-tight truncate">
+            {formatPrice(price, product.currency)}
+            {variant ? <span className="text-xs text-muted font-normal ml-2">{variant.name}</span> : null}
+          </p>
+        </div>
+        <button
+          onClick={add}
+          disabled={pending}
+          className="btn btn-outline shrink-0 px-3"
+          aria-label="Add to cart"
+        >
+          <ShoppingBag size={16} />
+        </button>
+        <button onClick={buyNow} disabled={pending} className="btn btn-primary shrink-0">
+          Buy now →
+        </button>
       </div>
     </div>
   );

@@ -1,3 +1,11 @@
+/**
+ * Salma brand mark — a refined 8-petal rosette built from a single path.
+ *
+ * The shape is an alternating-radius 16-vertex star: long rays at the four
+ * cardinal + four diagonal directions, gentle "shoulder" points between them.
+ * Reads as a star at glance and as a soft flower / Maghreb-style rosette on
+ * closer look. Designed to stay legible down to ~12px (favicons).
+ */
 export function LogoMark({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -6,7 +14,7 @@ export function LogoMark({ className = "" }: { className?: string }) {
       className={className}
       aria-hidden
     >
-      <path d="M32 4l3.6 22.4 21.4-7L40 32l21.4 12.6-21.4-7L32 60l-3.6-22.4-21.4 7L24 32 2.6 19.4l21.4 7L32 4z" />
+      <path d="M32 8 L38 18 L49 15 L46 26 L56 32 L46 38 L49 49 L38 46 L32 56 L26 46 L15 49 L18 38 L8 32 L18 26 L15 15 L26 18 Z" />
     </svg>
   );
 }

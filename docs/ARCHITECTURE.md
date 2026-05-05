@@ -37,7 +37,7 @@
 
 ## Data flow — checkout
 
-1. Customer adds to cart → cookie `soha_cart` with `[{productId, variantId, quantity}]`.
+1. Customer adds to cart → cookie `salma_cart` with `[{productId, variantId, quantity}]`.
 2. `/checkout` page reads cart cookie + Prisma, shows totals, optional
    promotion code, asks for email / name / WhatsApp.
 3. POST `/api/checkout` →
@@ -59,10 +59,10 @@
 
 ## Auth
 
-- httpOnly JWT cookie (`soha_admin`) signed with `AUTH_SECRET`.
+- httpOnly JWT cookie (`salma_admin`) signed with `AUTH_SECRET`.
 - Bootstrap on first request: if no users exist, `ensureBootstrapAdmin`
   creates one with `ADMIN_EMAIL` / `ADMIN_PASSWORD` (defaults
-  `admin@soha.local` / `soha-admin`). The admin should change credentials
+  `admin@salma.local` / `salma-admin`). The admin should change credentials
   immediately from `/admin/settings`.
 
 ## Where to add things

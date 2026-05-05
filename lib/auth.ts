@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { prisma } from "./db";
 
-const COOKIE_NAME = "soha_admin";
+const COOKIE_NAME = "salma_admin";
 
 function getSecret() {
   const secret = process.env.AUTH_SECRET || "dev-only-change-me-in-production";
@@ -74,8 +74,8 @@ export async function ensureBootstrapAdmin() {
   const count = await prisma.user.count();
   if (count > 0) return null;
 
-  const email = process.env.ADMIN_EMAIL || "admin@soha.local";
-  const password = process.env.ADMIN_PASSWORD || "soha-admin";
+  const email = process.env.ADMIN_EMAIL || "admin@salma.local";
+  const password = process.env.ADMIN_PASSWORD || "salma-admin";
   const passwordHash = await hashPassword(password);
   await prisma.user.create({
     data: { email, passwordHash, role: "admin", name: "Admin" },

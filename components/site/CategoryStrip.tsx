@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { CategoryIcon } from "./CategoryIcon";
 
 export async function CategoryStrip() {
   const categories = await prisma.category.findMany({
@@ -23,13 +24,13 @@ export async function CategoryStrip() {
           <Link
             key={c.id}
             href={`/category/${c.slug}`}
-            className="card p-5 flex items-center gap-3"
+            className="card p-4 md:p-5 flex items-center gap-3 hover:border-foreground/20 transition-colors"
           >
-            <span className="h-10 w-10 rounded-full bg-primary-soft text-primary flex items-center justify-center text-lg">
-              {c.icon || "✱"}
+            <span className="h-10 w-10 shrink-0 rounded-full bg-primary-soft text-primary flex items-center justify-center">
+              <CategoryIcon hint={c.icon || c.slug} />
             </span>
-            <div>
-              <p className="font-medium leading-tight">{c.name}</p>
+            <div className="min-w-0">
+              <p className="font-medium leading-tight truncate">{c.name}</p>
               {c.description ? (
                 <p className="text-[12px] text-muted line-clamp-1">{c.description}</p>
               ) : null}

@@ -4,6 +4,7 @@ import { getSettings } from "@/lib/settings";
 import { prisma } from "@/lib/db";
 import { ShoppingBag, Search } from "lucide-react";
 import { CartIndicator } from "./CartIndicator";
+import { MobileMenu } from "./MobileMenu";
 
 export async function Header() {
   const [s, categories] = await Promise.all([
@@ -16,13 +17,13 @@ export async function Header() {
   ]);
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-md bg-white/80 border-b border-border">
+    <header className="sticky top-0 z-40 backdrop-blur-md bg-white/85 border-b border-border">
       {s.announcementBar ? (
-        <div className="bg-foreground text-white text-[12px] tracking-wide text-center py-2 px-4">
+        <div className="bg-foreground text-white text-[11px] md:text-[12px] tracking-wide text-center py-2 px-4 truncate">
           {s.announcementBar}
         </div>
       ) : null}
-      <div className="max-w-6xl mx-auto px-5 h-14 flex items-center gap-6">
+      <div className="max-w-6xl mx-auto px-4 md:px-5 h-14 flex items-center gap-3 md:gap-6">
         <Logo />
         <nav className="hidden md:flex items-center gap-6 text-[14px] text-muted">
           <Link href="/catalog" className="hover:text-foreground">Catalog</Link>
@@ -52,6 +53,10 @@ export async function Header() {
             <ShoppingBag size={16} />
             <CartIndicator />
           </Link>
+          <MobileMenu
+            brand={s.brandName}
+            categories={categories.map((c) => ({ id: c.id, slug: c.slug, name: c.name }))}
+          />
         </div>
       </div>
     </header>

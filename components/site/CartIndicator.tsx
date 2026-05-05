@@ -9,7 +9,7 @@ export function CartIndicator() {
       try {
         const raw = document.cookie
           .split("; ")
-          .find((c) => c.startsWith("soha_cart="));
+          .find((c) => c.startsWith("salma_cart="));
         if (!raw) return setCount(0);
         const json = decodeURIComponent(raw.split("=")[1] || "");
         const parsed = JSON.parse(json);

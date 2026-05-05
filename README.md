@@ -1,13 +1,14 @@
-# Soha — digital subscriptions, services & boosts
+# Salma — digital subscriptions, services & boosts
 
 A clean, editorial e-commerce platform for selling digital subscriptions
 (streaming, AI tools, gaming top-ups, social-growth packs, ad-hoc services)
 with a fully admin-controlled storefront, LemonSqueezy payments, Telegram
 order alerts and WhatsApp customer-care.
 
-> "Soha" — سُهى — is the name of a faint star in the Big Dipper.
-> 4 letters, neutral worldwide, with a subtle Arabic root for our Algerian roots.
-> Re-brand from `/admin/settings` in one click.
+> **Salma** (سلمى) — Arabic for "peaceful / serene". Five letters, soft,
+> internationally pronounceable, with a quiet Maghreb resonance for our
+> Algerian roots. The name (and logo) are stored on the `Setting` model so
+> you can re-brand from `/admin/settings` in one click.
 
 ## What's inside
 
@@ -20,6 +21,8 @@ order alerts and WhatsApp customer-care.
   WhatsApp (deep links before/after payment).
 - **Hidden marketplace skeleton** — DB models for `Vendor`s exist, gated by
   `marketplaceEnabled` setting. UI to come in Phase 3.
+- **Mobile-first responsive design** — drawer navigation, sticky checkout
+  bars, touch-friendly controls, tested at 390 px viewport.
 
 See [`docs/PROJECT_PLAN.md`](docs/PROJECT_PLAN.md) for the full plan, and
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the data flow.
@@ -47,8 +50,8 @@ Open [http://localhost:3000](http://localhost:3000) for the public site and
 
 The first time you load any page, a default admin is bootstrapped:
 
-- email: `admin@soha.local`
-- password: `soha-admin`
+- email: `admin@salma.local`
+- password: `salma-admin`
 
 Change them immediately from `/admin/settings` (we'll surface a UI for changing
 the password in Phase 2 — for now you can update the user row directly).
