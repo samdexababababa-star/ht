@@ -1,34 +1,43 @@
 /**
- * Salma brand mark — a luminous halo with an inner pulse.
+ * Salma brand mark — a luminous halo crossed by a calligraphic stroke.
  *
  * Composition:
- *   1. Outer halo: sixteen dots arranged on a perfect circle with alternating
- *      radii (2 / 1.4). The eight cardinal + diagonal dots are slightly
- *      larger, the eight in-between dots smaller — creating a subtle
- *      "breathing" rhythm. Reads as an aura / halo, a literal nod to "Salma"
- *      (سلمى, peace / serenity) and to the soft glow around a star or moon.
+ *   1. Outer halo (16 dots): a perfect circle of dots with alternating radii
+ *      (2 / 1.4). The eight cardinal + diagonal dots are slightly larger,
+ *      the eight in-between dots smaller — a subtle "breathing" rhythm.
+ *      Reads as an aura / halo, a literal nod to "Salma" (سلمى,
+ *      peace / serenity) and to the soft glow around a star or moon.
  *
- *   2. Inner pulse: a five-dot vertical column through the center, radii
- *      sized in an arc (0.7, 1.3, 1.9, 1.3, 0.7). The composition reads
- *      simultaneously as: a candle flame, an axis / pillar of light, a
- *      heartbeat, a stylised lunar phase progression — and at small sizes
- *      collapses gracefully to a single bright center dot.
+ *   2. Inner calligraphic stroke (5 dots): a diagonal trace running from
+ *      the upper-right to the lower-left, radii sized in an arc
+ *      (0.6, 1.2, 1.8, 1.2, 0.6). The middle dot sits exactly at the
+ *      geometric center of the halo. Reads simultaneously as a meteor
+ *      streaking through its aura, a calligraphic brushstroke, the spine
+ *      of a stylised "S", and — significantly — a stroke whose direction
+ *      mirrors right-to-left Arabic reading flow.
  *
  * Why this works (psychology):
- *   - Two opposing geometries in harmony — circular (continuous, feminine,
- *     infinite) and vertical (focal, ascensional, axis-mundi). The tension
- *     between them is what makes the mark feel "alive" rather than static.
- *   - The bright center dot acts as an iris/pupil — universally attention-
- *     grabbing without aggression (a known fixation cue).
- *   - The Gestalt closure principle resolves the dot ring as a continuous
- *     halo, evoking completeness and safety.
- *   - Lunar / candle-flame readings carry an algerian / north-african
- *     undertone (subtle, not folkloric) while remaining internationally
- *     legible — moonlight and flames are universal symbols of guidance.
+ *   - Asymmetric tension: a perfect circle (calm, infinite, feminine) is
+ *     crossed by a directional diagonal (active, momentary, gestural).
+ *     The unresolved tension is what makes the mark feel alive rather
+ *     than ornamental.
+ *   - Right-to-left diagonal: the stroke flows in the natural reading
+ *     direction of Arabic — a subliminal cue that the brand belongs to
+ *     and "speaks" the user's culture, without resorting to literal
+ *     calligraphy or folkloric ornament.
+ *   - The bright center dot acts as an iris/pupil — universally
+ *     attention-grabbing without aggression (a known fixation cue).
+ *   - Gestalt closure: the halo dot ring resolves into a continuous
+ *     circle, evoking completeness and safety. The diagonal stroke
+ *     resolves into a continuous gesture — two complete forms in one mark.
+ *   - The fading-tips gradient (small → big → small) gives the stroke
+ *     velocity: the eye reads it as motion, like a comet or signature
+ *     stroke captured mid-gesture. This is what conveys "alive" / "ours".
  *
- * Inspired by minimalist dot-halo languages (e.g. Serus) but differentiated
- * by the alternating-radius rhythm + the inner vertical pulse — together
- * unique to Salma. Stays legible down to ~12px favicons.
+ * Inspired by minimalist dot-halo languages (e.g. Serus) but uniquely
+ * Salma's by the asymmetric calligraphic stroke. Stays legible down to
+ * ~12px favicons (where the stroke's center dominates and the halo
+ * provides ambient framing).
  */
 export function LogoMark({ className = "" }: { className?: string }) {
   return (
@@ -55,12 +64,12 @@ export function LogoMark({ className = "" }: { className?: string }) {
       <circle cx="11.7" cy="23.6" r="1.4" />
       <circle cx="16.4" cy="16.4" r="2" />
       <circle cx="23.6" cy="11.7" r="1.4" />
-      {/* Inner pulse — 5 dots, vertical through center, radii arc 0.7 → 1.9 → 0.7. */}
-      <circle cx="32" cy="22" r="0.7" />
-      <circle cx="32" cy="27" r="1.3" />
-      <circle cx="32" cy="32" r="1.9" />
-      <circle cx="32" cy="37" r="1.3" />
-      <circle cx="32" cy="42" r="0.7" />
+      {/* Calligraphic stroke — diagonal upper-right → lower-left, fading tips. */}
+      <circle cx="38" cy="22" r="0.6" />
+      <circle cx="35" cy="27" r="1.2" />
+      <circle cx="32" cy="32" r="1.8" />
+      <circle cx="29" cy="37" r="1.2" />
+      <circle cx="26" cy="42" r="0.6" />
     </svg>
   );
 }
