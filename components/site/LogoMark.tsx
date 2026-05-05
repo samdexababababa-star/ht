@@ -1,49 +1,41 @@
 /**
- * Salma brand mark — a luminous halo crossed by a calligraphic stroke.
+ * Salma brand mark — twin peaks, asymmetric inner.
  *
  * Composition:
- *   1. Outer halo (16 dots): a perfect circle of dots with alternating radii
- *      (2 / 1.4). The eight cardinal + diagonal dots are slightly larger,
- *      the eight in-between dots smaller — a subtle "breathing" rhythm.
- *      Reads as an aura / halo, a literal nod to "Salma" (سلمى,
- *      peace / serenity) and to the soft glow around a star or moon.
+ *   1. Outer triangle (frame): an outlined equilateral triangle, apex up,
+ *      drawn as one outer + one inner path with the even-odd fill rule
+ *      so it reads as a clean stroke of uniform thickness around the
+ *      perimeter. Symmetric, calm, the "container".
  *
- *   2. Inner calligraphic stroke (5 dots): an off-center diagonal trace
- *      from the upper-right to the lower-left, with radii fading
- *      monotonically (2.0, 1.5, 1.0, 0.6, 0.3). The stroke does NOT
- *      pass through the geometric centre — it brushes past it on the
- *      upper-right side, exactly the way a right-handed calligrapher
- *      lays down ink: heavy pressure at the start, lifting away into
- *      a fade. Reads simultaneously as a meteor entering the atmosphere
- *      (brightest at impact, burning out as it descends), a calligraphic
- *      brushstroke captured mid-gesture, and a stroke whose direction
- *      mirrors right-to-left Arabic reading flow.
+ *   2. Inner triangle (peak): a smaller, solid filled triangle inside
+ *      the frame. Its apex sits at x=28 — four units LEFT of its base
+ *      midpoint at x=31. This subtle lean is the heart of the mark:
+ *      it breaks every axis of symmetry the outer frame creates and
+ *      injects motion into the otherwise still composition.
  *
  * Why this works (psychology):
- *   - Asymmetric tension: a perfect circle (calm, infinite, feminine) is
- *     crossed by a directional diagonal (active, momentary, gestural).
- *     The unresolved tension is what makes the mark feel alive rather
- *     than ornamental.
- *   - Right-to-left diagonal: the stroke flows in the natural reading
- *     direction of Arabic — a subliminal cue that the brand belongs to
- *     and "speaks" the user's culture, without resorting to literal
- *     calligraphy or folkloric ornament.
- *   - The heavy head pulls visual weight to the upper-right quadrant,
- *     anchoring the composition off-axis. This is the asymmetry that
- *     breaks the diagonal mirror symmetry of v3 and gives the mark a
- *     true sense of momentum and one-of-a-kindness.
- *   - Gestalt closure: the halo dot ring resolves into a continuous
- *     circle, evoking completeness and safety. The off-centre stroke
- *     resolves into a continuous gesture — two complete forms in one
- *     mark, but with no shared axis of symmetry between them.
- *   - The monotonic fade (heavy → light, head → tail) is read by the
- *     eye as captured motion: a meteor or signature stroke caught
- *     mid-gesture. This is what conveys "alive" / "unique" / "ours".
+ *   - Twin peaks: the outer + inner triangles together read as Atlas
+ *     mountains / a horizon line — a culturally-grounded Algerian cue
+ *     without any folkloric ornament. They also read as visual depth:
+ *     a layered "outer calm contains inner life".
+ *   - The leaning inner peak: a perfect-frame containing an off-axis
+ *     core is the same composition you find in classical paintings
+ *     where the formal frame holds a charged, slightly-displaced
+ *     subject. The eye reads it as alive, intentional, human.
+ *   - Right-to-left lean: the inner peak's apex pulls left, which
+ *     mirrors the motion of an Arabic-reading eye moving right to
+ *     left. A subliminal cultural cue, not a literal one.
+ *   - Two stable triangles, one frame and one solid — strong
+ *     hierarchy: the outer says "structure / institution / trust",
+ *     the inner says "soul / heart / Salma". Premium without being
+ *     cold.
+ *   - Triangular geometry departs entirely from the dot-halo
+ *     language of earlier versions: a deliberately new mark, not a
+ *     refinement of the previous one.
  *
- * Inspired by minimalist dot-halo languages (e.g. Serus) but uniquely
- * Salma's by the asymmetric calligraphic stroke. Stays legible down to
- * ~12px favicons (where the stroke's center dominates and the halo
- * provides ambient framing).
+ * Stays legible from a 64×64 hero down to a 16×16 favicon, where the
+ * "twin peaks" silhouette stays recognisable even when the lean of
+ * the inner peak becomes a sub-pixel detail.
  */
 export function LogoMark({ className = "" }: { className?: string }) {
   return (
@@ -53,29 +45,13 @@ export function LogoMark({ className = "" }: { className?: string }) {
       className={className}
       aria-hidden
     >
-      {/* Outer halo — 16 dots on a circle of radius 22, alternating sizes. */}
-      <circle cx="32" cy="10" r="2" />
-      <circle cx="40.4" cy="11.7" r="1.4" />
-      <circle cx="47.6" cy="16.4" r="2" />
-      <circle cx="52.3" cy="23.6" r="1.4" />
-      <circle cx="54" cy="32" r="2" />
-      <circle cx="52.3" cy="40.4" r="1.4" />
-      <circle cx="47.6" cy="47.6" r="2" />
-      <circle cx="40.4" cy="52.3" r="1.4" />
-      <circle cx="32" cy="54" r="2" />
-      <circle cx="23.6" cy="52.3" r="1.4" />
-      <circle cx="16.4" cy="47.6" r="2" />
-      <circle cx="11.7" cy="40.4" r="1.4" />
-      <circle cx="10" cy="32" r="2" />
-      <circle cx="11.7" cy="23.6" r="1.4" />
-      <circle cx="16.4" cy="16.4" r="2" />
-      <circle cx="23.6" cy="11.7" r="1.4" />
-      {/* Calligraphic stroke — off-centre diagonal, heavy head → fading tail. */}
-      <circle cx="42" cy="20" r="2.0" />
-      <circle cx="38" cy="25" r="1.5" />
-      <circle cx="34" cy="30" r="1.0" />
-      <circle cx="30" cy="35" r="0.6" />
-      <circle cx="26" cy="40" r="0.3" />
+      {/* Outer triangle frame: outer minus inner, even-odd fill. */}
+      <path
+        fillRule="evenodd"
+        d="M32 8 L56 50 L8 50 Z M32 17 L48 45 L16 45 Z"
+      />
+      {/* Inner solid peak — apex shifted left of base midpoint (asymmetric lean). */}
+      <path d="M28 26 L42 42 L20 42 Z" />
     </svg>
   );
 }

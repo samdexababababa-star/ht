@@ -57,7 +57,7 @@ export function Hero({
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
           className="hidden md:block absolute right-10 top-24 text-primary"
         >
-          <LogoMark className="sparkle h-28 w-28 opacity-80" />
+          <LogoMark className="h-28 w-28 opacity-80" />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, scale: 0.6, rotate: 20 }}
@@ -65,7 +65,7 @@ export function Hero({
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           className="hidden md:block absolute right-44 top-72 text-primary"
         >
-          <LogoMark className="sparkle h-12 w-12 opacity-60" />
+          <LogoMark className="h-12 w-12 opacity-60" />
         </motion.div>
       </div>
     </section>

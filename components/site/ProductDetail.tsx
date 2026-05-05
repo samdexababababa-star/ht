@@ -111,7 +111,7 @@ export function ProductDetail({ product }: { product: Product }) {
                 />
               ) : (
                 <div className="h-full w-full flex items-center justify-center text-primary/40">
-                  <LogoMark className="w-24 h-24 sparkle" />
+                  <LogoMark className="w-24 h-24" />
                 </div>
               )}
             </motion.div>

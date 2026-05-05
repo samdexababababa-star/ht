@@ -35,7 +35,7 @@ export function ProductCard({ p }: { p: ProductCardData }) {
             />
           ) : (
             <div className="h-full w-full flex items-center justify-center text-primary/40">
-              <LogoMark className="w-16 h-16 sparkle" />
+              <LogoMark className="w-16 h-16" />
             </div>
           )}
 
