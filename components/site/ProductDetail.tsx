@@ -3,8 +3,9 @@ import { useState, useTransition, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice, safeJson } from "@/lib/utils";
-import { ShoppingBag, Sparkles, Clock } from "lucide-react";
+import { ShoppingBag, Sparkles, Clock, Tag } from "lucide-react";
 import { LogoMark } from "./LogoMark";
+import { OfferDialog } from "./OfferDialog";
 
 type Variant = {
   id: string;
@@ -32,10 +33,23 @@ type Product = {
   scarcityText: string | null;
   scarcityCount: number | null;
   urgencyEndsAt: Date | string | null;
+  allowQuantity?: boolean;
+  negotiable?: boolean;
+  minOfferPrice?: number | null;
   variants: Variant[];
 };
 
-export function ProductDetail({ product }: { product: Product }) {
+type Settings = {
+  negotiableEnabled: boolean;
+};
+
+export function ProductDetail({
+  product,
+  settings,
+}: {
+  product: Product;
+  settings?: Settings;
+}) {
   const router = useRouter();
   const gallery = useMemo(() => safeJson<string[]>(product.gallery, []), [product.gallery]);
   const allImages = product.thumbnail ? [product.thumbnail, ...gallery] : gallery;
@@ -54,6 +68,10 @@ export function ProductDetail({ product }: { product: Product }) {
 
   const [pending, start] = useTransition();
   const [added, setAdded] = useState(false);
+  const [qty, setQty] = useState(1);
+  const [offerOpen, setOfferOpen] = useState(false);
+  const negotiableOn =
+    !!product.negotiable && (settings?.negotiableEnabled ?? true);
 
   function add() {
     start(async () => {
@@ -64,7 +82,7 @@ export function ProductDetail({ product }: { product: Product }) {
           action: "add",
           productId: product.id,
           variantId,
-          quantity: 1,
+          quantity: qty,
         }),
       });
       if (res.ok) {
@@ -82,7 +100,7 @@ export function ProductDetail({ product }: { product: Product }) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           action: "set",
-          items: [{ productId: product.id, variantId, quantity: 1 }],
+          items: [{ productId: product.id, variantId, quantity: qty }],
         }),
       });
       router.push("/checkout");
@@ -192,6 +210,51 @@ export function ProductDetail({ product }: { product: Product }) {
           </div>
         ) : null}
 
+        {product.allowQuantity ? (
+          <div className="mt-6">
+            <p className="text-[12px] uppercase tracking-[0.16em] text-muted mb-2">
+              Quantity
+            </p>
+            <div className="inline-flex items-center gap-2 rounded-2xl border border-border p-1 bg-white">
+              <button
+                type="button"
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                className="h-9 w-9 rounded-xl text-muted hover:text-foreground"
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+              <input
+                type="number"
+                min={1}
+                value={qty}
+                onChange={(e) => setQty(Math.max(1, Number(e.target.value || "1")))}
+                className="w-12 h-9 text-center bg-transparent text-base font-medium"
+              />
+              <button
+                type="button"
+                onClick={() => setQty((q) => q + 1)}
+                className="h-9 w-9 rounded-xl text-muted hover:text-foreground"
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        ) : null}
+
+        {negotiableOn ? (
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={() => setOfferOpen(true)}
+              className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+            >
+              <Tag size={14} /> Make an offer on this price
+            </button>
+          </div>
+        ) : null}
+
         {product.scarcityEnabled || product.urgencyEndsAt ? (
           <div className="mt-6 flex flex-wrap gap-2">
             {product.scarcityEnabled && product.scarcityText ? (
@@ -234,9 +297,11 @@ export function ProductDetail({ product }: { product: Product }) {
       {/* Mobile-only sticky purchase bar so the CTA is always reachable */}
       <div className="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-border px-4 py-3 flex items-center gap-3 [padding-bottom:calc(env(safe-area-inset-bottom)+12px)]">
         <div className="flex-1 min-w-0">
-          <p className="text-[11px] uppercase tracking-wider text-muted">Total</p>
+          <p className="text-[11px] uppercase tracking-wider text-muted">
+            {qty > 1 ? `Total · ×${qty}` : "Total"}
+          </p>
           <p className="text-lg font-semibold leading-tight truncate">
-            {formatPrice(price, product.currency)}
+            {formatPrice(price * qty, product.currency)}
             {variant ? <span className="text-xs text-muted font-normal ml-2">{variant.name}</span> : null}
           </p>
         </div>
@@ -252,6 +317,20 @@ export function ProductDetail({ product }: { product: Product }) {
           Buy now →
         </button>
       </div>
+      {negotiableOn ? (
+        <OfferDialog
+          open={offerOpen}
+          onClose={() => setOfferOpen(false)}
+          product={{
+            id: product.id,
+            name: product.name,
+            currency: product.currency,
+            currentPrice: price,
+            minOfferPrice: product.minOfferPrice ?? null,
+          }}
+          variantId={variantId ?? null}
+        />
+      ) : null}
     </div>
   );
 }

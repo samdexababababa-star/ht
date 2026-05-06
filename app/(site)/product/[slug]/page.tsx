@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { getSettings } from "@/lib/settings";
 import { ProductDetail } from "@/components/site/ProductDetail";
 import { ProductCard } from "@/components/site/ProductCard";
 
@@ -11,13 +12,16 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    include: {
-      variants: { orderBy: { order: "asc" } },
-      category: true,
-    },
-  });
+  const [product, settings] = await Promise.all([
+    prisma.product.findUnique({
+      where: { slug },
+      include: {
+        variants: { orderBy: { order: "asc" } },
+        category: true,
+      },
+    }),
+    getSettings(),
+  ]);
   if (!product || !product.visible) notFound();
 
   const related = await prisma.product.findMany({
@@ -32,7 +36,10 @@ export default async function ProductPage({
 
   return (
     <div className="max-w-6xl mx-auto px-5 pt-10 pb-20">
-      <ProductDetail product={product} />
+      <ProductDetail
+        product={product}
+        settings={{ negotiableEnabled: settings.negotiableEnabled }}
+      />
 
       {related.length > 0 ? (
         <section className="mt-20">
