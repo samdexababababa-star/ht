@@ -40,6 +40,11 @@ export type ProductFormData = {
   scarcityText?: string | null;
   scarcityCount?: number | null;
   urgencyEndsAt?: string | null;
+  // phase 7
+  warrantyDays?: number | null;
+  allowQuantity?: boolean;
+  negotiable?: boolean;
+  minOfferPrice?: number | null;
   variants?: Variant[];
 };
 
@@ -291,6 +296,64 @@ export function ProductForm({
         >
           + Add variant
         </button>
+      </section>
+
+      <section className="card p-6 space-y-4">
+        <h2 className="text-lg tracking-tight">Selling options</h2>
+        <p className="text-sm text-muted">
+          Per-product overrides. Empty = use the storefront default from settings.
+        </p>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Field label="Warranty / claims window (days)">
+            <input
+              type="number"
+              min={0}
+              value={data.warrantyDays ?? ""}
+              onChange={(e) =>
+                up(
+                  "warrantyDays",
+                  e.target.value === "" ? null : Number(e.target.value),
+                )
+              }
+              placeholder="Use settings default"
+              className="input"
+            />
+          </Field>
+          <Field label="Min. offer price (cents)">
+            <input
+              type="number"
+              min={0}
+              value={data.minOfferPrice ?? ""}
+              onChange={(e) =>
+                up(
+                  "minOfferPrice",
+                  e.target.value === "" ? null : Number(e.target.value),
+                )
+              }
+              placeholder="No floor"
+              className="input"
+              disabled={!data.negotiable}
+            />
+          </Field>
+        </div>
+        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+          <label className="inline-flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={!!data.allowQuantity}
+              onChange={(e) => up("allowQuantity", e.target.checked)}
+            />
+            Allow quantity selection on the storefront
+          </label>
+          <label className="inline-flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={!!data.negotiable}
+              onChange={(e) => up("negotiable", e.target.checked)}
+            />
+            Price is negotiable (show &ldquo;Make an offer&rdquo;)
+          </label>
+        </div>
       </section>
 
       <section className="card p-6 space-y-4">

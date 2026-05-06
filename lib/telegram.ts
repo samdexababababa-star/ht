@@ -68,11 +68,23 @@ export async function tgAutoDetectChat(token: string) {
 }
 
 /**
+ * Render a template string by substituting {token} placeholders.
+ * Unknown tokens are left empty (not the literal "{token}").
+ */
+export function renderTemplate(template: string, vars: Record<string, string | number | undefined>) {
+  return template.replace(/\{(\w+)\}/g, (_, k: string) => {
+    const v = vars[k];
+    return v === undefined || v === null ? "" : String(v);
+  });
+}
+
+/**
  * Send a formatted order notification to the configured chat.
  */
 export async function tgNotifyOrder(orderId: string) {
   const settings = await getSettings();
   if (!settings.tgEnabled || !settings.tgBotToken || !settings.tgChatId) return;
+  if (!settings.tgNotifyOnNewOrder) return;
 
   const order = await prisma.order.findUnique({
     where: { id: orderId },
@@ -80,28 +92,89 @@ export async function tgNotifyOrder(orderId: string) {
   });
   if (!order) return;
 
-  const lines: string[] = [];
-  lines.push(`🛒 <b>New order</b> ${order.number}`);
-  lines.push(`Status: <b>${order.status}</b>`);
-  if (order.email) lines.push(`Email: ${order.email}`);
-  if (order.name) lines.push(`Name: ${order.name}`);
-  if (order.whatsapp) lines.push(`WhatsApp: ${order.whatsapp}`);
-  if (order.phone) lines.push(`Phone: ${order.phone}`);
-  if (order.notes) lines.push(`Notes: ${order.notes}`);
-  lines.push("");
-  lines.push("<b>Items:</b>");
-  for (const item of order.items) {
-    lines.push(
-      ` • ${item.name}${item.variantName ? ` — ${item.variantName}` : ""} ×${item.quantity}  (${(item.total / 100).toFixed(2)} ${order.currency})`,
-    );
-  }
-  lines.push("");
-  lines.push(`Subtotal: ${(order.subtotal / 100).toFixed(2)} ${order.currency}`);
-  if (order.discount) lines.push(`Discount: -${(order.discount / 100).toFixed(2)} ${order.currency}`);
-  lines.push(`<b>Total: ${(order.total / 100).toFixed(2)} ${order.currency}</b>`);
-  if (order.paymentUrl) lines.push(`Payment link: ${order.paymentUrl}`);
+  const itemsBlock = order.items
+    .map(
+      (item) =>
+        ` • ${item.name}${item.variantName ? ` — ${item.variantName}` : ""} ×${item.quantity}  (${(item.total / 100).toFixed(2)} ${order.currency})`,
+    )
+    .join("\n");
 
-  await tgSendMessage(settings.tgBotToken, settings.tgChatId, lines.join("\n"), {
-    parseMode: "HTML",
+  const customerLines: string[] = [];
+  if (order.email) customerLines.push(`Email: ${order.email}`);
+  if (order.name) customerLines.push(`Name: ${order.name}`);
+  if (order.whatsapp) customerLines.push(`WhatsApp: ${order.whatsapp}`);
+  if (order.phone) customerLines.push(`Phone: ${order.phone}`);
+  const customer = customerLines.join("\n") || "(anonymous)";
+
+  const text = renderTemplate(settings.tgOrderTemplate, {
+    order: order.number,
+    customer,
+    items: itemsBlock,
+    total: `${(order.total / 100).toFixed(2)} ${order.currency}`,
+    currency: order.currency,
+    status: order.status,
   });
+
+  await tgSendMessage(settings.tgBotToken, settings.tgChatId, text);
+}
+
+export async function tgNotifyOrderPaid(orderId: string) {
+  const settings = await getSettings();
+  if (!settings.tgEnabled || !settings.tgBotToken || !settings.tgChatId) return;
+  if (!settings.tgNotifyOnPaid) return;
+
+  const order = await prisma.order.findUnique({ where: { id: orderId } });
+  if (!order) return;
+
+  const text = renderTemplate(settings.tgPaidTemplate, {
+    order: order.number,
+    customer: order.email || order.name || "(anonymous)",
+    total: `${(order.total / 100).toFixed(2)} ${order.currency}`,
+    currency: order.currency,
+  });
+  await tgSendMessage(settings.tgBotToken, settings.tgChatId, text);
+}
+
+export async function tgNotifyClaim(claimId: string) {
+  const settings = await getSettings();
+  if (!settings.tgEnabled || !settings.tgBotToken || !settings.tgChatId) return;
+  if (!settings.tgNotifyOnClaim) return;
+
+  const claim = await prisma.claim.findUnique({
+    where: { id: claimId },
+    include: { order: true },
+  });
+  if (!claim) return;
+
+  const text = renderTemplate(settings.tgClaimTemplate, {
+    claim: claim.number,
+    customer: claim.customerName || claim.customerEmail,
+    email: claim.customerEmail,
+    reason: claim.reason,
+    order: claim.order?.number || "(no order)",
+    message: claim.message,
+  });
+  await tgSendMessage(settings.tgBotToken, settings.tgChatId, text);
+}
+
+export async function tgNotifyOffer(offerId: string) {
+  const settings = await getSettings();
+  if (!settings.tgEnabled || !settings.tgBotToken || !settings.tgChatId) return;
+  if (!settings.tgNotifyOnOffer) return;
+
+  const offer = await prisma.offer.findUnique({
+    where: { id: offerId },
+    include: { product: { select: { name: true } } },
+  });
+  if (!offer) return;
+
+  const text = renderTemplate(settings.tgOfferTemplate, {
+    offer: offer.number,
+    product: offer.product?.name ?? "(unknown product)",
+    customer: offer.customerName || offer.customerEmail,
+    email: offer.customerEmail,
+    price: `${(offer.proposedPrice / 100).toFixed(2)}`,
+    message: offer.message,
+  });
+  await tgSendMessage(settings.tgBotToken, settings.tgChatId, text);
 }

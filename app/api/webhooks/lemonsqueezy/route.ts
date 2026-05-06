@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
-import { tgNotifyOrder } from "@/lib/telegram";
+import { tgNotifyOrderPaid } from "@/lib/telegram";
 
 /**
  * LemonSqueezy webhook receiver.
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
         where,
         data: { status: "paid", paidAt: new Date(), paymentRef: lsRef ?? null },
       });
-      tgNotifyOrder(updated.id).catch(() => null);
+      tgNotifyOrderPaid(updated.id).catch(() => null);
     }
   }
   return NextResponse.json({ ok: true });

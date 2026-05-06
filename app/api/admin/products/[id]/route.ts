@@ -24,13 +24,13 @@ export async function PATCH(
     "seoDescription", "badge", "scarcityText", "categoryId",
   ];
   for (const k of passthrough) if (k in rest) data[k] = rest[k];
-  for (const k of ["basePrice", "compareAtPrice", "durationDays", "scarcityCount", "order"]) {
+  for (const k of ["basePrice", "compareAtPrice", "durationDays", "scarcityCount", "order", "warrantyDays", "minOfferPrice"]) {
     if (k in rest && rest[k] !== "" && rest[k] != null)
       data[k] = Number(rest[k] as string | number);
     else if (k in rest && (rest[k] === "" || rest[k] == null))
       data[k] = null;
   }
-  for (const k of ["visible", "featured", "scarcityEnabled"]) {
+  for (const k of ["visible", "featured", "scarcityEnabled", "allowQuantity", "negotiable"]) {
     if (k in rest) data[k] = Boolean(rest[k]);
   }
   if ("urgencyEndsAt" in rest) {

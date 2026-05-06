@@ -35,5 +35,15 @@ export function safeJson<T>(s: string | null | undefined, fallback: T): T {
 export function generateOrderNumber() {
   const ts = Date.now().toString(36).toUpperCase();
   const r = Math.random().toString(36).slice(2, 6).toUpperCase();
-  return `SOH-${ts}-${r}`;
+  return `SAL-${ts}-${r}`;
+}
+
+export function generateClaimNumber() {
+  const r = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `CLM-${r}`;
+}
+
+export function generateOfferNumber() {
+  const r = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `OFR-${r}`;
 }

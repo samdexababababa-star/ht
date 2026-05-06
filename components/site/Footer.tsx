@@ -24,10 +24,12 @@ export async function Footer() {
           </ul>
         </div>
         <div className="text-sm">
-          <p className="text-foreground font-medium mb-3">Trust</p>
+          <p className="text-foreground font-medium mb-3">Support</p>
           <ul className="space-y-2 text-muted">
+            {s.warrantyEnabled ? (
+              <li><Link href="/warranty" className="hover:text-foreground">Warranty &amp; claims</Link></li>
+            ) : null}
             <li>Instant or fast manual delivery</li>
-            <li>Refund within 24h if undelivered</li>
             <li>Real human support</li>
           </ul>
         </div>

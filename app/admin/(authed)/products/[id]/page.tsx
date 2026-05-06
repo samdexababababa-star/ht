@@ -51,6 +51,10 @@ export default async function EditProductPage({
             urgencyEndsAt: product.urgencyEndsAt
               ? new Date(product.urgencyEndsAt).toISOString().slice(0, 16)
               : null,
+            warrantyDays: product.warrantyDays,
+            allowQuantity: product.allowQuantity,
+            negotiable: product.negotiable,
+            minOfferPrice: product.minOfferPrice,
             variants: product.variants.map((v) => ({
               id: v.id,
               name: v.name,

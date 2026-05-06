@@ -59,6 +59,16 @@ export async function POST(req: NextRequest) {
       scarcityText: body.scarcityText || null,
       scarcityCount: body.scarcityCount ? Number(body.scarcityCount) : null,
       urgencyEndsAt: body.urgencyEndsAt ? new Date(body.urgencyEndsAt) : null,
+      warrantyDays:
+        body.warrantyDays === null || body.warrantyDays === undefined
+          ? null
+          : Number(body.warrantyDays),
+      allowQuantity: body.allowQuantity ?? true,
+      negotiable: body.negotiable ?? false,
+      minOfferPrice:
+        body.minOfferPrice === null || body.minOfferPrice === undefined
+          ? null
+          : Number(body.minOfferPrice),
       order: Number(body.order ?? 0),
       variants: Array.isArray(body.variants) && body.variants.length > 0
         ? {
