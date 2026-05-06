@@ -1,0 +1,317 @@
+@import "tailwindcss";
+
+/* ───────────────────── Design tokens ───────────────────── */
+:root {
+  --background: #ffffff;
+  --foreground: #050505;
+  --muted: #6b7280;
+  --muted-2: #f4f4f5;
+  --border: #ececec;
+  --primary: #0047FF;
+  --primary-soft: #E6EEFF;
+  --accent: #050505;
+  --radius: 14px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-geist-mono);
+}
+
+* { -webkit-font-smoothing: antialiased; }
+
+html, body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Headline serif used for editorial italics */
+.serif-italic { font-family: var(--font-display), Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; }
+
+/* Subtle grid texture (used very lightly behind hero, optional) */
+.bg-soft-grid {
+  background-image:
+    linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Soft blue glow */
+.bg-blue-glow {
+  background:
+    radial-gradient(60% 40% at 30% 30%, rgba(0,71,255,0.16) 0%, rgba(0,71,255,0) 70%),
+    radial-gradient(50% 35% at 70% 60%, rgba(0,71,255,0.12) 0%, rgba(0,71,255,0) 70%);
+}
+
+/* Editorial sparkle */
+@keyframes sparkle-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.sparkle { animation: sparkle-spin 12s linear infinite; }
+
+/* Salma S-mark loop:
+ *   1. The whole mark rotates slowly around its centre.
+ *   2. The stroke dashes flow continuously along the S path.
+ *   Together they read as a single continuous loop — the line never
+ *   ends, like an infinity tube the S is drawn through.
+ *   Path length is normalised via pathLength="100" on the <path>,
+ *   so the dasharray period (20) divides cleanly and the flow has
+ *   no visible seam. */
+@keyframes salma-rotate-loop {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes salma-flow-loop {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -20; }
+}
+.salma-loop {
+  animation: salma-rotate-loop 9s linear infinite;
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+.salma-loop path {
+  stroke-dasharray: 12 8;
+  animation: salma-flow-loop 1.6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .salma-loop, .salma-loop path { animation: none; }
+  .salma-loop path { stroke-dasharray: none; }
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0.5rem; height: 44px; padding: 0 18px; border-radius: 999px;
+  font-weight: 500; font-size: 14px; transition: transform .12s ease, background .12s ease, color .12s ease, border-color .12s ease;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:hover { transform: translateY(-1px); }
+/* Tactile press feedback — most noticeable on touch devices. */
+.btn:active { transform: scale(0.96); transition-duration: .08s; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: #1a1a1a; }
+.btn-blue { background: var(--primary); color: white; }
+.btn-blue:hover { background: #0035c4; }
+.btn-outline { border: 1px solid var(--border); color: var(--foreground); background: white; }
+.btn-outline:hover { border-color: var(--accent); }
+
+/* Cards */
+.card {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius);
+  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.card:hover { border-color: rgba(0,0,0,0.18); transform: translateY(-2px); box-shadow: 0 6px 24px -16px rgba(0,0,0,0.18); }
+/* Tactile press feedback for cards (links wrap them) — applies on
+   any touch device or mouse press. */
+.card:active { transform: scale(0.985); transition-duration: .08s; }
+a:active .card { transform: scale(0.985); transition-duration: .08s; }
+
+/* Depth — soft elevation when enabled. Applied via <html data-depth="on">.
+   Keeps the same flat look by default; only lifts when the toggle is on. */
+[data-depth="on"] .card {
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 8px 24px -20px rgba(15,23,42,0.10);
+}
+[data-depth="on"] .card:hover {
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 22px 50px -28px rgba(15,23,42,0.22);
+  transform: translateY(-3px);
+}
+[data-depth="on"] .btn-primary { box-shadow: 0 8px 22px -14px rgba(5,5,5,0.55); }
+[data-depth="on"] .btn-blue    { box-shadow: 0 10px 22px -14px rgba(0,71,255,0.55); }
+@media (prefers-reduced-motion: reduce) {
+  .card, .card:hover { transition: none; transform: none; }
+}
+
+/* Scroll-reveal — fades + lifts content as it enters the viewport.
+   Gated by <html data-reveal="on">; element opts in with .reveal,
+   then the IntersectionObserver flips data-visible="true". */
+[data-reveal="on"] .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);
+  will-change: opacity, transform;
+}
+[data-reveal="on"] .reveal[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal="on"] .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Parallax — assigns a slow translation driven by --parallax-y on the element.
+   Set from JS (a simple scroll listener). */
+[data-parallax="on"] .parallax-soft {
+  transform: translate3d(0, var(--parallax-y, 0), 0);
+  transition: transform .12s linear;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-parallax="on"] .parallax-soft { transform: none; }
+}
+
+/* Selection */
+::selection { background: var(--primary); color: white; }
+
+/* ─────────────────── Mobile micro-interactions ─────────────────── */
+
+/* Mobile-only sticky purchase bar:
+ *  - Subtle vertical gradient instead of a flat fill (more depth, more premium).
+ *  - Smooth slide-out when scrolling up, slide-in when scrolling down — driven
+ *    by JS toggling [data-hidden="true"] on the bar.
+ */
+.mobile-sticky-bar {
+  background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,1) 60%);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  box-shadow: 0 -8px 28px -22px rgba(15,23,42,0.25);
+  transform: translateY(0);
+  transition: transform .32s cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+.mobile-sticky-bar[data-hidden="true"] {
+  transform: translateY(110%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-sticky-bar { transition: none; transform: none !important; }
+}
+
+/* Horizontal scroll-snap row — used for plan variants on mobile so each
+ * card centres itself on swipe. We expose it as a utility because Tailwind v4
+ * arbitrary scroll-snap classes are awkward inside our token system. */
+.snap-row {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.snap-row::-webkit-scrollbar { display: none; }
+.snap-row > * {
+  scroll-snap-align: center;
+  flex: 0 0 auto;
+}
+
+/* Variant grid — flex+snap on mobile (each card peeks the next),
+ * 2-col grid on desktop. Used for product plan variants. */
+.variant-grid {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
+  margin-inline: -1.25rem;
+  padding-inline: 1.25rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.variant-grid::-webkit-scrollbar { display: none; }
+.variant-grid > * {
+  scroll-snap-align: center;
+  flex: 0 0 78%;
+}
+@media (min-width: 768px) {
+  .variant-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+  .variant-grid > * { flex: initial; }
+}
+
+/* Cart badge bounce — fires when the cart count increments (CartIndicator
+ * adds .cart-bump for ~450ms on rising edge). Subtle, single bounce. */
+@keyframes cart-bump {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.45); }
+  70%  { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+.cart-bump { animation: cart-bump .45s cubic-bezier(.2,.7,.2,1); }
+@media (prefers-reduced-motion: reduce) {
+  .cart-bump { animation: none; }
+}
+
+/* Drawer entry — spring-in from the right, with cascading items.
+ * Used by the mobile menu portal. */
+@keyframes drawer-spring-in {
+  0%   { transform: translateX(100%); }
+  68%  { transform: translateX(-2.5%); }
+  84%  { transform: translateX(1%); }
+  100% { transform: translateX(0); }
+}
+@keyframes drawer-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes drawer-item-in {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.drawer-spring   { animation: drawer-spring-in .56s cubic-bezier(.2,.85,.3,1) both; }
+.drawer-backdrop { animation: drawer-fade-in   .24s ease-out both; }
+.drawer-item     { animation: drawer-item-in   .42s cubic-bezier(.2,.7,.2,1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .drawer-spring,
+  .drawer-backdrop,
+  .drawer-item { animation: none; }
+}
+
+/* Hero S — gentle ambient breathing behind the mark on mobile.
+ * Matches the rotating S without competing with it. */
+@keyframes hero-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.06); }
+}
+.hero-breathe { animation: hero-breathe 5.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-breathe { animation: none; opacity: 0.7; }
+}
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track { animation: marquee 36s linear infinite; }
+
+/* Chips */
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--muted-2); color: var(--foreground); }
+.chip-blue { background: var(--primary-soft); color: var(--primary); }
+
+/* Exit-intent popup fade-in. */
+@keyframes exit-intent-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes exit-intent-pop-in {
+  from { transform: translateY(20px) scale(.96); opacity: 0; }
+  to   { transform: translateY(0)    scale(1);   opacity: 1; }
+}
+.exit-intent-fade { animation: exit-intent-fade-in .22s ease-out both; }
+.exit-intent-fade > * { animation: exit-intent-pop-in .34s cubic-bezier(.2,.85,.3,1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .exit-intent-fade,
+  .exit-intent-fade > * { animation: none; }
+}

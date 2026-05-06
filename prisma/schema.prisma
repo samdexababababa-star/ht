@@ -1,0 +1,415 @@
+// Salma — admin-controlled subscription & digital services platform
+// All models below are designed to be admin-editable from /admin panel.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Auth — minimal admin-only auth for now. Future: customer accounts.
+// ─────────────────────────────────────────────────────────────────────────────
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin") // "admin" | "vendor" (future) | "customer" (future)
+  name         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  vendor   Vendor?
+  orders   Order[]
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Catalog — categories → products → variants
+// ─────────────────────────────────────────────────────────────────────────────
+model Category {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  description String?
+  icon        String? // lucide icon name or emoji
+  image       String?
+  parentId    String?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  order       Int      @default(0)
+  visible     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+}
+
+model Product {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  name            String
+  tagline         String?
+  description     String   @default("")
+  longDescription String   @default("")
+  // pricing
+  basePrice       Int      @default(0) // in cents (USD or your default currency)
+  currency        String   @default("USD")
+  compareAtPrice  Int?     // for "save X%" display
+  // media
+  thumbnail       String?
+  gallery         String   @default("[]") // JSON array of image URLs
+  // type
+  kind            String   @default("subscription") // "subscription" | "service" | "digital" | "followers"
+  durationDays    Int?     // for subscriptions
+  // status
+  visible         Boolean  @default(true)
+  featured        Boolean  @default(false)
+  badge           String?  // e.g. "BEST SELLER", "NEW"
+  // delivery / fulfilment
+  deliveryMode    String   @default("manual") // "manual" | "auto" | "instant"
+  deliveryNotes   String   @default("")
+  // SEO / dynamic landing
+  seoTitle        String?
+  seoDescription  String?
+  landingPageId   String?
+  landingPage     Page?    @relation(fields: [landingPageId], references: [id])
+  // marketplace (future)
+  vendorId        String?
+  vendor          Vendor?  @relation(fields: [vendorId], references: [id])
+  // taxonomy
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id])
+  // psychology
+  scarcityEnabled Boolean  @default(false)
+  scarcityText    String?  // e.g. "Only {n} left"
+  scarcityCount   Int?     // remaining count for fake/real scarcity
+  urgencyEndsAt   DateTime?
+  // per-product feature toggles (override settings defaults)
+  warrantyDays    Int?     // null = use settings.warrantyDefaultDays
+  allowQuantity   Boolean  @default(true)
+  negotiable      Boolean  @default(false)
+  minOfferPrice   Int?     // optional cents floor for negotiable offers
+  // growth / attractiveness boosters (admin-toggleable per product)
+  socialProofEnabled Boolean @default(false)
+  socialProofText    String? // e.g. "73 people bought in the last 24h"
+  trustBadgeText     String? // e.g. "Instant delivery", "30-day money back"
+  bestSellerBadge    Boolean @default(false) // shows "BEST SELLER" auto-pill on cards/PDP
+  newBadge           Boolean @default(false) // shows "NEW" pill (overrides bestSellerBadge if both)
+  highlightSavings   Boolean @default(false) // shows "Save $X" instead of -X% chip
+  bundleProductId    String? // optional cross-sell: another Product to suggest as bundle
+  bundleProduct      Product? @relation("ProductBundle", fields: [bundleProductId], references: [id])
+  bundledBy          Product[] @relation("ProductBundle")
+  // ordering
+  order           Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  variants     Variant[]
+  orderItems   OrderItem[]
+  promotions   PromotionProduct[]
+  offers       Offer[]
+}
+
+model Variant {
+  id           String   @id @default(cuid())
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name         String   // "1 month", "12 months", "Premium 4K"
+  price        Int      // cents
+  compareAtPrice Int?
+  durationDays Int?
+  stock        Int?     // null = unlimited
+  // LemonSqueezy linkage (optional)
+  lsVariantId  String?
+  // ordering
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orderItems OrderItem[]
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Promotions — codes + automatic site-wide rules
+// ─────────────────────────────────────────────────────────────────────────────
+model Promotion {
+  id          String   @id @default(cuid())
+  code        String?  @unique // null = automatic / banner-style
+  title       String
+  description String?
+  // discount
+  type        String   @default("percent") // "percent" | "fixed"
+  value       Int      // percent (0-100) or cents
+  // scope
+  appliesTo   String   @default("all") // "all" | "products" | "categories"
+  // conditions
+  minSubtotal Int?
+  maxUses     Int?
+  uses        Int      @default(0)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  // display
+  bannerText  String?  // small ribbon shown subtly on product cards / banner
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products   PromotionProduct[]
+}
+
+model PromotionProduct {
+  promotionId String
+  productId   String
+  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([promotionId, productId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Orders + payment links
+// ─────────────────────────────────────────────────────────────────────────────
+model Order {
+  id              String   @id @default(cuid())
+  number          String   @unique // e.g. "SOH-000123"
+  status          String   @default("pending") // "pending" | "paid" | "delivered" | "cancelled" | "refunded"
+  // customer
+  email           String?
+  name            String?
+  phone           String?
+  whatsapp        String?
+  notes           String?
+  // pricing
+  subtotal        Int      @default(0)
+  discount        Int      @default(0)
+  total           Int      @default(0)
+  currency        String   @default("USD")
+  promotionCode   String?
+  // payment
+  paymentProvider String?  // "lemonsqueezy" | "manual_link"
+  paymentUrl      String?  // for manual link orders
+  paymentRef      String?  // ls order id / checkout id
+  paidAt          DateTime?
+  // user (future)
+  userId          String?
+  user            User?    @relation(fields: [userId], references: [id])
+  // tracking
+  source          String?  // "site" | "telegram" | "manual"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  items  OrderItem[]
+  claims Claim[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+  variantId String?
+  variant   Variant? @relation(fields: [variantId], references: [id])
+  // snapshot
+  name        String
+  variantName String?
+  quantity    Int    @default(1)
+  unitPrice   Int    @default(0)
+  total       Int    @default(0)
+  // fulfilment metadata (e.g. account credentials, delivery info)
+  fulfilment  String @default("{}") // JSON
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Pages — dynamic CMS-like landing pages, "limited offer" pages, etc.
+// ─────────────────────────────────────────────────────────────────────────────
+model Page {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  kind          String   @default("custom") // "custom" | "landing" | "limited_offer" | "fake_offer"
+  // content blocks (JSON list of blocks: hero, gallery, pricing, faq, cta…)
+  content       String   @default("[]")
+  visible       Boolean  @default(true)
+  seoTitle      String?
+  seoDescription String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  products Product[]
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Settings — single-row config controllable from admin panel
+// ─────────────────────────────────────────────────────────────────────────────
+model Setting {
+  id        String  @id @default("default")
+  // brand
+  brandName String  @default("Salma")
+  tagline   String  @default("Premium digital subscriptions, services & boosts.")
+  logoUrl   String?
+  faviconUrl String?
+  primaryColor String @default("#0047FF") // electric blue, like the reference
+  accentColor  String @default("#000000")
+  // contact
+  supportEmail String?
+  // currency / locale
+  defaultCurrency String @default("USD")
+  defaultLocale   String @default("fr")
+  // payments — LemonSqueezy
+  lsApiKey       String? // stored encrypted in production (see lib/crypto)
+  lsStoreId      String?
+  lsWebhookSecret String?
+  paymentsEnabled Boolean @default(false)
+  // Telegram
+  tgBotToken    String?
+  tgChatId      String? // auto-detected when admin first messages the bot
+  tgEnabled     Boolean @default(false)
+  // WhatsApp
+  waNumber          String? // international format, no '+'
+  waEnabled         Boolean @default(false)
+  waRedirectMode    String  @default("after") // "before" | "after" | "both" | "off"
+  waPrefilledMessage String  @default("Hello, I'd like to order: {product} ({variant}) — Order {order}.")
+  // homepage
+  heroTitle    String  @default("One platform.\nEvery digital subscription.")
+  heroSubtitle String  @default("Streaming, AI, gaming, social — premium quality, instant delivery.")
+  heroCtaLabel String  @default("Browse the catalog")
+  heroCtaHref  String  @default("/catalog")
+  // marketplace (future, hidden)
+  marketplaceEnabled Boolean @default(false)
+  vendorSignupOpen   Boolean @default(false)
+  // admin auth
+  adminEmail String?
+  // warranty / claims
+  warrantyEnabled        Boolean @default(true)
+  warrantyDefaultDays    Int     @default(7)
+  claimsRequirePhoto     Boolean @default(true)
+  claimsAllowMessage     Boolean @default(true)
+  claimsMaxPhotos        Int     @default(4)
+  // order grouping
+  orderGroupingEnabled   Boolean @default(true)
+  // per-product feature defaults
+  allowQuantityByDefault Boolean @default(true)
+  negotiableEnabled      Boolean @default(false)
+  // visual polish
+  depthEffectsEnabled    Boolean @default(true)
+  scrollRevealEnabled    Boolean @default(true)
+  parallaxEnabled        Boolean @default(false)
+  // growth / attractiveness — site-wide master toggles. All default to safe
+  // values (mostly off) so nothing changes destructively. Each one is also
+  // surfaced on /admin/growth with rationale + where-it-applies indicator.
+  stickyPromoEnabled     Boolean @default(false)
+  stickyPromoText        String  @default("Free instant delivery on every order")
+  stickyPromoLink        String? // optional href when the bar is clickable
+  trustBadgesEnabled     Boolean @default(true)  // shown in product page + footer
+  liveVisitorCountEnabled Boolean @default(false) // "X people viewing this product"
+  exitIntentEnabled      Boolean @default(false)
+  exitIntentText         String  @default("Wait — get 10% off your first order")
+  exitIntentCode         String? // promo code to surface in the popup
+  backToTopEnabled       Boolean @default(true)
+  recentlyViewedEnabled  Boolean @default(false)
+  pageTransitionsEnabled Boolean @default(true)
+  readingProgressEnabled Boolean @default(false)
+  bundlesEnabled         Boolean @default(false) // master toggle for product-level bundle suggestions
+  socialProofGlobalEnabled Boolean @default(false) // master toggle for product-level social proof
+  // Telegram event toggles & templates
+  tgNotifyOnNewOrder Boolean @default(true)
+  tgNotifyOnPaid     Boolean @default(true)
+  tgNotifyOnClaim    Boolean @default(true)
+  tgNotifyOnOffer    Boolean @default(true)
+  tgNotifyOnError    Boolean @default(false)
+  tgOrderTemplate    String  @default("🛒 New order {order}\nFrom: {customer}\nItems:\n{items}\nTotal: {total}")
+  tgPaidTemplate     String  @default("💳 Payment received for {order}\n{customer} paid {total}")
+  tgClaimTemplate    String  @default("🛡️ New warranty claim {claim}\nCustomer: {customer}\nReason: {reason}")
+  tgOfferTemplate    String  @default("💬 New offer {offer}\nProduct: {product}\nCustomer: {customer}\nProposed: {price}")
+  // misc
+  announcementBar String? // tiny top bar, e.g. "🎉 Spring sale — up to 50% off"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Vendors (marketplace, hidden behind feature flag)
+// ─────────────────────────────────────────────────────────────────────────────
+model Vendor {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storeName   String
+  slug        String  @unique
+  bio         String?
+  logoUrl     String?
+  approved    Boolean @default(false)
+  // payouts (future)
+  payoutMethod String?
+  payoutDetails String? // JSON
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Audit log — for admin actions
+// ─────────────────────────────────────────────────────────────────────────────
+model AuditLog {
+  id        String   @id @default(cuid())
+  actor     String   // user id or "system"
+  action    String
+  target    String?
+  meta      String   @default("{}")
+  createdAt DateTime @default(now())
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Warranty claims — customer-submitted claims after a purchase
+// ─────────────────────────────────────────────────────────────────────────────
+model Claim {
+  id            String   @id @default(cuid())
+  number        String   @unique // e.g. "CLM-XXXXX"
+  // related order (nullable so we can still accept generic claims)
+  orderId       String?
+  order         Order?   @relation(fields: [orderId], references: [id])
+  orderItemId   String?  // optional pointer to specific item within the order
+  // customer
+  customerEmail String
+  customerName  String?
+  customerPhone String?
+  // body
+  reason        String   @default("") // short label / category
+  message       String   @default("")
+  photos        String   @default("[]") // JSON array of data URLs or upload refs
+  // workflow
+  status        String   @default("open") // open | reviewing | resolved | rejected
+  adminNote     String   @default("")
+  resolvedAt    DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Negotiable offers — customer "make an offer" submissions
+// ─────────────────────────────────────────────────────────────────────────────
+model Offer {
+  id            String   @id @default(cuid())
+  number        String   @unique // e.g. "OFR-XXXXX"
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId     String?
+  // customer
+  customerEmail String
+  customerName  String?
+  customerPhone String?
+  // proposal
+  proposedPrice Int      // cents
+  message       String   @default("")
+  // workflow
+  status        String   @default("open") // open | accepted | rejected | counter | expired
+  adminNote     String   @default("")
+  counterPrice  Int?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
