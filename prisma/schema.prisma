@@ -87,6 +87,11 @@ model Product {
   scarcityText    String?  // e.g. "Only {n} left"
   scarcityCount   Int?     // remaining count for fake/real scarcity
   urgencyEndsAt   DateTime?
+  // per-product feature toggles (override settings defaults)
+  warrantyDays    Int?     // null = use settings.warrantyDefaultDays
+  allowQuantity   Boolean  @default(true)
+  negotiable      Boolean  @default(false)
+  minOfferPrice   Int?     // optional cents floor for negotiable offers
   // ordering
   order           Int      @default(0)
   createdAt       DateTime @default(now())
@@ -95,6 +100,7 @@ model Product {
   variants     Variant[]
   orderItems   OrderItem[]
   promotions   PromotionProduct[]
+  offers       Offer[]
 }
 
 model Variant {
@@ -185,7 +191,8 @@ model Order {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  items OrderItem[]
+  items  OrderItem[]
+  claims Claim[]
 }
 
 model OrderItem {
@@ -266,6 +273,30 @@ model Setting {
   vendorSignupOpen   Boolean @default(false)
   // admin auth
   adminEmail String?
+  // warranty / claims
+  warrantyEnabled        Boolean @default(true)
+  warrantyDefaultDays    Int     @default(7)
+  claimsRequirePhoto     Boolean @default(true)
+  claimsAllowMessage     Boolean @default(true)
+  claimsMaxPhotos        Int     @default(4)
+  // order grouping
+  orderGroupingEnabled   Boolean @default(true)
+  // per-product feature defaults
+  allowQuantityByDefault Boolean @default(true)
+  negotiableEnabled      Boolean @default(false)
+  // visual polish
+  depthEffectsEnabled    Boolean @default(true)
+  scrollRevealEnabled    Boolean @default(true)
+  // Telegram event toggles & templates
+  tgNotifyOnNewOrder Boolean @default(true)
+  tgNotifyOnPaid     Boolean @default(true)
+  tgNotifyOnClaim    Boolean @default(true)
+  tgNotifyOnOffer    Boolean @default(true)
+  tgNotifyOnError    Boolean @default(false)
+  tgOrderTemplate    String  @default("🛒 New order {order}\nFrom: {customer}\nItems:\n{items}\nTotal: {total}")
+  tgPaidTemplate     String  @default("💳 Payment received for {order}\n{customer} paid {total}")
+  tgClaimTemplate    String  @default("🛡️ New warranty claim {claim}\nCustomer: {customer}\nReason: {reason}")
+  tgOfferTemplate    String  @default("💬 New offer {offer}\nProduct: {product}\nCustomer: {customer}\nProposed: {price}")
   // misc
   announcementBar String? // tiny top bar, e.g. "🎉 Spring sale — up to 50% off"
   createdAt DateTime @default(now())
@@ -303,4 +334,54 @@ model AuditLog {
   target    String?
   meta      String   @default("{}")
   createdAt DateTime @default(now())
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Warranty claims — customer-submitted claims after a purchase
+// ─────────────────────────────────────────────────────────────────────────────
+model Claim {
+  id            String   @id @default(cuid())
+  number        String   @unique // e.g. "CLM-XXXXX"
+  // related order (nullable so we can still accept generic claims)
+  orderId       String?
+  order         Order?   @relation(fields: [orderId], references: [id])
+  orderItemId   String?  // optional pointer to specific item within the order
+  // customer
+  customerEmail String
+  customerName  String?
+  customerPhone String?
+  // body
+  reason        String   @default("") // short label / category
+  message       String   @default("")
+  photos        String   @default("[]") // JSON array of data URLs or upload refs
+  // workflow
+  status        String   @default("open") // open | reviewing | resolved | rejected
+  adminNote     String   @default("")
+  resolvedAt    DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Negotiable offers — customer "make an offer" submissions
+// ─────────────────────────────────────────────────────────────────────────────
+model Offer {
+  id            String   @id @default(cuid())
+  number        String   @unique // e.g. "OFR-XXXXX"
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId     String?
+  // customer
+  customerEmail String
+  customerName  String?
+  customerPhone String?
+  // proposal
+  proposedPrice Int      // cents
+  message       String   @default("")
+  // workflow
+  status        String   @default("open") // open | accepted | rejected | counter | expired
+  adminNote     String   @default("")
+  counterPrice  Int?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
