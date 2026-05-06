@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/site/ProductCard";
 import { SectionTitle } from "@/components/site/SectionTitle";
+import { Reveal } from "@/components/site/Reveal";
 
 export const revalidate = 30;
 
@@ -29,8 +30,10 @@ export default async function CategoryPage({
         <p className="mt-4 text-muted max-w-2xl">{cat.description}</p>
       ) : null}
       <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        {cat.products.map((p) => (
-          <ProductCard key={p.id} p={p} />
+        {cat.products.map((p, i) => (
+          <Reveal key={p.id} delay={Math.min(i * 0.05, 0.4)}>
+            <ProductCard p={p} />
+          </Reveal>
         ))}
         {cat.products.length === 0 ? (
           <div className="col-span-full card p-12 text-center text-muted">

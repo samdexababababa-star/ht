@@ -1,5 +1,6 @@
 import { ProductCard } from "@/components/site/ProductCard";
 import { SectionTitle } from "@/components/site/SectionTitle";
+import { Reveal } from "@/components/site/Reveal";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 
@@ -72,8 +73,10 @@ export default async function CatalogPage({
       </div>
 
       <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        {products.map((p) => (
-          <ProductCard key={p.id} p={p} />
+        {products.map((p, i) => (
+          <Reveal key={p.id} delay={Math.min(i * 0.05, 0.4)}>
+            <ProductCard p={p} />
+          </Reveal>
         ))}
         {products.length === 0 ? (
           <div className="col-span-full card p-12 text-center">

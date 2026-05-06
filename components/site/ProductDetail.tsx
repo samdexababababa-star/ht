@@ -73,6 +73,37 @@ export function ProductDetail({
   const negotiableOn =
     !!product.negotiable && (settings?.negotiableEnabled ?? true);
 
+  // Mobile sticky bar — slide it out of view on scroll-up, slide back on
+  // scroll-down. Mirrors the App Store / Apple.com pattern: when the user
+  // scans content (going up), the CTA gets out of the way; when they get
+  // close to action (going down), the CTA comes back into reach.
+  const [barHidden, setBarHidden] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let lastY = window.scrollY;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const delta = y - lastY;
+        // Ignore tiny twitches; require ≥6px sustained move.
+        if (Math.abs(delta) > 6) {
+          // Scroll DOWN (delta > 0) → hide so the user can read content.
+          // Scroll UP (delta < 0) → show, the user is scanning back to act.
+          // Always show near the top.
+          if (y < 80) setBarHidden(false);
+          else setBarHidden(delta > 0);
+          lastY = y;
+        }
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   function add() {
     start(async () => {
       const res = await fetch("/api/cart", {
@@ -183,13 +214,13 @@ export function ProductDetail({
             <p className="text-[12px] uppercase tracking-[0.16em] text-muted mb-2">
               Choose your plan
             </p>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="variant-grid">
               {product.variants.map((v) => (
                 <button
                   key={v.id}
                   type="button"
                   onClick={() => setVariantId(v.id)}
-                  className={`text-left p-4 rounded-2xl border transition ${
+                  className={`text-left p-4 rounded-2xl border transition active:scale-[0.98] ${
                     variantId === v.id
                       ? "border-foreground bg-muted-2"
                       : "border-border hover:border-muted"
@@ -219,7 +250,7 @@ export function ProductDetail({
               <button
                 type="button"
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="h-9 w-9 rounded-xl text-muted hover:text-foreground"
+                className="h-9 w-9 rounded-xl text-muted hover:text-foreground active:scale-90 transition"
                 aria-label="Decrease quantity"
               >
                 −
@@ -234,7 +265,7 @@ export function ProductDetail({
               <button
                 type="button"
                 onClick={() => setQty((q) => q + 1)}
-                className="h-9 w-9 rounded-xl text-muted hover:text-foreground"
+                className="h-9 w-9 rounded-xl text-muted hover:text-foreground active:scale-90 transition"
                 aria-label="Increase quantity"
               >
                 +
@@ -248,7 +279,7 @@ export function ProductDetail({
             <button
               type="button"
               onClick={() => setOfferOpen(true)}
-              className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+              className="inline-flex items-center gap-2 text-sm text-primary hover:underline active:scale-95 transition"
             >
               <Tag size={14} /> Make an offer on this price
             </button>
@@ -294,8 +325,12 @@ export function ProductDetail({
         ) : null}
       </div>
 
-      {/* Mobile-only sticky purchase bar so the CTA is always reachable */}
-      <div className="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-border px-4 py-3 flex items-center gap-3 [padding-bottom:calc(env(safe-area-inset-bottom)+12px)]">
+      {/* Mobile-only sticky purchase bar so the CTA is always reachable.
+          Uses .mobile-sticky-bar (gradient + slide-on-scroll). */}
+      <div
+        data-hidden={barHidden}
+        className="mobile-sticky-bar md:hidden fixed bottom-0 inset-x-0 z-30 border-t border-border px-4 py-3 flex items-center gap-3 [padding-bottom:calc(env(safe-area-inset-bottom)+12px)]"
+      >
         <div className="flex-1 min-w-0">
           <p className="text-[11px] uppercase tracking-wider text-muted">
             {qty > 1 ? `Total · ×${qty}` : "Total"}

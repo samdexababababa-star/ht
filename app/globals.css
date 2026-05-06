@@ -96,8 +96,11 @@ html, body {
   gap: 0.5rem; height: 44px; padding: 0 18px; border-radius: 999px;
   font-weight: 500; font-size: 14px; transition: transform .12s ease, background .12s ease, color .12s ease, border-color .12s ease;
   white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
 }
 .btn:hover { transform: translateY(-1px); }
+/* Tactile press feedback — most noticeable on touch devices. */
+.btn:active { transform: scale(0.96); transition-duration: .08s; }
 .btn-primary { background: var(--accent); color: white; }
 .btn-primary:hover { background: #1a1a1a; }
 .btn-blue { background: var(--primary); color: white; }
@@ -109,8 +112,13 @@ html, body {
 .card {
   background: white; border: 1px solid var(--border); border-radius: var(--radius);
   transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 .card:hover { border-color: rgba(0,0,0,0.18); transform: translateY(-2px); box-shadow: 0 6px 24px -16px rgba(0,0,0,0.18); }
+/* Tactile press feedback for cards (links wrap them) — applies on
+   any touch device or mouse press. */
+.card:active { transform: scale(0.985); transition-duration: .08s; }
+a:active .card { transform: scale(0.985); transition-duration: .08s; }
 
 /* Depth — soft elevation when enabled. Applied via <html data-depth="on">.
    Keeps the same flat look by default; only lifts when the toggle is on. */
@@ -161,6 +169,125 @@ html, body {
 
 /* Selection */
 ::selection { background: var(--primary); color: white; }
+
+/* ─────────────────── Mobile micro-interactions ─────────────────── */
+
+/* Mobile-only sticky purchase bar:
+ *  - Subtle vertical gradient instead of a flat fill (more depth, more premium).
+ *  - Smooth slide-out when scrolling up, slide-in when scrolling down — driven
+ *    by JS toggling [data-hidden="true"] on the bar.
+ */
+.mobile-sticky-bar {
+  background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,1) 60%);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  box-shadow: 0 -8px 28px -22px rgba(15,23,42,0.25);
+  transform: translateY(0);
+  transition: transform .32s cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+.mobile-sticky-bar[data-hidden="true"] {
+  transform: translateY(110%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-sticky-bar { transition: none; transform: none !important; }
+}
+
+/* Horizontal scroll-snap row — used for plan variants on mobile so each
+ * card centres itself on swipe. We expose it as a utility because Tailwind v4
+ * arbitrary scroll-snap classes are awkward inside our token system. */
+.snap-row {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.snap-row::-webkit-scrollbar { display: none; }
+.snap-row > * {
+  scroll-snap-align: center;
+  flex: 0 0 auto;
+}
+
+/* Variant grid — flex+snap on mobile (each card peeks the next),
+ * 2-col grid on desktop. Used for product plan variants. */
+.variant-grid {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
+  margin-inline: -1.25rem;
+  padding-inline: 1.25rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.variant-grid::-webkit-scrollbar { display: none; }
+.variant-grid > * {
+  scroll-snap-align: center;
+  flex: 0 0 78%;
+}
+@media (min-width: 768px) {
+  .variant-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+  .variant-grid > * { flex: initial; }
+}
+
+/* Cart badge bounce — fires when the cart count increments (CartIndicator
+ * adds .cart-bump for ~450ms on rising edge). Subtle, single bounce. */
+@keyframes cart-bump {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.45); }
+  70%  { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+.cart-bump { animation: cart-bump .45s cubic-bezier(.2,.7,.2,1); }
+@media (prefers-reduced-motion: reduce) {
+  .cart-bump { animation: none; }
+}
+
+/* Drawer entry — spring-in from the right, with cascading items.
+ * Used by the mobile menu portal. */
+@keyframes drawer-spring-in {
+  0%   { transform: translateX(100%); }
+  68%  { transform: translateX(-2.5%); }
+  84%  { transform: translateX(1%); }
+  100% { transform: translateX(0); }
+}
+@keyframes drawer-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes drawer-item-in {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.drawer-spring   { animation: drawer-spring-in .56s cubic-bezier(.2,.85,.3,1) both; }
+.drawer-backdrop { animation: drawer-fade-in   .24s ease-out both; }
+.drawer-item     { animation: drawer-item-in   .42s cubic-bezier(.2,.7,.2,1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .drawer-spring,
+  .drawer-backdrop,
+  .drawer-item { animation: none; }
+}
+
+/* Hero S — gentle ambient breathing behind the mark on mobile.
+ * Matches the rotating S without competing with it. */
+@keyframes hero-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.06); }
+}
+.hero-breathe { animation: hero-breathe 5.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-breathe { animation: none; opacity: 0.7; }
+}
 
 /* Marquee */
 @keyframes marquee {

@@ -51,6 +51,22 @@ export function Hero({
           </div>
         </motion.div>
 
+        {/* Mobile-only floating S — keeps the brand sign alive on small
+            screens (desktop already gets two larger ones below). The breathing
+            halo behind it gives a soft, ambient "presence". */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+          className="md:hidden absolute right-4 top-4 text-primary"
+          aria-hidden
+        >
+          <span className="relative inline-flex items-center justify-center">
+            <span className="hero-breathe absolute inset-0 rounded-full bg-primary/15 blur-xl" />
+            <LogoMark className="salma-loop relative h-14 w-14 opacity-80" />
+          </span>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, scale: 0.6, rotate: -10 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
