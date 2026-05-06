@@ -30,6 +30,27 @@ type Settings = {
   marketplaceEnabled: boolean;
   vendorSignupOpen: boolean;
   announcementBar: string | null;
+  // phase 7
+  warrantyEnabled: boolean;
+  warrantyDefaultDays: number;
+  claimsRequirePhoto: boolean;
+  claimsAllowMessage: boolean;
+  claimsMaxPhotos: number;
+  orderGroupingEnabled: boolean;
+  allowQuantityByDefault: boolean;
+  negotiableEnabled: boolean;
+  depthEffectsEnabled: boolean;
+  scrollRevealEnabled: boolean;
+  parallaxEnabled: boolean;
+  tgNotifyOnNewOrder: boolean;
+  tgNotifyOnPaid: boolean;
+  tgNotifyOnClaim: boolean;
+  tgNotifyOnOffer: boolean;
+  tgNotifyOnError: boolean;
+  tgOrderTemplate: string;
+  tgPaidTemplate: string;
+  tgClaimTemplate: string;
+  tgOfferTemplate: string;
 };
 
 export function SettingsForm({ initial }: { initial: Settings }) {
@@ -251,6 +272,139 @@ export function SettingsForm({ initial }: { initial: Settings }) {
       </Section>
 
       <Section
+        title="Warranty & claims"
+        subtitle="Lets buyers file a claim with photos and a message after delivery. Toggle off to hide the public /warranty page entirely."
+      >
+        <Grid>
+          <F label="Enable warranty page">
+            <Toggle value={s.warrantyEnabled} onChange={(v) => up("warrantyEnabled", v)} />
+          </F>
+          <F label="Default warranty window (days)">
+            <I
+              type="number"
+              value={String(s.warrantyDefaultDays)}
+              onChange={(v) => up("warrantyDefaultDays", Number(v || "0"))}
+            />
+          </F>
+          <F label="Require at least one photo">
+            <Toggle value={s.claimsRequirePhoto} onChange={(v) => up("claimsRequirePhoto", v)} />
+          </F>
+          <F label="Allow customer message">
+            <Toggle value={s.claimsAllowMessage} onChange={(v) => up("claimsAllowMessage", v)} />
+          </F>
+          <F label="Max photos per claim">
+            <I
+              type="number"
+              value={String(s.claimsMaxPhotos)}
+              onChange={(v) => up("claimsMaxPhotos", Math.max(1, Number(v || "1")))}
+            />
+          </F>
+        </Grid>
+      </Section>
+
+      <Section
+        title="Selling defaults"
+        subtitle="Defaults applied to brand-new products. Each product can override these from its own form."
+      >
+        <Grid>
+          <F label="Allow quantity selection by default">
+            <Toggle
+              value={s.allowQuantityByDefault}
+              onChange={(v) => up("allowQuantityByDefault", v)}
+            />
+          </F>
+          <F label="Enable Make-an-offer storefront-wide">
+            <Toggle
+              value={s.negotiableEnabled}
+              onChange={(v) => up("negotiableEnabled", v)}
+            />
+          </F>
+          <F label="Group orders by product in admin">
+            <Toggle
+              value={s.orderGroupingEnabled}
+              onChange={(v) => up("orderGroupingEnabled", v)}
+            />
+          </F>
+        </Grid>
+      </Section>
+
+      <Section
+        title="Visual polish"
+        subtitle="Subtle elevation, scroll-reveal, and parallax. Off-by-default for parallax to keep things calm; depth + reveal are on by default."
+      >
+        <Grid>
+          <F label="Soft elevation on cards">
+            <Toggle
+              value={s.depthEffectsEnabled}
+              onChange={(v) => up("depthEffectsEnabled", v)}
+            />
+          </F>
+          <F label="Scroll-reveal animations">
+            <Toggle
+              value={s.scrollRevealEnabled}
+              onChange={(v) => up("scrollRevealEnabled", v)}
+            />
+          </F>
+          <F label="Parallax on hero S marks">
+            <Toggle
+              value={s.parallaxEnabled}
+              onChange={(v) => up("parallaxEnabled", v)}
+            />
+          </F>
+        </Grid>
+        <p className="text-xs text-muted">
+          All effects respect each user&apos;s OS-level &ldquo;reduce motion&rdquo; preference automatically.
+        </p>
+      </Section>
+
+      <Section
+        title="Telegram notifications"
+        subtitle="Pick the events that should ping your Telegram chat. Each template supports {variable} tokens — see hints below each field."
+      >
+        <Grid>
+          <F label="On new order">
+            <Toggle value={s.tgNotifyOnNewOrder} onChange={(v) => up("tgNotifyOnNewOrder", v)} />
+          </F>
+          <F label="On payment received">
+            <Toggle value={s.tgNotifyOnPaid} onChange={(v) => up("tgNotifyOnPaid", v)} />
+          </F>
+          <F label="On warranty claim">
+            <Toggle value={s.tgNotifyOnClaim} onChange={(v) => up("tgNotifyOnClaim", v)} />
+          </F>
+          <F label="On price offer">
+            <Toggle value={s.tgNotifyOnOffer} onChange={(v) => up("tgNotifyOnOffer", v)} />
+          </F>
+          <F label="On error">
+            <Toggle value={s.tgNotifyOnError} onChange={(v) => up("tgNotifyOnError", v)} />
+          </F>
+        </Grid>
+        <TemplateField
+          label="New order template"
+          tokens={["{order}", "{customer}", "{email}", "{items}", "{total}"]}
+          value={s.tgOrderTemplate}
+          onChange={(v) => up("tgOrderTemplate", v)}
+        />
+        <TemplateField
+          label="Payment received template"
+          tokens={["{order}", "{customer}", "{total}"]}
+          value={s.tgPaidTemplate}
+          onChange={(v) => up("tgPaidTemplate", v)}
+        />
+        <TemplateField
+          label="Claim template"
+          tokens={["{claim}", "{customer}", "{email}", "{order}", "{reason}", "{message}"]}
+          value={s.tgClaimTemplate}
+          onChange={(v) => up("tgClaimTemplate", v)}
+        />
+        <TemplateField
+          label="Offer template"
+          tokens={["{offer}", "{product}", "{customer}", "{email}", "{price}", "{message}"]}
+          value={s.tgOfferTemplate}
+          onChange={(v) => up("tgOfferTemplate", v)}
+        />
+      </Section>
+
+      <Section
         title="Marketplace (hidden / future)"
         subtitle="Future: open the store to third-party vendors. The DB is ready; the UI is not — keep this off until Phase 3 is built."
       >
@@ -341,6 +495,64 @@ function T(props: {
       placeholder={props.placeholder}
       className="input"
     />
+  );
+}
+
+function TemplateField({
+  label,
+  tokens,
+  value,
+  onChange,
+}: {
+  label: string;
+  tokens: string[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  // Live preview with stub values
+  const stub: Record<string, string> = {
+    "{order}": "SAL-ABC123",
+    "{customer}": "Sarah K.",
+    "{email}": "sarah@example.com",
+    "{items}": "Netflix Premium ×1\nDisney+ ×2",
+    "{total}": "$24.98",
+    "{claim}": "CLM-X8K7M2",
+    "{reason}": "Subscription expired early",
+    "{message}": "It stopped working after 3 days.",
+    "{offer}": "OFR-Q9L2",
+    "{product}": "Netflix Premium",
+    "{price}": "9.99",
+  };
+  const preview = value.replace(/\{[a-zA-Z]+\}/g, (m) => stub[m] ?? "");
+
+  return (
+    <div className="space-y-2">
+      <label className="block">
+        <span className="text-xs uppercase tracking-[0.16em] text-muted">{label}</span>
+        <textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          rows={3}
+          className="input mt-1"
+        />
+      </label>
+      <div className="flex flex-wrap gap-1.5">
+        {tokens.map((t) => (
+          <button
+            key={t}
+            type="button"
+            onClick={() => onChange((value || "") + (value && !value.endsWith(" ") ? " " : "") + t)}
+            className="text-[11px] font-mono px-2 py-0.5 rounded-full border border-border text-muted hover:text-foreground hover:border-foreground/40"
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+      <div className="rounded-xl border border-dashed border-border bg-muted-2/60 p-3">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-muted mb-1">Preview</p>
+        <pre className="text-xs whitespace-pre-wrap leading-relaxed">{preview || "—"}</pre>
+      </div>
+    </div>
   );
 }
 

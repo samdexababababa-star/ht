@@ -37,7 +37,7 @@ const allowedFields = [
   // per-product defaults
   "allowQuantityByDefault", "negotiableEnabled",
   // visual polish
-  "depthEffectsEnabled", "scrollRevealEnabled",
+  "depthEffectsEnabled", "scrollRevealEnabled", "parallaxEnabled",
   // misc
   "announcementBar",
 ] as const;

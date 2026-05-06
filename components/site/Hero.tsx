@@ -55,7 +55,8 @@ export function Hero({
           initial={{ opacity: 0, scale: 0.6, rotate: -10 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className="hidden md:block absolute right-10 top-24 text-primary"
+          className="hidden md:block absolute right-10 top-24 text-primary parallax-soft"
+          data-parallax-speed="0.18"
         >
           <LogoMark className="salma-loop h-28 w-28 opacity-80" />
         </motion.div>
@@ -63,7 +64,8 @@ export function Hero({
           initial={{ opacity: 0, scale: 0.6, rotate: 20 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className="hidden md:block absolute right-44 top-72 text-primary"
+          className="hidden md:block absolute right-44 top-72 text-primary parallax-soft"
+          data-parallax-speed="0.32"
         >
           <LogoMark className="salma-loop h-12 w-12 opacity-60" />
         </motion.div>
