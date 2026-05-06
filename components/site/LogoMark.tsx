@@ -31,7 +31,10 @@ export function LogoMark({ className = "" }: { className?: string }) {
       className={className}
       aria-hidden
     >
-      <path d="M 46 17 A 11 11 0 1 0 32 32 A 11 11 0 1 1 18 47" />
+      <path
+        pathLength={100}
+        d="M 46 17 A 11 11 0 1 0 32 32 A 11 11 0 1 1 18 47"
+      />
     </svg>
   );
 }

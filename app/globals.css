@@ -60,6 +60,36 @@ html, body {
 }
 .sparkle { animation: sparkle-spin 12s linear infinite; }
 
+/* Salma S-mark loop:
+ *   1. The whole mark rotates slowly around its centre.
+ *   2. The stroke dashes flow continuously along the S path.
+ *   Together they read as a single continuous loop — the line never
+ *   ends, like an infinity tube the S is drawn through.
+ *   Path length is normalised via pathLength="100" on the <path>,
+ *   so the dasharray period (20) divides cleanly and the flow has
+ *   no visible seam. */
+@keyframes salma-rotate-loop {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes salma-flow-loop {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -20; }
+}
+.salma-loop {
+  animation: salma-rotate-loop 9s linear infinite;
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+.salma-loop path {
+  stroke-dasharray: 12 8;
+  animation: salma-flow-loop 1.6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .salma-loop, .salma-loop path { animation: none; }
+  .salma-loop path { stroke-dasharray: none; }
+}
+
 /* Buttons */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;

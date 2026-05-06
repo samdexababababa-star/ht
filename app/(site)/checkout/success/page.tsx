@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { LogoMark } from "@/components/site/LogoMark";
 
 export const dynamic = "force-dynamic";
 
@@ -34,9 +35,7 @@ export default async function SuccessPage({
   return (
     <div className="max-w-2xl mx-auto px-5 pt-20 pb-24 text-center">
       <div className="text-primary mx-auto mb-6">
-        <svg viewBox="0 0 64 64" fill="currentColor" className="w-16 h-16 mx-auto sparkle">
-          <path d="M32 4l3.6 22.4 21.4-7L40 32l21.4 12.6-21.4-7L32 60l-3.6-22.4-21.4 7L24 32 2.6 19.4l21.4 7L32 4z" />
-        </svg>
+        <LogoMark className="salma-loop w-16 h-16 mx-auto" />
       </div>
       <h1 className="text-4xl md:text-5xl tracking-tight">
         Thank <span className="serif-italic text-primary">you</span>
