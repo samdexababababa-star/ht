@@ -1,15 +1,17 @@
 import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { formatPrice } from "@/lib/utils";
+import { SetupChecklist } from "@/components/admin/SetupChecklist";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const [s, productCount, orderCount, paidOrders, recentOrders] = await Promise.all([
+  const [s, productCount, orderCount, claimsOpen, paidOrders, recentOrders] = await Promise.all([
     getSettings(),
     prisma.product.count(),
     prisma.order.count(),
+    prisma.claim.count({ where: { status: "open" } }).catch(() => 0),
     prisma.order.findMany({ where: { status: "paid" }, select: { total: true, currency: true } }),
     prisma.order.findMany({ orderBy: { createdAt: "desc" }, take: 8 }),
   ]);
@@ -23,17 +25,11 @@ export default async function AdminDashboard() {
         Welcome <span className="serif-italic text-primary">back</span>
       </h1>
 
-      {!s.paymentsEnabled || !s.lsApiKey ? (
-        <div className="mt-6 card p-5 bg-primary-soft border-primary/20">
-          <p className="text-sm">
-            <strong>Payments are not configured yet.</strong> Add your LemonSqueezy
-            API key in <Link className="underline" href="/admin/settings">Settings</Link> to start
-            accepting cards.
-          </p>
-        </div>
-      ) : null}
+      <div className="mt-6">
+        <SetupChecklist settings={s} />
+      </div>
 
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-4 gap-4">
         <div className="card p-6">
           <p className="text-xs uppercase tracking-[0.18em] text-muted">Products</p>
           <p className="mt-2 text-3xl tracking-tight">{productCount}</p>
@@ -45,6 +41,13 @@ export default async function AdminDashboard() {
         <div className="card p-6">
           <p className="text-xs uppercase tracking-[0.18em] text-muted">Revenue (paid)</p>
           <p className="mt-2 text-3xl tracking-tight">{formatPrice(revenue, currency)}</p>
+        </div>
+        <div className="card p-6">
+          <p className="text-xs uppercase tracking-[0.18em] text-muted">Open claims</p>
+          <p className="mt-2 text-3xl tracking-tight">{claimsOpen}</p>
+          {claimsOpen > 0 ? (
+            <Link href="/admin/claims" className="mt-1 inline-block text-xs text-primary hover:underline">Review →</Link>
+          ) : null}
         </div>
       </div>
 

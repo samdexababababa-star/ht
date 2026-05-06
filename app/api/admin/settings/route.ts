@@ -7,14 +7,38 @@ export async function GET() {
   return NextResponse.json({ ok: true, settings: await getSettings() });
 }
 
+// Fields that are nullable in the schema — empty string becomes null.
+const nullableStringFields = new Set<string>([
+  "logoUrl", "faviconUrl", "supportEmail", "lsApiKey", "lsStoreId",
+  "lsWebhookSecret", "tgBotToken", "tgChatId", "waNumber", "adminEmail",
+  "announcementBar",
+]);
+
 const allowedFields = [
+  // brand
   "brandName", "tagline", "logoUrl", "faviconUrl", "primaryColor", "accentColor",
   "supportEmail", "defaultCurrency", "defaultLocale",
+  // payments
   "lsApiKey", "lsStoreId", "lsWebhookSecret", "paymentsEnabled",
+  // telegram
   "tgBotToken", "tgChatId", "tgEnabled",
+  "tgNotifyOnNewOrder", "tgNotifyOnPaid", "tgNotifyOnClaim", "tgNotifyOnOffer", "tgNotifyOnError",
+  "tgOrderTemplate", "tgPaidTemplate", "tgClaimTemplate", "tgOfferTemplate",
+  // whatsapp
   "waNumber", "waEnabled", "waRedirectMode", "waPrefilledMessage",
+  // homepage
   "heroTitle", "heroSubtitle", "heroCtaLabel", "heroCtaHref",
+  // marketplace
   "marketplaceEnabled", "vendorSignupOpen",
+  // warranty / claims
+  "warrantyEnabled", "warrantyDefaultDays", "claimsRequirePhoto", "claimsAllowMessage", "claimsMaxPhotos",
+  // order grouping
+  "orderGroupingEnabled",
+  // per-product defaults
+  "allowQuantityByDefault", "negotiableEnabled",
+  // visual polish
+  "depthEffectsEnabled", "scrollRevealEnabled",
+  // misc
   "announcementBar",
 ] as const;
 
@@ -24,10 +48,11 @@ export async function PATCH(req: NextRequest) {
   const data: Record<string, unknown> = {};
   for (const k of allowedFields) {
     if (k in body) {
-      if (typeof body[k] === "string" && body[k] === "") {
+      const v = body[k];
+      if (typeof v === "string" && v === "" && nullableStringFields.has(k)) {
         data[k] = null;
       } else {
-        data[k] = body[k];
+        data[k] = v;
       }
     }
   }

@@ -13,6 +13,8 @@ import {
   FileText,
   Settings as SettingsIcon,
   Link as LinkIcon,
+  ShieldCheck,
+  MessagesSquare,
 } from "lucide-react";
 
 export default async function AuthedAdminLayout({
@@ -29,6 +31,8 @@ export default async function AuthedAdminLayout({
     { href: "/admin/products", label: "Products", icon: Package },
     { href: "/admin/categories", label: "Categories", icon: Tag },
     { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
+    { href: "/admin/claims", label: "Claims", icon: ShieldCheck },
+    { href: "/admin/offers", label: "Offers", icon: MessagesSquare },
     { href: "/admin/promotions", label: "Promotions", icon: Percent },
     { href: "/admin/pages", label: "Pages", icon: FileText },
     { href: "/admin/payment-link", label: "Payment links", icon: LinkIcon },
