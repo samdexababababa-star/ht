@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { getSettings } from "@/lib/settings";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { notFound } from "next/navigation";
 
@@ -10,9 +11,18 @@ export default async function EditProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [product, categories] = await Promise.all([
-    prisma.product.findUnique({ where: { id }, include: { variants: { orderBy: { order: "asc" } } } }),
+  const [product, categories, s, otherProducts] = await Promise.all([
+    prisma.product.findUnique({
+      where: { id },
+      include: { variants: { orderBy: { order: "asc" } } },
+    }),
     prisma.category.findMany({ orderBy: { name: "asc" } }),
+    getSettings(),
+    prisma.product.findMany({
+      where: { visible: true, id: { not: id } },
+      select: { id: true, name: true },
+      orderBy: { name: "asc" },
+    }),
   ]);
   if (!product) notFound();
 
@@ -55,6 +65,14 @@ export default async function EditProductPage({
             allowQuantity: product.allowQuantity,
             negotiable: product.negotiable,
             minOfferPrice: product.minOfferPrice,
+            // phase 8 — growth boosters
+            socialProofEnabled: product.socialProofEnabled,
+            socialProofText: product.socialProofText,
+            trustBadgeText: product.trustBadgeText,
+            bestSellerBadge: product.bestSellerBadge,
+            newBadge: product.newBadge,
+            highlightSavings: product.highlightSavings,
+            bundleProductId: product.bundleProductId,
             variants: product.variants.map((v) => ({
               id: v.id,
               name: v.name,
@@ -66,6 +84,11 @@ export default async function EditProductPage({
             })),
           }}
           categories={categories}
+          otherProducts={otherProducts}
+          siteFlags={{
+            bundlesEnabled: s.bundlesEnabled,
+            socialProofGlobalEnabled: s.socialProofGlobalEnabled,
+          }}
         />
       </div>
     </div>

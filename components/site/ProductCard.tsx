@@ -14,13 +14,27 @@ export type ProductCardData = {
   badge?: string | null;
   scarcityEnabled: boolean;
   scarcityText?: string | null;
+  // phase 8 — growth boosters
+  bestSellerBadge?: boolean | null;
+  newBadge?: boolean | null;
+  highlightSavings?: boolean | null;
 };
 
 export function ProductCard({ p }: { p: ProductCardData }) {
-  const discount =
-    p.compareAtPrice && p.compareAtPrice > p.basePrice
-      ? Math.round(((p.compareAtPrice - p.basePrice) / p.compareAtPrice) * 100)
-      : null;
+  const hasCompare =
+    !!p.compareAtPrice && p.compareAtPrice > p.basePrice;
+  const discountPct = hasCompare
+    ? Math.round(((p.compareAtPrice! - p.basePrice) / p.compareAtPrice!) * 100)
+    : null;
+  const savings = hasCompare ? p.compareAtPrice! - p.basePrice : null;
+  // Auto-derived corner badge: NEW > BEST SELLER > custom badge string.
+  // Order matters because "NEW" beats "BEST SELLER" when both are checked
+  // (newer products earn the spotlight).
+  const cornerBadge = p.newBadge
+    ? "NEW"
+    : p.bestSellerBadge
+      ? "BEST SELLER"
+      : p.badge ?? null;
 
   return (
     <Link href={`/product/${p.slug}`} className="group">
@@ -39,11 +53,15 @@ export function ProductCard({ p }: { p: ProductCardData }) {
             </div>
           )}
 
-          {p.badge ? (
-            <span className="absolute top-3 left-3 chip chip-blue">{p.badge}</span>
+          {cornerBadge ? (
+            <span className="absolute top-3 left-3 chip chip-blue">{cornerBadge}</span>
           ) : null}
-          {discount ? (
-            <span className="absolute top-3 right-3 chip">−{discount}%</span>
+          {hasCompare ? (
+            <span className="absolute top-3 right-3 chip">
+              {p.highlightSavings && savings != null
+                ? `Save ${formatPrice(savings, p.currency)}`
+                : `−${discountPct}%`}
+            </span>
           ) : null}
         </div>
         <div className="p-4">
@@ -55,9 +73,9 @@ export function ProductCard({ p }: { p: ProductCardData }) {
             <span className="text-[15px] font-semibold">
               {formatPrice(p.basePrice, p.currency)}
             </span>
-            {p.compareAtPrice && p.compareAtPrice > p.basePrice ? (
+            {hasCompare ? (
               <span className="text-[12px] text-muted line-through">
-                {formatPrice(p.compareAtPrice, p.currency)}
+                {formatPrice(p.compareAtPrice!, p.currency)}
               </span>
             ) : null}
           </div>

@@ -69,6 +69,14 @@ export async function POST(req: NextRequest) {
         body.minOfferPrice === null || body.minOfferPrice === undefined
           ? null
           : Number(body.minOfferPrice),
+      // growth boosters
+      socialProofEnabled: body.socialProofEnabled ?? false,
+      socialProofText: body.socialProofText || null,
+      trustBadgeText: body.trustBadgeText || null,
+      bestSellerBadge: body.bestSellerBadge ?? false,
+      newBadge: body.newBadge ?? false,
+      highlightSavings: body.highlightSavings ?? false,
+      bundleProductId: body.bundleProductId || null,
       order: Number(body.order ?? 0),
       variants: Array.isArray(body.variants) && body.variants.length > 0
         ? {

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { ProductDetail } from "@/components/site/ProductDetail";
 import { ProductCard } from "@/components/site/ProductCard";
+import { RecentlyViewedTracker } from "@/components/site/RecentlyViewedTracker";
 
 export const revalidate = 30;
 
@@ -24,6 +25,24 @@ export default async function ProductPage({
   ]);
   if (!product || !product.visible) notFound();
 
+  // Fetch bundle partner product if one is configured AND the master toggle is
+  // on. Avoid the extra query when bundles are off site-wide.
+  const bundle =
+    settings.bundlesEnabled && product.bundleProductId
+      ? await prisma.product.findUnique({
+          where: { id: product.bundleProductId },
+          select: {
+            id: true,
+            slug: true,
+            name: true,
+            basePrice: true,
+            currency: true,
+            thumbnail: true,
+            visible: true,
+          },
+        })
+      : null;
+
   const related = await prisma.product.findMany({
     where: {
       visible: true,
@@ -36,9 +55,27 @@ export default async function ProductPage({
 
   return (
     <div className="max-w-6xl mx-auto px-5 pt-10 pb-20">
+      <RecentlyViewedTracker
+        enabled={settings.recentlyViewedEnabled}
+        product={{
+          id: product.id,
+          slug: product.slug,
+          name: product.name,
+          basePrice: product.basePrice,
+          currency: product.currency,
+          thumbnail: product.thumbnail,
+        }}
+      />
       <ProductDetail
         product={product}
-        settings={{ negotiableEnabled: settings.negotiableEnabled }}
+        settings={{
+          negotiableEnabled: settings.negotiableEnabled,
+          trustBadgesEnabled: settings.trustBadgesEnabled,
+          liveVisitorCountEnabled: settings.liveVisitorCountEnabled,
+          socialProofGlobalEnabled: settings.socialProofGlobalEnabled,
+          bundlesEnabled: settings.bundlesEnabled,
+        }}
+        bundle={bundle && bundle.visible ? bundle : null}
       />
 
       {related.length > 0 ? (

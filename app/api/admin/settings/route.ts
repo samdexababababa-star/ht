@@ -12,6 +12,7 @@ const nullableStringFields = new Set<string>([
   "logoUrl", "faviconUrl", "supportEmail", "lsApiKey", "lsStoreId",
   "lsWebhookSecret", "tgBotToken", "tgChatId", "waNumber", "adminEmail",
   "announcementBar",
+  "stickyPromoLink", "exitIntentCode",
 ]);
 
 const allowedFields = [
@@ -38,6 +39,13 @@ const allowedFields = [
   "allowQuantityByDefault", "negotiableEnabled",
   // visual polish
   "depthEffectsEnabled", "scrollRevealEnabled", "parallaxEnabled",
+  // growth / attractiveness
+  "stickyPromoEnabled", "stickyPromoText", "stickyPromoLink",
+  "trustBadgesEnabled", "liveVisitorCountEnabled",
+  "exitIntentEnabled", "exitIntentText", "exitIntentCode",
+  "backToTopEnabled", "recentlyViewedEnabled",
+  "pageTransitionsEnabled", "readingProgressEnabled",
+  "bundlesEnabled", "socialProofGlobalEnabled",
   // misc
   "announcementBar",
 ] as const;

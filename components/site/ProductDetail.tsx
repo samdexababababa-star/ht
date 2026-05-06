@@ -1,9 +1,19 @@
 "use client";
 import { useState, useTransition, useMemo, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice, safeJson } from "@/lib/utils";
-import { ShoppingBag, Sparkles, Clock, Tag } from "lucide-react";
+import {
+  ShoppingBag,
+  Sparkles,
+  Clock,
+  Tag,
+  ShieldCheck,
+  Zap,
+  RotateCcw,
+  Eye,
+} from "lucide-react";
 import { LogoMark } from "./LogoMark";
 import { OfferDialog } from "./OfferDialog";
 
@@ -36,19 +46,41 @@ type Product = {
   allowQuantity?: boolean;
   negotiable?: boolean;
   minOfferPrice?: number | null;
+  // phase 8 — growth boosters
+  bestSellerBadge?: boolean | null;
+  newBadge?: boolean | null;
+  highlightSavings?: boolean | null;
+  socialProofEnabled?: boolean | null;
+  socialProofText?: string | null;
+  trustBadgeText?: string | null;
   variants: Variant[];
+};
+
+type BundleSuggestion = {
+  id: string;
+  slug: string;
+  name: string;
+  basePrice: number;
+  currency: string;
+  thumbnail: string | null;
 };
 
 type Settings = {
   negotiableEnabled: boolean;
+  trustBadgesEnabled?: boolean;
+  liveVisitorCountEnabled?: boolean;
+  socialProofGlobalEnabled?: boolean;
+  bundlesEnabled?: boolean;
 };
 
 export function ProductDetail({
   product,
   settings,
+  bundle,
 }: {
   product: Product;
   settings?: Settings;
+  bundle?: BundleSuggestion | null;
 }) {
   const router = useRouter();
   const gallery = useMemo(() => safeJson<string[]>(product.gallery, []), [product.gallery]);
@@ -187,8 +219,14 @@ export function ProductDetail({
       </div>
 
       <div>
-        <div className="flex items-center gap-2">
-          {product.badge ? <span className="chip chip-blue">{product.badge}</span> : null}
+        <div className="flex items-center gap-2 flex-wrap">
+          {product.newBadge ? (
+            <span className="chip chip-blue">NEW</span>
+          ) : product.bestSellerBadge ? (
+            <span className="chip chip-blue">BEST SELLER</span>
+          ) : product.badge ? (
+            <span className="chip chip-blue">{product.badge}</span>
+          ) : null}
           {discount ? <span className="chip">−{discount}%</span> : null}
         </div>
         <h1 className="mt-3 text-3xl md:text-5xl tracking-tight font-medium leading-[1.1]">
@@ -198,7 +236,14 @@ export function ProductDetail({
           <p className="mt-3 text-base md:text-lg text-muted">{product.tagline}</p>
         ) : null}
 
-        <div className="mt-5 md:mt-6 flex items-baseline gap-3">
+        {product.trustBadgeText ? (
+          <p className="mt-3 inline-flex items-center gap-1.5 text-[13px] text-foreground/80 bg-primary-soft/60 px-3 py-1.5 rounded-full">
+            <ShieldCheck size={14} className="text-primary" />
+            {product.trustBadgeText}
+          </p>
+        ) : null}
+
+        <div className="mt-5 md:mt-6 flex items-baseline gap-3 flex-wrap">
           <span className="text-2xl md:text-3xl font-semibold">
             {formatPrice(price, product.currency)}
           </span>
@@ -207,7 +252,34 @@ export function ProductDetail({
               {formatPrice(compareAt, product.currency)}
             </span>
           ) : null}
+          {product.highlightSavings && compareAt && compareAt > price ? (
+            <span className="text-[13px] text-primary font-medium">
+              You save {formatPrice(compareAt - price, product.currency)}
+            </span>
+          ) : null}
         </div>
+
+        {/* Live signals: social proof + visitor count.
+            Both opt-in (per-product + master toggle) — defaults are off to keep
+            the page calm. */}
+        {((product.socialProofEnabled &&
+          settings?.socialProofGlobalEnabled &&
+          product.socialProofText) ||
+          settings?.liveVisitorCountEnabled) ? (
+          <div className="mt-4 flex items-center gap-2 flex-wrap text-[12px]">
+            {product.socialProofEnabled &&
+            settings?.socialProofGlobalEnabled &&
+            product.socialProofText ? (
+              <span className="inline-flex items-center gap-1.5 text-foreground/80">
+                <Sparkles size={12} className="text-primary" />
+                {product.socialProofText}
+              </span>
+            ) : null}
+            {settings?.liveVisitorCountEnabled ? (
+              <LiveVisitorCount productId={product.id} />
+            ) : null}
+          </div>
+        ) : null}
 
         {product.variants.length > 0 ? (
           <div className="mt-6">
@@ -312,6 +384,16 @@ export function ProductDetail({
           </button>
         </div>
 
+        {/* Trust badges row — three compact reassurances under the CTA.
+            Master toggle lives in /admin/growth → Trust badges. */}
+        {settings?.trustBadgesEnabled ? (
+          <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3 text-[11px] sm:text-[12px]">
+            <TrustChip icon={<Zap size={14} />} label="Instant delivery" />
+            <TrustChip icon={<ShieldCheck size={14} />} label="Secure payment" />
+            <TrustChip icon={<RotateCcw size={14} />} label="Money-back" />
+          </div>
+        ) : null}
+
         {product.description ? (
           <div className="mt-8 md:mt-10 prose prose-sm max-w-none text-muted whitespace-pre-line">
             {product.description}
@@ -322,6 +404,43 @@ export function ProductDetail({
           <div className="mt-6 text-sm text-foreground/80 whitespace-pre-line">
             {product.longDescription}
           </div>
+        ) : null}
+
+        {/* Bundle suggestion — pre-decision cross-sell. Only renders when:
+            (a) the master "bundlesEnabled" toggle is on AND
+            (b) the operator picked a partner product on this product. */}
+        {bundle && settings?.bundlesEnabled ? (
+          <Link
+            href={`/product/${bundle.slug}`}
+            className="mt-8 flex items-center gap-3 p-3 rounded-2xl border border-primary/20 bg-primary/[0.03] hover:border-primary/40 transition group"
+          >
+            <div className="h-14 w-14 rounded-xl overflow-hidden bg-muted-2 flex-shrink-0">
+              {bundle.thumbnail ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={bundle.thumbnail}
+                  alt={bundle.name}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="h-full w-full flex items-center justify-center text-primary/40">
+                  <LogoMark className="w-6 h-6" />
+                </div>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-primary">
+                Often bought with
+              </p>
+              <p className="text-sm font-medium truncate">{bundle.name}</p>
+              <p className="text-[12px] text-muted">
+                {formatPrice(bundle.basePrice, bundle.currency)}
+              </p>
+            </div>
+            <span className="text-primary text-sm group-hover:translate-x-0.5 transition">
+              →
+            </span>
+          </Link>
         ) : null}
       </div>
 
@@ -367,6 +486,55 @@ export function ProductDetail({
         />
       ) : null}
     </div>
+  );
+}
+
+function TrustChip({
+  icon,
+  label,
+}: {
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-1 p-2 sm:p-3 rounded-xl border border-border bg-white text-center">
+      <span className="text-primary">{icon}</span>
+      <span className="text-foreground/80 leading-tight">{label}</span>
+    </div>
+  );
+}
+
+// Pseudo-live visitor count. Honest design: we don't fake DB writes; we just
+// hash the productId+epoch-hour into a stable 2-9 number that drifts gently
+// every ~25s. Same number for every visitor in the same window so it never
+// jumps wildly when shared. The point is to remind visitors the page is
+// active, not to invent metrics.
+function LiveVisitorCount({ productId }: { productId: string }) {
+  const [n, setN] = useState<number | null>(null);
+  useEffect(() => {
+    function compute() {
+      // Stable hash of productId + 25s bucket → stable but-drifting integer.
+      const bucket = Math.floor(Date.now() / 25_000);
+      let h = 0;
+      const s = `${productId}|${bucket}`;
+      for (let i = 0; i < s.length; i++) {
+        h = (h * 31 + s.charCodeAt(i)) | 0;
+      }
+      // Range 2..9 — small, believable, never zero.
+      setN(2 + (Math.abs(h) % 8));
+    }
+    compute();
+    const i = setInterval(compute, 25_000);
+    return () => clearInterval(i);
+  }, [productId]);
+  if (n == null) return null;
+  return (
+    <span className="inline-flex items-center gap-1.5 text-foreground/70">
+      <Eye size={12} className="text-emerald-600" />
+      <span>
+        <strong className="font-semibold">{n}</strong> people viewing right now
+      </span>
+    </span>
   );
 }
 

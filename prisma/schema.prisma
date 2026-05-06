@@ -92,6 +92,16 @@ model Product {
   allowQuantity   Boolean  @default(true)
   negotiable      Boolean  @default(false)
   minOfferPrice   Int?     // optional cents floor for negotiable offers
+  // growth / attractiveness boosters (admin-toggleable per product)
+  socialProofEnabled Boolean @default(false)
+  socialProofText    String? // e.g. "73 people bought in the last 24h"
+  trustBadgeText     String? // e.g. "Instant delivery", "30-day money back"
+  bestSellerBadge    Boolean @default(false) // shows "BEST SELLER" auto-pill on cards/PDP
+  newBadge           Boolean @default(false) // shows "NEW" pill (overrides bestSellerBadge if both)
+  highlightSavings   Boolean @default(false) // shows "Save $X" instead of -X% chip
+  bundleProductId    String? // optional cross-sell: another Product to suggest as bundle
+  bundleProduct      Product? @relation("ProductBundle", fields: [bundleProductId], references: [id])
+  bundledBy          Product[] @relation("ProductBundle")
   // ordering
   order           Int      @default(0)
   createdAt       DateTime @default(now())
@@ -288,6 +298,23 @@ model Setting {
   depthEffectsEnabled    Boolean @default(true)
   scrollRevealEnabled    Boolean @default(true)
   parallaxEnabled        Boolean @default(false)
+  // growth / attractiveness — site-wide master toggles. All default to safe
+  // values (mostly off) so nothing changes destructively. Each one is also
+  // surfaced on /admin/growth with rationale + where-it-applies indicator.
+  stickyPromoEnabled     Boolean @default(false)
+  stickyPromoText        String  @default("Free instant delivery on every order")
+  stickyPromoLink        String? // optional href when the bar is clickable
+  trustBadgesEnabled     Boolean @default(true)  // shown in product page + footer
+  liveVisitorCountEnabled Boolean @default(false) // "X people viewing this product"
+  exitIntentEnabled      Boolean @default(false)
+  exitIntentText         String  @default("Wait — get 10% off your first order")
+  exitIntentCode         String? // promo code to surface in the popup
+  backToTopEnabled       Boolean @default(true)
+  recentlyViewedEnabled  Boolean @default(false)
+  pageTransitionsEnabled Boolean @default(true)
+  readingProgressEnabled Boolean @default(false)
+  bundlesEnabled         Boolean @default(false) // master toggle for product-level bundle suggestions
+  socialProofGlobalEnabled Boolean @default(false) // master toggle for product-level social proof
   // Telegram event toggles & templates
   tgNotifyOnNewOrder Boolean @default(true)
   tgNotifyOnPaid     Boolean @default(true)

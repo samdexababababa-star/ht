@@ -1,13 +1,19 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
 import { getSettings } from "@/lib/settings";
+import { RecentlyViewedRow } from "./RecentlyViewedRow";
 
-export async function Footer() {
+export async function Footer({
+  recentlyViewedEnabled = false,
+}: {
+  recentlyViewedEnabled?: boolean;
+}) {
   const s = await getSettings();
   const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-border mt-24">
-      <div className="max-w-6xl mx-auto px-5 py-12 grid gap-10 md:grid-cols-4">
+    <footer className="mt-24">
+      {recentlyViewedEnabled ? <RecentlyViewedRow /> : null}
+      <div className="border-t border-border max-w-6xl mx-auto px-5 py-12 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
           <Logo />
           <p className="mt-3 text-sm text-muted max-w-sm">{s.tagline}</p>

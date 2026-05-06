@@ -22,15 +22,24 @@ export async function PATCH(
     "name", "slug", "tagline", "description", "longDescription", "currency",
     "thumbnail", "gallery", "kind", "deliveryMode", "deliveryNotes", "seoTitle",
     "seoDescription", "badge", "scarcityText", "categoryId",
+    "socialProofText", "trustBadgeText",
   ];
   for (const k of passthrough) if (k in rest) data[k] = rest[k];
+  // bundleProductId — empty string clears the relation
+  if ("bundleProductId" in rest) {
+    const v = rest.bundleProductId;
+    data.bundleProductId = typeof v === "string" && v ? v : null;
+  }
   for (const k of ["basePrice", "compareAtPrice", "durationDays", "scarcityCount", "order", "warrantyDays", "minOfferPrice"]) {
     if (k in rest && rest[k] !== "" && rest[k] != null)
       data[k] = Number(rest[k] as string | number);
     else if (k in rest && (rest[k] === "" || rest[k] == null))
       data[k] = null;
   }
-  for (const k of ["visible", "featured", "scarcityEnabled", "allowQuantity", "negotiable"]) {
+  for (const k of [
+    "visible", "featured", "scarcityEnabled", "allowQuantity", "negotiable",
+    "socialProofEnabled", "bestSellerBadge", "newBadge", "highlightSavings",
+  ]) {
     if (k in rest) data[k] = Boolean(rest[k]);
   }
   if ("urgencyEndsAt" in rest) {
