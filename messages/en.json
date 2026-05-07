@@ -15,6 +15,11 @@
   },
   "home": {
     "shopAll": "Shop the full catalog",
+    "hero": {
+      "title": "One platform. Every digital subscription.",
+      "subtitle": "Streaming, AI, gaming, social — premium quality, instant delivery.",
+      "ctaLabel": "Browse the catalog"
+    },
     "categories": "Browse by category",
     "categoriesSubtitle": "Find exactly what you need.",
     "recent": "Just landed",
@@ -299,6 +304,9 @@
     "next": "Next",
     "yes": "Yes",
     "no": "No",
-    "close": "Close"
+    "close": "Close",
+    "tagline": "Premium digital subscriptions, services & boosts.",
+    "stickyPromoText": "Free instant delivery on every order",
+    "exitIntentText": "Wait — get 10% off your first order"
   }
 }

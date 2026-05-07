@@ -15,6 +15,11 @@
   },
   "home": {
     "shopAll": "Voir tout le catalogue",
+    "hero": {
+      "title": "Une plateforme. Tous tes abonnements numériques.",
+      "subtitle": "Streaming, IA, gaming, social — qualité premium, livraison instantanée.",
+      "ctaLabel": "Voir le catalogue"
+    },
     "categories": "Parcourir par catégorie",
     "categoriesSubtitle": "Trouve exactement ce qu'il te faut.",
     "recent": "Nouveautés",
@@ -299,6 +304,9 @@
     "next": "Suivant",
     "yes": "Oui",
     "no": "Non",
-    "close": "Fermer"
+    "close": "Fermer",
+    "tagline": "Abonnements et services numériques premium.",
+    "stickyPromoText": "Livraison instantanée gratuite sur chaque commande",
+    "exitIntentText": "Attends — profite de 10% sur ta première commande"
   }
 }

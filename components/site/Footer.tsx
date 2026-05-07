@@ -1,7 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import { Logo } from "./Logo";
-import { getSettings } from "@/lib/settings";
+import { getSettings, SETTING_DEFAULTS } from "@/lib/settings";
 import { RecentlyViewedRow } from "./RecentlyViewedRow";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
@@ -10,15 +10,22 @@ export async function Footer({
 }: {
   recentlyViewedEnabled?: boolean;
 }) {
-  const [s, t] = await Promise.all([getSettings(), getTranslations("footer")]);
+  const [s, t, tc] = await Promise.all([
+    getSettings(),
+    getTranslations("footer"),
+    getTranslations("common"),
+  ]);
   const year = new Date().getFullYear();
+  // Translate tagline when admin hasn't overridden the schema default.
+  const tagline =
+    s.tagline === SETTING_DEFAULTS.tagline ? tc("tagline") : s.tagline;
   return (
     <footer className="mt-24">
       {recentlyViewedEnabled ? <RecentlyViewedRow /> : null}
       <div className="border-t border-border max-w-6xl mx-auto px-5 py-12 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
           <Logo />
-          <p className="mt-3 text-sm text-muted max-w-sm">{s.tagline}</p>
+          <p className="mt-3 text-sm text-muted max-w-sm">{tagline}</p>
           <p className="mt-6 text-xs text-muted">
             © {year} {s.brandName}. {t("rights")}
           </p>

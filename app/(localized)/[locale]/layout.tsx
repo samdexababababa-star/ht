@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing, localeLabels, type Locale } from "@/i18n/routing";
-import { getSettings } from "@/lib/settings";
+import { getSettings, SETTING_DEFAULTS } from "@/lib/settings";
 import "../../globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -34,7 +34,16 @@ export async function generateMetadata({
     s = null;
   }
   const brand = s?.brandName ?? "Salma";
-  const tagline = s?.tagline ?? "Premium digital subscriptions, services & boosts.";
+  // Translate tagline when admin hasn't overridden the schema default
+  let tagline = s?.tagline ?? SETTING_DEFAULTS.tagline;
+  if (tagline === SETTING_DEFAULTS.tagline) {
+    try {
+      const t = await getTranslations({ locale, namespace: "common" });
+      tagline = t("tagline");
+    } catch {
+      /* fall back to default if translations unavailable */
+    }
+  }
   return {
     title: { default: `${brand} — ${tagline}`, template: `%s — ${brand}` },
     description: tagline,

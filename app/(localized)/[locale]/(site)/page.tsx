@@ -7,7 +7,7 @@ import { Marquee } from "@/components/site/Marquee";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/db";
-import { getSettings } from "@/lib/settings";
+import { getSettings, SETTING_DEFAULTS } from "@/lib/settings";
 import { ensureBootstrapAdmin } from "@/lib/auth";
 
 export const revalidate = 30;
@@ -31,12 +31,28 @@ export default async function HomePage() {
     getTranslations("home"),
   ]);
 
+  // When the admin hasn't customized the hero copy, surface translated
+  // strings instead of the schema's English defaults. Once the admin
+  // overrides any field, that override wins across every locale.
+  const heroTitle =
+    s.heroTitle === SETTING_DEFAULTS.heroTitle
+      ? t("hero.title")
+      : s.heroTitle.replace(/\n/g, " ");
+  const heroSubtitle =
+    s.heroSubtitle === SETTING_DEFAULTS.heroSubtitle
+      ? t("hero.subtitle")
+      : s.heroSubtitle;
+  const heroCtaLabel =
+    s.heroCtaLabel === SETTING_DEFAULTS.heroCtaLabel
+      ? t("hero.ctaLabel")
+      : s.heroCtaLabel;
+
   return (
     <>
       <Hero
-        title={s.heroTitle.replace(/\n/g, " ")}
-        subtitle={s.heroSubtitle}
-        ctaLabel={s.heroCtaLabel}
+        title={heroTitle}
+        subtitle={heroSubtitle}
+        ctaLabel={heroCtaLabel}
         ctaHref={s.heroCtaHref}
       />
 
