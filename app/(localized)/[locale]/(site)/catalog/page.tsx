@@ -2,7 +2,8 @@ import { ProductCard } from "@/components/site/ProductCard";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { Reveal } from "@/components/site/Reveal";
 import { prisma } from "@/lib/db";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 
 export const revalidate = 30;
 
@@ -15,7 +16,7 @@ export default async function CatalogPage({
   const q = sp.q?.trim() ?? "";
   const cat = sp.category?.trim() ?? "";
 
-  const [categories, products] = await Promise.all([
+  const [categories, products, t] = await Promise.all([
     prisma.category.findMany({
       where: { visible: true, parentId: null },
       orderBy: { order: "asc" },
@@ -36,22 +37,27 @@ export default async function CatalogPage({
       },
       orderBy: [{ featured: "desc" }, { order: "asc" }, { createdAt: "desc" }],
     }),
+    getTranslations("catalog"),
   ]);
 
   return (
     <div className="max-w-6xl mx-auto px-5 pt-12 pb-20">
-      <SectionTitle eyebrow="Catalog" title="Everything we" italicTail="offer" />
+      <SectionTitle
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        italicTail={t("italicTail")}
+      />
 
       <form className="mt-6 flex gap-2">
         <input
           type="search"
           name="q"
           defaultValue={q}
-          placeholder="Search…"
+          placeholder={t("searchPlaceholder")}
           className="flex-1 h-11 rounded-full border border-border px-5 text-sm focus:outline-none focus:border-foreground"
         />
         {cat ? <input type="hidden" name="category" value={cat} /> : null}
-        <button className="btn btn-primary">Search</button>
+        <button className="btn btn-primary">{t("searchButton")}</button>
       </form>
 
       <div className="mt-6 flex flex-wrap gap-2">
@@ -59,7 +65,7 @@ export default async function CatalogPage({
           href="/catalog"
           className={`chip ${!cat ? "chip-blue" : ""}`}
         >
-          All
+          {t("all")}
         </Link>
         {categories.map((c) => (
           <Link
@@ -80,12 +86,8 @@ export default async function CatalogPage({
         ))}
         {products.length === 0 ? (
           <div className="col-span-full card p-12 text-center">
-            <p className="text-2xl tracking-tight">
-              Nothing here <span className="serif-italic text-primary">yet</span>.
-            </p>
-            <p className="mt-2 text-sm text-muted">
-              Try a different search or browse a category.
-            </p>
+            <p className="text-2xl tracking-tight">{t("emptyTitle")}</p>
+            <p className="mt-2 text-sm text-muted">{t("emptyHint")}</p>
           </div>
         ) : null}
       </div>

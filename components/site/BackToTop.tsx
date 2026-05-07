@@ -33,7 +33,7 @@ export function BackToTop() {
       onClick={go}
       aria-label="Back to top"
       data-visible={visible}
-      className="md:hidden fixed bottom-24 right-4 z-30 h-11 w-11 rounded-full bg-foreground text-white shadow-lg flex items-center justify-center transition-all duration-300 data-[visible=false]:opacity-0 data-[visible=false]:translate-y-2 data-[visible=false]:pointer-events-none active:scale-90 [bottom:calc(env(safe-area-inset-bottom)+88px)]"
+      className="md:hidden fixed bottom-24 end-4 z-30 h-11 w-11 rounded-full bg-foreground text-white shadow-lg flex items-center justify-center transition-all duration-300 data-[visible=false]:opacity-0 data-[visible=false]:translate-y-2 data-[visible=false]:pointer-events-none active:scale-90 [bottom:calc(env(safe-area-inset-bottom)+88px)]"
     >
       <ArrowUp size={18} />
     </button>

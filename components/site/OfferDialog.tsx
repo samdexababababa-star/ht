@@ -158,7 +158,7 @@ function OfferDialogInner({
                 Your offer ({product.currency})
               </span>
               <div className="mt-1 relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
+                <span className="absolute start-3 top-1/2 -translate-y-1/2 text-muted">
                   <Tag size={16} />
                 </span>
                 <input
@@ -169,7 +169,7 @@ function OfferDialogInner({
                   value={offer}
                   onChange={(e) => setOffer(e.target.value)}
                   placeholder="0.00"
-                  className="w-full h-11 rounded-xl border border-border pl-10 pr-3 text-base"
+                  className="w-full h-11 rounded-xl border border-border ps-10 pe-3 text-base"
                 />
               </div>
             </label>

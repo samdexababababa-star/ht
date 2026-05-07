@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 
 // Pinned-to-top promo strip. Shows the operator's chosen text and (optionally)
@@ -63,7 +63,7 @@ export function StickyPromoBanner({
         type="button"
         aria-label="Dismiss banner"
         onClick={dismiss}
-        className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 inline-flex items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/10 transition"
+        className="absolute end-2 top-1/2 -translate-y-1/2 h-6 w-6 inline-flex items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/10 transition"
       >
         <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden>
           <path

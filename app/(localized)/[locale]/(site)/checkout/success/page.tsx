@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
@@ -13,11 +14,12 @@ export default async function SuccessPage({
 }) {
   const sp = await searchParams;
   const orderNumber = sp.order;
-  const [order, settings] = await Promise.all([
+  const [order, settings, t] = await Promise.all([
     orderNumber
       ? prisma.order.findUnique({ where: { number: orderNumber }, include: { items: true } })
       : Promise.resolve(null),
     getSettings(),
+    getTranslations("checkout.success"),
   ]);
 
   const showWhatsApp =
@@ -37,22 +39,19 @@ export default async function SuccessPage({
       <div className="text-primary mx-auto mb-6">
         <LogoMark className="salma-loop w-16 h-16 mx-auto" />
       </div>
-      <h1 className="text-4xl md:text-5xl tracking-tight">
-        Thank <span className="serif-italic text-primary">you</span>
-      </h1>
+      <h1 className="text-4xl md:text-5xl tracking-tight">{t("title")}</h1>
       <p className="mt-3 text-muted">
-        Your order {order ? <span className="font-semibold">#{order.number}</span> : null} has been placed.
-        We&apos;ll deliver it shortly — and pop into your inbox if we need anything.
+        {order ? t("body", { order: `#${order.number}` }) : t("body", { order: "" })}
       </p>
 
       <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
         {waLink ? (
-          <Link href={waLink} className="btn btn-blue" target="_blank">
-            Continue on WhatsApp →
-          </Link>
+          <a href={waLink} className="btn btn-blue" target="_blank" rel="noreferrer">
+            {t("whatsapp")} →
+          </a>
         ) : null}
         <Link href="/catalog" className="btn btn-outline">
-          Back to catalog
+          {t("back")}
         </Link>
       </div>
     </div>

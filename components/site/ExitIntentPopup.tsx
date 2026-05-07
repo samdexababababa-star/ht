@@ -96,7 +96,7 @@ export function ExitIntentPopup({
           type="button"
           aria-label="Close"
           onClick={close}
-          className="absolute right-3 top-3 h-8 w-8 inline-flex items-center justify-center rounded-full text-muted hover:text-foreground hover:bg-muted-2 transition"
+          className="absolute end-3 top-3 h-8 w-8 inline-flex items-center justify-center rounded-full text-muted hover:text-foreground hover:bg-muted-2 transition"
         >
           <X size={16} />
         </button>

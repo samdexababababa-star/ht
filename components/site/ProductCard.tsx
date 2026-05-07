@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { formatPrice } from "@/lib/utils";
 import { LogoMark } from "./LogoMark";
 
@@ -54,10 +54,10 @@ export function ProductCard({ p }: { p: ProductCardData }) {
           )}
 
           {cornerBadge ? (
-            <span className="absolute top-3 left-3 chip chip-blue">{cornerBadge}</span>
+            <span className="absolute top-3 start-3 chip chip-blue">{cornerBadge}</span>
           ) : null}
           {hasCompare ? (
-            <span className="absolute top-3 right-3 chip">
+            <span className="absolute top-3 end-3 chip">
               {p.highlightSavings && savings != null
                 ? `Save ${formatPrice(savings, p.currency)}`
                 : `−${discountPct}%`}

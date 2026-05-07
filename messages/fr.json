@@ -1,0 +1,304 @@
+{
+  "nav": {
+    "catalog": "Catalogue",
+    "search": "Rechercher",
+    "cart": "Panier",
+    "menu": "Menu",
+    "openMenu": "Ouvrir le menu",
+    "close": "Fermer",
+    "account": "Mon compte",
+    "signIn": "Se connecter",
+    "affiliate": "Programme d'affiliation",
+    "categories": "Catégories",
+    "language": "Langue",
+    "browseCatalog": "Voir le catalogue"
+  },
+  "home": {
+    "shopAll": "Voir tout le catalogue",
+    "categories": "Parcourir par catégorie",
+    "categoriesSubtitle": "Trouve exactement ce qu'il te faut.",
+    "recent": "Nouveautés",
+    "recentSubtitle": "Les derniers ajouts au catalogue.",
+    "marquee": {
+      "instantDelivery": "Livraison instantanée",
+      "refund24": "Remboursement sous 24h",
+      "humanSupport": "Vrai support humain",
+      "poweredByLS": "Propulsé par LemonSqueezy",
+      "builtForMENA": "Conçu pour l'Algérie & l'Afrique",
+      "premiumQuality": "Qualité premium, à chaque commande"
+    },
+    "featured": {
+      "eyebrow": "En direct",
+      "title": "Sélection",
+      "italicTail": "de la semaine"
+    },
+    "editorial": {
+      "title": "Tout ce qui est numérique. Un seul checkout.",
+      "body": "Streaming, outils IA, recharges gaming, packs de croissance sociale et services sur mesure. Paie une fois par carte ou wallet — on livre, on suit et on te répond personnellement sur WhatsApp.",
+      "browseCta": "Explorer le catalogue",
+      "affiliateCta": "Devenir affilié"
+    },
+    "fresh": {
+      "eyebrow": "Encore plus",
+      "title": "Tout frais sur"
+    },
+    "empty": {
+      "title": "Pas encore de produits.",
+      "hint": "Connecte-toi à"
+    },
+    "proof": {
+      "delivered": "Abonnements livrés",
+      "refundWindow": "Fenêtre de remboursement",
+      "rating": "Note moyenne client",
+      "trusted": "Approuvé par des clients en Algérie, en Afrique et dans le monde. {brand} est conçue pour que tu reçoives exactement ce que tu commandes — vite, propre, et personnel."
+    },
+    "trustBadges": {
+      "instant": "Livraison instantanée",
+      "support": "Support humain 7j/7",
+      "secure": "Paiement sécurisé",
+      "warranty": "Garantie incluse"
+    }
+  },
+  "catalog": {
+    "eyebrow": "Catalogue",
+    "title": "Tout ce qu'on",
+    "italicTail": "propose",
+    "searchPlaceholder": "Rechercher…",
+    "searchButton": "Rechercher",
+    "all": "Tout",
+    "emptyTitle": "Rien ici pour l'instant.",
+    "emptyHint": "Essaie une autre recherche ou parcours une catégorie."
+  },
+  "product": {
+    "buyNow": "Acheter maintenant",
+    "addToCart": "Ajouter au panier",
+    "added": "Ajouté !",
+    "outOfStock": "Rupture de stock",
+    "from": "À partir de",
+    "save": "Économisez",
+    "savePercent": "{percent}%",
+    "selectVariant": "Choisis une option",
+    "choosePlan": "Choisis ton offre",
+    "quantity": "Quantité",
+    "decreaseQty": "Diminuer la quantité",
+    "increaseQty": "Augmenter la quantité",
+    "description": "Description",
+    "details": "Détails",
+    "delivery": "Livraison",
+    "warranty": "Garantie",
+    "makeOffer": "Proposer un prix",
+    "yourOffer": "Ton offre",
+    "submitOffer": "Envoyer l'offre",
+    "scarcity": "Stock limité",
+    "endsIn": "Se termine dans {time}",
+    "bundleWith": "Souvent acheté avec",
+    "oftenBoughtWith": "Souvent acheté avec",
+    "trustLine": "Achat 100% sécurisé",
+    "trustInstant": "Livraison instantanée",
+    "trustSecure": "Paiement sécurisé",
+    "trustMoneyBack": "Remboursement",
+    "related": "Tu pourrais aussi aimer",
+    "total": "Total",
+    "liveViewers": "<b>{count}</b> personnes le regardent maintenant",
+    "youSave": "Tu économises {amount}"
+  },
+  "cart": {
+    "title": "Ton panier",
+    "empty": "Ton panier est vide.",
+    "continueShopping": "Continuer mes achats",
+    "checkout": "Passer commande",
+    "subtotal": "Sous-total",
+    "discount": "Remise",
+    "total": "Total",
+    "remove": "Retirer",
+    "promoCode": "Code promo",
+    "applyPromo": "Appliquer",
+    "removePromo": "Retirer",
+    "promoApplied": "Code promo appliqué",
+    "promoInvalid": "Code invalide",
+    "items": "{count, plural, =1 {1 article} other {# articles}}"
+  },
+  "checkout": {
+    "title": "Dernière étape",
+    "subtitle": "Juste ton e-mail et on s'occupe du reste.",
+    "yourDetails": "Tes coordonnées",
+    "email": "E-mail",
+    "name": "Nom complet",
+    "whatsapp": "WhatsApp (optionnel)",
+    "notes": "Notes (optionnel)",
+    "review": "Récapitulatif",
+    "place": "Confirmer et payer",
+    "processing": "Traitement…",
+    "viaWhatsApp": "Continuer sur WhatsApp",
+    "viaCard": "Payer en sécurité",
+    "errorGeneric": "Une erreur est survenue. Réessaie.",
+    "success": {
+      "title": "Merci",
+      "body": "Ta commande {order} a été confirmée. On te livre rapidement et on te ping par e-mail si on a besoin de quoi que ce soit.",
+      "whatsapp": "Continuer sur WhatsApp",
+      "back": "Retour au catalogue"
+    }
+  },
+  "warranty": {
+    "eyebrow": "Garantie & réclamations",
+    "title": "Quelque chose ne va pas ?",
+    "subtitle": "Un problème avec ta commande ? On le règle.",
+    "intro": "On garantit chaque commande avec une fenêtre de {days} jours. Dis-nous ce qui s'est passé — un message court, quelques photos si besoin, on revient vite vers toi.",
+    "orderNumber": "Numéro de commande",
+    "email": "E-mail utilisé",
+    "lookup": "Trouver ma commande",
+    "reason": "Raison",
+    "reasons": {
+      "notWorking": "Ne fonctionne pas",
+      "wrongItem": "Mauvais produit",
+      "notReceived": "Pas reçu",
+      "other": "Autre"
+    },
+    "message": "Message (optionnel)",
+    "photos": "Photos",
+    "photosHint": "Jusqu'à {max} photos",
+    "submit": "Envoyer la réclamation",
+    "noOrderNumber": "Pas de numéro de commande ? <link>Écris-nous</link> et on t'aide.",
+    "success": {
+      "eyebrow": "Réclamation reçue",
+      "title": "Bien reçu — on s'en occupe",
+      "reference": "Référence",
+      "body": "On revient vers toi à l'e-mail fourni. La plupart des réclamations reçoivent une première réponse en quelques heures.",
+      "home": "Retour à l'accueil"
+    },
+    "wizard": {
+      "findOrder": "Trouve ta commande",
+      "findOrderHelp": "On a besoin de confirmer l'achat avant d'ouvrir une réclamation.",
+      "orderNumber": "Numéro de commande",
+      "emailLabel": "E-mail utilisé au paiement",
+      "continue": "Continuer",
+      "window": "Sous {days} jours après ton achat par défaut — les admins peuvent étendre par produit.",
+      "submitting": "Envoi de ta réclamation…",
+      "order": "Commande {number}",
+      "placed": "Passée le",
+      "noEmail": "pas d'e-mail",
+      "whichItem": "Quel article ?",
+      "reason": "Raison",
+      "reasonChoose": "Choisis une raison…",
+      "reasons": {
+        "notDelivered": "Pas livré",
+        "wrongItem": "Mauvais article reçu",
+        "notWorking": "Ne fonctionne pas",
+        "quality": "Problème de qualité",
+        "other": "Autre"
+      },
+      "tellMore": "Dis-nous-en plus",
+      "optional": "(optionnel)",
+      "required": "obligatoire",
+      "messagePlaceholder": "Ce qui s'est passé, quand, ce que tu as essayé…",
+      "photos": "Photos",
+      "photosHint": "Jusqu'à {count} images. On les utilise pour enquêter plus vite.",
+      "removePhoto": "Retirer la photo",
+      "addPhoto": "Ajouter",
+      "name": "Ton nom (optionnel)",
+      "phone": "Téléphone / WhatsApp (optionnel)",
+      "submitClaim": "Envoyer la réclamation",
+      "differentOrder": "Autre commande",
+      "errors": {
+        "missing": "Renseigne le numéro de commande et l'e-mail.",
+        "notFound": "Commande introuvable.",
+        "fileRead": "Un ou plusieurs fichiers n'ont pas pu être lus.",
+        "reason": "Choisis une raison.",
+        "photo": "Au moins une photo est requise.",
+        "submit": "Impossible d'envoyer ta réclamation."
+      }
+    }
+  },
+  "footer": {
+    "shop": "Boutique",
+    "support": "Support",
+    "company": "Entreprise",
+    "allProducts": "Tous les produits",
+    "warrantyClaims": "Garantie & réclamations",
+    "instantDelivery": "Livraison instantanée ou rapide",
+    "humanSupport": "Vrai support humain",
+    "affiliate": "Devenir affilié",
+    "rights": "Tous droits réservés.",
+    "language": "Langue"
+  },
+  "auth": {
+    "signIn": "Se connecter",
+    "signUp": "Créer un compte",
+    "signOut": "Se déconnecter",
+    "withGoogle": "Continuer avec Google",
+    "withEmail": "Continuer par e-mail",
+    "emailPlaceholder": "ton@email.com",
+    "sendMagicLink": "Envoyer le lien magique",
+    "magicLinkSent": "Vérifie ta boîte mail.",
+    "or": "ou"
+  },
+  "account": {
+    "title": "Mon compte",
+    "orders": "Mes commandes",
+    "profile": "Profil",
+    "affiliate": "Affiliation",
+    "noOrders": "Aucune commande pour l'instant."
+  },
+  "affiliate": {
+    "hero": {
+      "kicker": "Programme d'affiliation",
+      "title": "Gagne jusqu'à {percent}% sur chaque vente que tu apportes",
+      "subtitle": "Pensé pour les créateurs de 1 000 à 50 000 abonnés. Gratuit, transparent, sans minimum.",
+      "cta": "Devenir affilié",
+      "trust": "Déjà {count} créateurs avec nous"
+    },
+    "how": {
+      "title": "Comment ça marche",
+      "step1Title": "Crée ton compte",
+      "step1Body": "30 secondes. E-mail ou Google.",
+      "step2Title": "Reçois ton lien",
+      "step2Body": "Un lien unique + un QR code prêt pour tes stories.",
+      "step3Title": "Encaisse",
+      "step3Body": "Suivi en temps réel. Paiement à la demande dès $20."
+    },
+    "tiers": {
+      "title": "Plus tu vends, plus tu gagnes",
+      "subtitle": "Tiers à vie — une fois atteints, ils ne redescendent pas.",
+      "bronze": "Bronze",
+      "silver": "Argent",
+      "gold": "Or",
+      "platinum": "Platine",
+      "salesLabel": "ventes confirmées"
+    },
+    "calculator": {
+      "title": "Calcule ton potentiel",
+      "followers": "Abonnés",
+      "convertRate": "% qui achète",
+      "monthlyEarnings": "Revenu mensuel estimé"
+    },
+    "faq": {
+      "title": "Questions fréquentes"
+    },
+    "dashboard": {
+      "title": "Tableau de bord affilié",
+      "yourLink": "Ton lien d'affiliation",
+      "copy": "Copier",
+      "copied": "Copié !",
+      "stats": {
+        "clicks": "Clics (30j)",
+        "conversions": "Ventes (30j)",
+        "rate": "Taux de conversion",
+        "pending": "En attente",
+        "paid": "Versé"
+      },
+      "nextTier": "Encore {count} ventes pour passer {tier}",
+      "streak": "Série de {weeks, plural, =1 {1 semaine} other {# semaines}}",
+      "requestPayout": "Demander un paiement"
+    }
+  },
+  "common": {
+    "loading": "Chargement…",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "next": "Suivant",
+    "yes": "Oui",
+    "no": "Non",
+    "close": "Fermer"
+  }
+}

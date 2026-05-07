@@ -2,20 +2,26 @@ import { getCart } from "@/lib/cart";
 import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { CheckoutForm } from "@/components/site/CheckoutForm";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function CheckoutPage() {
-  const [cart, settings] = await Promise.all([getCart(), getSettings()]);
+  const [cart, settings, t, tCart] = await Promise.all([
+    getCart(),
+    getSettings(),
+    getTranslations("checkout"),
+    getTranslations("cart"),
+  ]);
 
   if (cart.length === 0) {
     return (
       <div className="max-w-3xl mx-auto px-5 pt-16 pb-20 text-center">
-        <h1 className="text-4xl tracking-tight">
-          Your cart is <span className="serif-italic text-primary">empty</span>.
-        </h1>
-        <Link href="/catalog" className="btn btn-primary mt-6">Browse the catalog →</Link>
+        <h1 className="text-4xl tracking-tight">{tCart("empty")}</h1>
+        <Link href="/catalog" className="btn btn-primary mt-6">
+          {tCart("continueShopping")} →
+        </Link>
       </div>
     );
   }
@@ -49,10 +55,8 @@ export default async function CheckoutPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-5 pt-12 pb-20">
-      <h1 className="text-4xl md:text-5xl tracking-tight">
-        Final <span className="serif-italic text-primary">step</span>
-      </h1>
-      <p className="mt-2 text-muted">Just your email and we&apos;ll handle the rest.</p>
+      <h1 className="text-4xl md:text-5xl tracking-tight">{t("title")}</h1>
+      <p className="mt-2 text-muted">{t("subtitle")}</p>
       <div className="mt-8">
         <CheckoutForm
           lines={lines}

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { formatPrice } from "@/lib/utils";
 
 type Line = {
@@ -29,6 +30,8 @@ export function CheckoutForm({
   whatsappBeforePayment: boolean;
 }) {
   const router = useRouter();
+  const t = useTranslations("checkout");
+  const tCart = useTranslations("cart");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
@@ -81,7 +84,7 @@ export function CheckoutForm({
       if (data.redirectUrl) {
         window.location.href = data.redirectUrl;
       } else if (data.orderNumber) {
-        router.push(`/checkout/success?order=${data.orderNumber}`);
+        router.push({ pathname: "/checkout/success", query: { order: data.orderNumber } });
       }
     });
   }
@@ -92,19 +95,19 @@ export function CheckoutForm({
     <div className="grid md:grid-cols-3 gap-8">
       <div className="md:col-span-2 space-y-5">
         <div className="card p-6">
-          <p className="text-[12px] uppercase tracking-[0.18em] text-muted">Contact</p>
+          <p className="text-[12px] uppercase tracking-[0.18em] text-muted">{t("yourDetails")}</p>
           <div className="mt-3 grid sm:grid-cols-2 gap-3">
             <input
               required
               type="email"
-              placeholder="Email *"
+              placeholder={`${t("email")} *`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="h-11 rounded-xl border border-border px-4 text-sm focus:outline-none focus:border-foreground"
             />
             <input
               type="text"
-              placeholder="Full name (optional)"
+              placeholder={t("name")}
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="h-11 rounded-xl border border-border px-4 text-sm focus:outline-none focus:border-foreground"
@@ -113,14 +116,14 @@ export function CheckoutForm({
           {whatsappEnabled ? (
             <input
               type="tel"
-              placeholder="WhatsApp number (optional)"
+              placeholder={t("whatsapp")}
               value={whatsapp}
               onChange={(e) => setWhatsapp(e.target.value)}
               className="mt-3 w-full h-11 rounded-xl border border-border px-4 text-sm focus:outline-none focus:border-foreground"
             />
           ) : null}
           <textarea
-            placeholder="Notes / special requests (optional)"
+            placeholder={t("notes")}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
@@ -131,12 +134,12 @@ export function CheckoutForm({
         <form onSubmit={applyCode} className="card p-6 flex gap-2">
           <input
             type="text"
-            placeholder="Have a code?"
+            placeholder={tCart("promoCode")}
             value={code}
             onChange={(e) => setCode(e.target.value.toUpperCase())}
             className="flex-1 h-11 rounded-xl border border-border px-4 text-sm uppercase focus:outline-none focus:border-foreground"
           />
-          <button type="submit" className="btn btn-outline">Apply</button>
+          <button type="submit" className="btn btn-outline">{tCart("applyPromo")}</button>
         </form>
 
         {error ? (
@@ -145,11 +148,11 @@ export function CheckoutForm({
       </div>
 
       <aside className="card p-6 h-fit md:sticky md:top-24">
-        <p className="text-[12px] uppercase tracking-[0.18em] text-muted">Order</p>
+        <p className="text-[12px] uppercase tracking-[0.18em] text-muted">{t("review")}</p>
         <div className="mt-3 space-y-2">
           {lines.map((l) => (
             <div key={`${l.productId}-${l.variantId ?? ""}`} className="flex justify-between text-sm">
-              <span className="truncate pr-2">
+              <span className="truncate pe-2">
                 {l.productName}
                 {l.variantName ? ` — ${l.variantName}` : ""} × {l.quantity}
               </span>
@@ -158,15 +161,15 @@ export function CheckoutForm({
           ))}
         </div>
         <div className="my-4 border-t border-border" />
-        <div className="text-sm flex justify-between"><span>Subtotal</span><span>{formatPrice(subtotal, currency)}</span></div>
+        <div className="text-sm flex justify-between"><span>{tCart("subtotal")}</span><span>{formatPrice(subtotal, currency)}</span></div>
         {discount > 0 ? (
           <div className="text-sm flex justify-between text-primary mt-1">
-            <span>Discount</span>
+            <span>{tCart("discount")}</span>
             <span>−{formatPrice(discount, currency)}</span>
           </div>
         ) : null}
         <div className="mt-3 flex items-baseline justify-between">
-          <span className="font-medium">Total</span>
+          <span className="font-medium">{tCart("total")}</span>
           <span className="text-xl font-semibold">{formatPrice(total, currency)}</span>
         </div>
         <button
@@ -176,16 +179,13 @@ export function CheckoutForm({
           className="btn btn-primary w-full mt-6"
         >
           {pending
-            ? "Processing…"
+            ? t("processing")
             : paymentsEnabled
-              ? "Pay securely →"
+              ? `${t("viaCard")} →`
               : whatsappBeforePayment
-                ? "Continue on WhatsApp →"
-                : "Place order →"}
+                ? `${t("viaWhatsApp")} →`
+                : `${t("place")} →`}
         </button>
-        <p className="mt-3 text-[11px] text-muted text-center">
-          By placing this order, you agree that your contact info will be used to deliver your products.
-        </p>
       </aside>
     </div>
   );

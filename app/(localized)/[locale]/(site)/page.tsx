@@ -4,7 +4,8 @@ import { ProductCard } from "@/components/site/ProductCard";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { Reveal } from "@/components/site/Reveal";
 import { Marquee } from "@/components/site/Marquee";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { ensureBootstrapAdmin } from "@/lib/auth";
@@ -15,7 +16,7 @@ export default async function HomePage() {
   // First-run convenience: bootstrap admin so the operator can log in immediately.
   await ensureBootstrapAdmin().catch(() => null);
 
-  const [s, featured, recent] = await Promise.all([
+  const [s, featured, recent, t] = await Promise.all([
     getSettings(),
     prisma.product.findMany({
       where: { visible: true, featured: true },
@@ -27,6 +28,7 @@ export default async function HomePage() {
       orderBy: { createdAt: "desc" },
       take: 8,
     }),
+    getTranslations("home"),
   ]);
 
   return (
@@ -40,12 +42,12 @@ export default async function HomePage() {
 
       <Marquee
         items={[
-          "Instant delivery",
-          "Refund within 24h",
-          "Real human support",
-          "Powered by LemonSqueezy",
-          "Built for Algeria & Africa",
-          "Premium quality, every order",
+          t("marquee.instantDelivery"),
+          t("marquee.refund24"),
+          t("marquee.humanSupport"),
+          t("marquee.poweredByLS"),
+          t("marquee.builtForMENA"),
+          t("marquee.premiumQuality"),
         ]}
       />
 
@@ -54,9 +56,9 @@ export default async function HomePage() {
       <section id="featured" className="max-w-6xl mx-auto px-5 py-12">
         <Reveal>
           <SectionTitle
-            eyebrow="Now live"
-            title="Hand-picked"
-            italicTail="this week"
+            eyebrow={t("featured.eyebrow")}
+            title={t("featured.title")}
+            italicTail={t("featured.italicTail")}
           />
         </Reveal>
         <div className="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
@@ -75,20 +77,14 @@ export default async function HomePage() {
       <section className="max-w-6xl mx-auto px-5 py-16 grid md:grid-cols-2 gap-10 items-end">
         <Reveal>
           <h3 className="text-4xl md:text-6xl leading-[1.05] tracking-tight">
-            Everything <span className="serif-italic text-primary">digital</span>.
-            <br />
-            One simple checkout.
+            {t("editorial.title")}
           </h3>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="text-lg text-muted max-w-md">
-            Streaming, AI tools, gaming top-ups, social growth packs, and bespoke
-            services. Pay once with card or wallet — we deliver, track and follow up
-            personally on WhatsApp.
-          </p>
+          <p className="text-lg text-muted max-w-md">{t("editorial.body")}</p>
           <div className="mt-6 flex gap-3">
-            <Link href="/catalog" className="btn btn-blue">Browse the catalog</Link>
-            <Link href="/p/about" className="btn btn-outline">How it works</Link>
+            <Link href="/catalog" className="btn btn-blue">{t("editorial.browseCta")}</Link>
+            <Link href="/affiliate" className="btn btn-outline">{t("editorial.affiliateCta")}</Link>
           </div>
         </Reveal>
       </section>
@@ -97,9 +93,9 @@ export default async function HomePage() {
         <section className="max-w-6xl mx-auto px-5 py-12">
           <Reveal>
             <SectionTitle
-              eyebrow="More"
-              title="Fresh on"
-              italicTail="Salma"
+              eyebrow={t("fresh.eyebrow")}
+              title={t("fresh.title")}
+              italicTail={s.brandName}
             />
           </Reveal>
           <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -117,41 +113,41 @@ export default async function HomePage() {
   );
 }
 
-function EmptyState() {
+async function EmptyState() {
+  const t = await getTranslations("home.empty");
   return (
     <div className="col-span-full card p-10 text-center">
-      <p className="text-2xl tracking-tight">
-        No products yet — <span className="serif-italic text-primary">add your first one</span>.
-      </p>
+      <p className="text-2xl tracking-tight">{t("title")}</p>
       <p className="mt-2 text-sm text-muted">
-        Sign in to <Link href="/admin" className="underline">/admin</Link> and create your first product.
+        {t("hint")}{" "}
+        {/* /admin lives outside the localized route group; full reload is intentional. */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+        <a href="/admin" className="underline">/admin</a>.
       </p>
     </div>
   );
 }
 
-function SocialProof({ brand }: { brand: string }) {
+async function SocialProof({ brand }: { brand: string }) {
+  const t = await getTranslations("home.proof");
   return (
     <section className="max-w-6xl mx-auto px-5 pt-8 pb-20">
       <div className="card p-8 md:p-12 bg-blue-glow">
         <div className="grid md:grid-cols-3 gap-8 text-center">
           <div>
             <p className="text-5xl tracking-tight">10k+</p>
-            <p className="text-sm text-muted mt-1">Subscriptions delivered</p>
+            <p className="text-sm text-muted mt-1">{t("delivered")}</p>
           </div>
           <div>
             <p className="text-5xl tracking-tight">24h</p>
-            <p className="text-sm text-muted mt-1">Refund window if undelivered</p>
+            <p className="text-sm text-muted mt-1">{t("refundWindow")}</p>
           </div>
           <div>
             <p className="text-5xl tracking-tight">4.9★</p>
-            <p className="text-sm text-muted mt-1">Average customer rating</p>
+            <p className="text-sm text-muted mt-1">{t("rating")}</p>
           </div>
         </div>
-        <p className="text-center mt-8 text-muted text-sm">
-          Trusted by clients across Algeria, Africa &amp; worldwide. {brand} is built so
-          you get exactly what you ordered — fast, clean, and personal.
-        </p>
+        <p className="text-center mt-8 text-muted text-sm">{t("trusted", { brand })}</p>
       </div>
     </section>
   );

@@ -1,19 +1,22 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import { Logo } from "./Logo";
 import { getSettings } from "@/lib/settings";
 import { prisma } from "@/lib/db";
 import { ShoppingBag, Search } from "lucide-react";
 import { CartIndicator } from "./CartIndicator";
 import { MobileMenu } from "./MobileMenu";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export async function Header() {
-  const [s, categories] = await Promise.all([
+  const [s, categories, t] = await Promise.all([
     getSettings(),
     prisma.category.findMany({
       where: { visible: true, parentId: null },
       orderBy: { order: "asc" },
       take: 6,
     }),
+    getTranslations("nav"),
   ]);
 
   return (
@@ -26,7 +29,7 @@ export async function Header() {
       <div className="max-w-6xl mx-auto px-4 md:px-5 h-14 flex items-center gap-3 md:gap-6">
         <Logo />
         <nav className="hidden md:flex items-center gap-6 text-[14px] text-muted">
-          <Link href="/catalog" className="hover:text-foreground">Catalog</Link>
+          <Link href="/catalog" className="hover:text-foreground">{t("catalog")}</Link>
           {categories.map((c) => (
             <Link
               key={c.id}
@@ -37,17 +40,18 @@ export async function Header() {
             </Link>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-1">
+        <div className="ms-auto flex items-center gap-1">
+          <LanguageSwitcher variant="header" />
           <Link
             href="/catalog"
-            aria-label="Search"
+            aria-label={t("search")}
             className="h-9 w-9 inline-flex items-center justify-center rounded-full hover:bg-muted-2"
           >
             <Search size={16} />
           </Link>
           <Link
             href="/cart"
-            aria-label="Cart"
+            aria-label={t("cart")}
             className="h-9 w-9 inline-flex items-center justify-center rounded-full hover:bg-muted-2 relative"
           >
             <ShoppingBag size={16} />

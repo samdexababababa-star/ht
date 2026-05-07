@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { LogoMark } from "./LogoMark";
 
@@ -45,9 +45,9 @@ export function Hero({
             <Link href={ctaHref} className="btn btn-primary">
               {ctaLabel} →
             </Link>
-            <Link href="#featured" className="btn btn-outline">
-              See what&apos;s new
-            </Link>
+            <a href="#featured" className="btn btn-outline">
+              ↓
+            </a>
           </div>
         </motion.div>
 
@@ -58,7 +58,7 @@ export function Hero({
           initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="md:hidden absolute right-4 top-4 text-primary"
+          className="md:hidden absolute end-4 top-4 text-primary"
           aria-hidden
         >
           <span className="relative inline-flex items-center justify-center">
@@ -71,7 +71,7 @@ export function Hero({
           initial={{ opacity: 0, scale: 0.6, rotate: -10 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className="hidden md:block absolute right-10 top-24 text-primary parallax-soft"
+          className="hidden md:block absolute end-10 top-24 text-primary parallax-soft"
           data-parallax-speed="0.18"
         >
           <LogoMark className="salma-loop h-28 w-28 opacity-80" />
@@ -80,7 +80,7 @@ export function Hero({
           initial={{ opacity: 0, scale: 0.6, rotate: 20 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className="hidden md:block absolute right-44 top-72 text-primary parallax-soft"
+          className="hidden md:block absolute end-44 top-72 text-primary parallax-soft"
           data-parallax-speed="0.32"
         >
           <LogoMark className="salma-loop h-12 w-12 opacity-60" />

@@ -1,7 +1,7 @@
 "use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { formatPrice } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
 
@@ -31,6 +31,7 @@ export function CartView({
 }) {
   const router = useRouter();
   const [pending, start] = useTransition();
+  const t = useTranslations("cart");
 
   function update(productId: string, variantId: string | undefined, quantity: number) {
     start(async () => {
@@ -57,11 +58,9 @@ export function CartView({
   if (lines.length === 0) {
     return (
       <div className="card p-8 md:p-12 text-center">
-        <p className="text-2xl tracking-tight">
-          Your cart is <span className="serif-italic text-primary">empty</span>.
-        </p>
+        <p className="text-2xl tracking-tight">{t("empty")}</p>
         <Link href="/catalog" className="btn btn-primary mt-6">
-          Browse the catalog →
+          {t("continueShopping")} →
         </Link>
       </div>
     );
@@ -100,7 +99,7 @@ export function CartView({
                     {formatPrice(l.unitPrice, currency)} each
                   </p>
                 </div>
-                <p className="text-right font-semibold text-[15px] shrink-0">
+                <p className="text-end font-semibold text-[15px] shrink-0">
                   {formatPrice(l.lineTotal, currency)}
                 </p>
               </div>
@@ -132,7 +131,7 @@ export function CartView({
                   onClick={() => remove(l.productId, l.variantId)}
                   className="inline-flex items-center gap-1 text-xs text-muted hover:text-foreground px-2 py-2"
                 >
-                  <Trash2 size={14} /> Remove
+                  <Trash2 size={14} /> {t("remove")}
                 </button>
               </div>
             </div>
@@ -141,19 +140,19 @@ export function CartView({
 
         {/* Desktop summary card */}
         <aside className="hidden md:block card p-6 h-fit md:sticky md:top-24">
-          <p className="text-[12px] uppercase tracking-[0.18em] text-muted">Summary</p>
+          <p className="text-[12px] uppercase tracking-[0.18em] text-muted">{t("title")}</p>
           <div className="mt-3 flex items-baseline justify-between">
-            <span className="text-sm text-muted">Subtotal</span>
+            <span className="text-sm text-muted">{t("subtotal")}</span>
             <span className="text-lg font-semibold">{formatPrice(subtotal, currency)}</span>
           </div>
           <Link href="/checkout" className="btn btn-primary w-full mt-6">
-            Checkout →
+            {t("checkout")} →
           </Link>
           <Link
             href="/catalog"
             className="block text-center text-sm text-muted hover:text-foreground mt-4"
           >
-            Continue shopping
+            {t("continueShopping")}
           </Link>
         </aside>
       </div>
@@ -161,11 +160,11 @@ export function CartView({
       {/* Mobile-only sticky checkout bar */}
       <div className="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-border px-4 py-3 flex items-center gap-3 [padding-bottom:calc(env(safe-area-inset-bottom)+12px)]">
         <div className="flex-1 min-w-0">
-          <p className="text-[11px] uppercase tracking-wider text-muted">Subtotal</p>
+          <p className="text-[11px] uppercase tracking-wider text-muted">{t("subtotal")}</p>
           <p className="text-lg font-semibold leading-tight">{formatPrice(subtotal, currency)}</p>
         </div>
         <Link href="/checkout" className="btn btn-primary shrink-0">
-          Checkout →
+          {t("checkout")} →
         </Link>
       </div>
     </>
