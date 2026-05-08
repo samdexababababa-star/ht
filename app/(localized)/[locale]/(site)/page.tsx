@@ -50,6 +50,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero
+        eyebrow={t("heroEyebrow")}
         title={heroTitle}
         subtitle={heroSubtitle}
         ctaLabel={heroCtaLabel}

@@ -4,11 +4,13 @@ import { motion } from "framer-motion";
 import { LogoMark } from "./LogoMark";
 
 export function Hero({
+  eyebrow,
   title,
   subtitle,
   ctaLabel,
   ctaHref,
 }: {
+  eyebrow: string;
   title: string;
   subtitle: string;
   ctaLabel: string;
@@ -32,7 +34,7 @@ export function Hero({
         >
           <div className="chip chip-blue mb-5 md:mb-6">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            New • Built for Africa, ready worldwide
+            {eyebrow}
           </div>
           <h1 className="text-[40px] md:text-7xl leading-[1.05] md:leading-[1.02] tracking-[-0.02em] font-semibold">
             {head ? <span>{head} </span> : null}
