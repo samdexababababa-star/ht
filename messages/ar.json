@@ -103,6 +103,12 @@
     "trustSecure": "دفع آمن",
     "trustMoneyBack": "ضمان استرداد",
     "related": "قد يعجبك أيضاً",
+    "relatedTitle": "قد يعجبك",
+    "relatedItalicTail": "أيضاً",
+    "badgeNew": "جديد",
+    "badgeBestSeller": "الأكثر مبيعاً",
+    "savePrefix": "وفّر {amount}",
+    "scarcityDefault": "كمية محدودة — آخر القطع المتاحة",
     "total": "الإجمالي",
     "liveViewers": "<b>{count}</b> أشخاص يشاهدون الآن",
     "youSave": "توفّر {amount}"

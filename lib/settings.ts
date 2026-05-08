@@ -1,25 +1,10 @@
 import { prisma } from "./db";
 import type { Setting } from "@/app/generated/prisma/client";
 
-/**
- * Schema defaults for admin-controlled strings rendered on the public site.
- * When the stored value still equals the default, public components fall back
- * to next-intl translations so the visible copy follows the user's locale
- * instead of being stuck in English. Once an admin overrides the field, that
- * single string wins across every locale (one global override).
- *
- * Keep these in sync with prisma/schema.prisma defaults.
- */
-export const SETTING_DEFAULTS = {
-  tagline: "Premium digital subscriptions, services & boosts.",
-  heroTitle: "One platform.\nEvery digital subscription.",
-  heroSubtitle:
-    "Streaming, AI, gaming, social — premium quality, instant delivery.",
-  heroCtaLabel: "Browse the catalog",
-  heroCtaHref: "/catalog",
-  stickyPromoText: "Free instant delivery on every order",
-  exitIntentText: "Wait — get 10% off your first order",
-} as const;
+// Re-export the content defaults from a Prisma-free module so client
+// components can import them without dragging the SQLite adapter into
+// the browser bundle (better-sqlite3 has a Node-only runtime).
+export { SETTING_DEFAULTS, PRODUCT_DEFAULTS } from "./content-defaults";
 
 /**
  * Single-row settings model. We use an upsert so concurrent renders during

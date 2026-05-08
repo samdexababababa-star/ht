@@ -103,6 +103,12 @@
     "trustSecure": "Paiement sécurisé",
     "trustMoneyBack": "Remboursement",
     "related": "Tu pourrais aussi aimer",
+    "relatedTitle": "Tu pourrais aussi",
+    "relatedItalicTail": "aimer",
+    "badgeNew": "NOUVEAU",
+    "badgeBestSeller": "BEST SELLER",
+    "savePrefix": "Économise {amount}",
+    "scarcityDefault": "Stock limité — derniers exemplaires",
     "total": "Total",
     "liveViewers": "<b>{count}</b> personnes le regardent maintenant",
     "youSave": "Tu économises {amount}"

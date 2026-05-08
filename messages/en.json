@@ -103,6 +103,12 @@
     "trustSecure": "Secure payment",
     "trustMoneyBack": "Money-back",
     "related": "You may also like",
+    "relatedTitle": "You might also",
+    "relatedItalicTail": "like",
+    "badgeNew": "NEW",
+    "badgeBestSeller": "BEST SELLER",
+    "savePrefix": "Save {amount}",
+    "scarcityDefault": "Limited stock — last few left",
     "total": "Total",
     "liveViewers": "<b>{count}</b> people viewing right now",
     "youSave": "You save {amount}"

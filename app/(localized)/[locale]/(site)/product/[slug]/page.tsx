@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { ProductDetail } from "@/components/site/ProductDetail";
@@ -43,15 +44,18 @@ export default async function ProductPage({
         })
       : null;
 
-  const related = await prisma.product.findMany({
-    where: {
-      visible: true,
-      id: { not: product.id },
-      ...(product.categoryId ? { categoryId: product.categoryId } : {}),
-    },
-    take: 4,
-    orderBy: { createdAt: "desc" },
-  });
+  const [related, t] = await Promise.all([
+    prisma.product.findMany({
+      where: {
+        visible: true,
+        id: { not: product.id },
+        ...(product.categoryId ? { categoryId: product.categoryId } : {}),
+      },
+      take: 4,
+      orderBy: { createdAt: "desc" },
+    }),
+    getTranslations("product"),
+  ]);
 
   return (
     <div className="max-w-6xl mx-auto px-5 pt-10 pb-20">
@@ -81,7 +85,10 @@ export default async function ProductPage({
       {related.length > 0 ? (
         <section className="mt-20">
           <h2 className="text-2xl tracking-tight mb-6">
-            You might also <span className="serif-italic text-primary">like</span>
+            {t("relatedTitle")}{" "}
+            <span className="serif-italic text-primary">
+              {t("relatedItalicTail")}
+            </span>
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {related.map((p) => (

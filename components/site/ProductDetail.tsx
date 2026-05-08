@@ -4,6 +4,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice, safeJson } from "@/lib/utils";
+import { PRODUCT_DEFAULTS } from "@/lib/content-defaults";
 import {
   ShoppingBag,
   Sparkles,
@@ -222,9 +223,9 @@ export function ProductDetail({
       <div>
         <div className="flex items-center gap-2 flex-wrap">
           {product.newBadge ? (
-            <span className="chip chip-blue">NEW</span>
+            <span className="chip chip-blue">{t("badgeNew")}</span>
           ) : product.bestSellerBadge ? (
-            <span className="chip chip-blue">BEST SELLER</span>
+            <span className="chip chip-blue">{t("badgeBestSeller")}</span>
           ) : product.badge ? (
             <span className="chip chip-blue">{product.badge}</span>
           ) : null}
@@ -363,7 +364,10 @@ export function ProductDetail({
           <div className="mt-6 flex flex-wrap gap-2">
             {product.scarcityEnabled && product.scarcityText ? (
               <span className="chip chip-blue">
-                <Sparkles size={12} /> {product.scarcityText}
+                <Sparkles size={12} />{" "}
+                {product.scarcityText === PRODUCT_DEFAULTS.scarcityText
+                  ? t("scarcityDefault")
+                  : product.scarcityText}
               </span>
             ) : null}
             {product.urgencyEndsAt ? (
