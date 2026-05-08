@@ -226,6 +226,10 @@ export function ProductDetail({
             <span className="chip chip-blue">{t("badgeNew")}</span>
           ) : product.bestSellerBadge ? (
             <span className="chip chip-blue">{t("badgeBestSeller")}</span>
+          ) : product.badge === PRODUCT_DEFAULTS.badgeBestSeller ? (
+            <span className="chip chip-blue">{t("badgeBestSeller")}</span>
+          ) : product.badge === PRODUCT_DEFAULTS.badgeNew ? (
+            <span className="chip chip-blue">{t("badgeNew")}</span>
           ) : product.badge ? (
             <span className="chip chip-blue">{product.badge}</span>
           ) : null}

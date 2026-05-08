@@ -32,14 +32,22 @@ export async function ProductCard({ p }: { p: ProductCardData }) {
   const savings = hasCompare ? p.compareAtPrice! - p.basePrice : null;
   // Auto-derived corner badge: NEW > BEST SELLER > custom badge string.
   // Order matters because "NEW" beats "BEST SELLER" when both are checked
-  // (newer products earn the spotlight). Built-in badges run through next-intl
-  // so /fr and /ar don't show English. Admin-supplied custom badge strings
-  // pass through unchanged (admin override wins).
-  const cornerBadge = p.newBadge
-    ? t("badgeNew")
-    : p.bestSellerBadge
-      ? t("badgeBestSeller")
-      : p.badge ?? null;
+  // (newer products earn the spotlight). Built-in badges (boolean toggles or
+  // the free-form seed defaults "BEST SELLER" / "NEW") run through next-intl
+  // so /fr and /ar don't show English. Any other admin-entered badge string
+  // passes through unchanged (admin override wins).
+  let cornerBadge: string | null = null;
+  if (p.newBadge) {
+    cornerBadge = t("badgeNew");
+  } else if (p.bestSellerBadge) {
+    cornerBadge = t("badgeBestSeller");
+  } else if (p.badge === PRODUCT_DEFAULTS.badgeBestSeller) {
+    cornerBadge = t("badgeBestSeller");
+  } else if (p.badge === PRODUCT_DEFAULTS.badgeNew) {
+    cornerBadge = t("badgeNew");
+  } else if (p.badge) {
+    cornerBadge = p.badge;
+  }
   // Same translate-by-default trick as Hero/tagline: when stored value still
   // matches the seed default, we render the translation; otherwise the
   // admin-customised string wins.

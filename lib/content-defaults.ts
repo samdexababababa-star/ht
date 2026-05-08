@@ -23,4 +23,6 @@ export const SETTING_DEFAULTS = {
 
 export const PRODUCT_DEFAULTS = {
   scarcityText: "Only 6 left at this price",
+  badgeBestSeller: "BEST SELLER",
+  badgeNew: "NEW",
 } as const;
