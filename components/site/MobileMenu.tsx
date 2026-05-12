@@ -8,10 +8,20 @@ import { LogoMark } from "./LogoMark";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
 type Cat = { id: string; slug: string; name: string };
+type DrawerUser = { name: string | null; email: string; image: string | null };
 
-export function MobileMenu({ brand, categories }: { brand: string; categories: Cat[] }) {
+export function MobileMenu({
+  brand,
+  categories,
+  user,
+}: {
+  brand: string;
+  categories: Cat[];
+  user: DrawerUser | null;
+}) {
   const [open, setOpen] = useState(false);
   const t = useTranslations("nav");
+  const tAuth = useTranslations("auth");
   // Track when we're mounted on the client so the portal target (document.body)
   // is available and we don't trip a hydration mismatch. The setState-in-effect
   // pattern is intentional here — it's the standard SSR-safe portal idiom.
@@ -57,6 +67,9 @@ export function MobileMenu({ brand, categories }: { brand: string; categories: C
         ] as Item[])
       : []),
     { kind: "section", label: t("account") },
+    user
+      ? { kind: "link", href: "/account", label: t("account") }
+      : { kind: "link", href: "/sign-in", label: tAuth("signIn") },
     { kind: "link", href: "/cart", label: t("cart") },
     { kind: "link", href: "/affiliate", label: t("affiliate") },
     { kind: "section", label: t("language") },

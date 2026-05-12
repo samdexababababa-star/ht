@@ -241,15 +241,74 @@
     "withEmail": "Continue with email",
     "emailPlaceholder": "you@email.com",
     "sendMagicLink": "Send magic link",
+    "sending": "Sending…",
     "magicLinkSent": "Check your inbox.",
-    "or": "or"
+    "or": "or",
+    "page": {
+      "title": "Welcome back",
+      "subtitle": "Sign in in one click. No password to remember.",
+      "emailLabel": "Email address",
+      "emailHint": "We'll send you a secure one-time link.",
+      "continueLabel": "Continue",
+      "backHome": "Back to home",
+      "legal": "By continuing you agree to our terms and privacy policy."
+    },
+    "verify": {
+      "title": "Check your inbox",
+      "body": "We just sent a link to <b>{email}</b>. Click it to sign in — the link is valid for 24 hours.",
+      "hint": "Don't forget to check your spam folder. You can safely close this page.",
+      "resend": "Resend link",
+      "different": "Use a different address"
+    },
+    "errors": {
+      "generic": "Couldn't sign you in right now. Try again in a moment.",
+      "emailRequired": "Please enter your email address.",
+      "emailInvalid": "That doesn't look like a valid email.",
+      "OAuthAccountNotLinked": "This email is already linked to another sign-in method. Use the same method you used the first time.",
+      "AccessDenied": "Access denied.",
+      "Verification": "This link has expired or has already been used. Request a new one.",
+      "Default": "Couldn't sign you in right now. Try again in a moment."
+    }
   },
   "account": {
     "title": "My account",
+    "welcome": "Hi {name}",
     "orders": "My orders",
     "profile": "Profile",
+    "security": "Security",
     "affiliate": "Affiliate",
-    "noOrders": "No orders yet."
+    "signOut": "Sign out",
+    "noOrders": "No orders yet.",
+    "noOrdersCta": "Browse the catalog",
+    "sections": {
+      "profileTitle": "Profile",
+      "profileSubtitle": "This info shows up on your orders.",
+      "securityTitle": "Security",
+      "securitySubtitle": "The sign-in method you used.",
+      "ordersTitle": "My orders",
+      "ordersSubtitle": "Full history, warranties and receipts.",
+      "affiliateTitle": "Affiliate program",
+      "affiliateSubtitle": "Recommend Salma and earn on every sale.",
+      "affiliateCta": "Learn more"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "locale": "Language",
+      "memberSince": "Member since",
+      "signInMethod": "Sign-in method"
+    },
+    "methods": {
+      "email": "Email magic link",
+      "google": "Google"
+    },
+    "order": {
+      "number": "Order {number}",
+      "placedOn": "Placed on",
+      "status": "Status",
+      "total": "Total",
+      "view": "Details"
+    }
   },
   "affiliate": {
     "hero": {

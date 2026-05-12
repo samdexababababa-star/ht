@@ -51,7 +51,8 @@
 
 ## Data flow — admin
 
-1. `/admin/login` → POST `/api/auth/login` → set JWT cookie.
+1. `/admin/login` → POST `/api/admin/auth/login` → set JWT cookie.
+2. Customer accounts use Auth.js v5 (magic link via Resend + Google OAuth) at `/api/auth/[...nextauth]`. See `auth.ts`.
 2. Every `/admin/*` server-rendered route calls `requireAdmin()` in its
    layout — unauthenticated visitors get redirected to `/admin/login`.
 3. Every mutation goes through `/api/admin/*` route handlers which also

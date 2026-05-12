@@ -241,15 +241,74 @@
     "withEmail": "Continuer par e-mail",
     "emailPlaceholder": "ton@email.com",
     "sendMagicLink": "Envoyer le lien magique",
+    "sending": "Envoi en cours…",
     "magicLinkSent": "Vérifie ta boîte mail.",
-    "or": "ou"
+    "or": "ou",
+    "page": {
+      "title": "Bon retour",
+      "subtitle": "Connecte-toi en un clic. Pas de mot de passe à retenir.",
+      "emailLabel": "Adresse e-mail",
+      "emailHint": "On t'envoie un lien sécurisé à usage unique.",
+      "continueLabel": "Continuer",
+      "backHome": "Retour à l'accueil",
+      "legal": "En continuant, tu acceptes nos conditions et notre politique de confidentialité."
+    },
+    "verify": {
+      "title": "Regarde ta boîte mail",
+      "body": "On vient d'envoyer un lien à <b>{email}</b>. Clique dessus pour te connecter — le lien est valide 24 heures.",
+      "hint": "Pense à vérifier les spams. Tu peux fermer cette page.",
+      "resend": "Renvoyer le lien",
+      "different": "Utiliser une autre adresse"
+    },
+    "errors": {
+      "generic": "Connexion impossible pour l'instant. Réessaie dans un instant.",
+      "emailRequired": "Renseigne ton adresse e-mail.",
+      "emailInvalid": "Cette adresse e-mail ne semble pas valide.",
+      "OAuthAccountNotLinked": "Cette adresse est déjà liée à un autre mode de connexion. Connecte-toi de la même façon que la première fois.",
+      "AccessDenied": "Accès refusé.",
+      "Verification": "Ce lien a expiré ou a déjà été utilisé. Demande un nouveau lien.",
+      "Default": "Connexion impossible pour l'instant. Réessaie dans un instant."
+    }
   },
   "account": {
     "title": "Mon compte",
+    "welcome": "Bonjour {name}",
     "orders": "Mes commandes",
     "profile": "Profil",
+    "security": "Sécurité",
     "affiliate": "Affiliation",
-    "noOrders": "Aucune commande pour l'instant."
+    "signOut": "Se déconnecter",
+    "noOrders": "Aucune commande pour l'instant.",
+    "noOrdersCta": "Voir le catalogue",
+    "sections": {
+      "profileTitle": "Profil",
+      "profileSubtitle": "Ces informations apparaissent sur tes commandes.",
+      "securityTitle": "Sécurité",
+      "securitySubtitle": "Méthode de connexion utilisée.",
+      "ordersTitle": "Mes commandes",
+      "ordersSubtitle": "Historique complet, garanties et reçus.",
+      "affiliateTitle": "Programme d'affiliation",
+      "affiliateSubtitle": "Recommande Salma et gagne sur chaque vente.",
+      "affiliateCta": "Découvrir"
+    },
+    "fields": {
+      "name": "Nom",
+      "email": "E-mail",
+      "locale": "Langue",
+      "memberSince": "Membre depuis",
+      "signInMethod": "Mode de connexion"
+    },
+    "methods": {
+      "email": "Lien magique par e-mail",
+      "google": "Google"
+    },
+    "order": {
+      "number": "Commande {number}",
+      "placedOn": "Passée le",
+      "status": "Statut",
+      "total": "Total",
+      "view": "Détails"
+    }
   },
   "affiliate": {
     "hero": {

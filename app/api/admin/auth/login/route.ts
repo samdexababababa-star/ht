@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   await ensureBootstrapAdmin().catch(() => null);
 
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) {
+  if (!user || !user.passwordHash) {
     return NextResponse.json({ ok: false, message: "Invalid credentials." }, { status: 401 });
   }
   const ok = await verifyPassword(password, user.passwordHash);

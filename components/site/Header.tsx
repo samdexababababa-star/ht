@@ -7,9 +7,16 @@ import { ShoppingBag, Search } from "lucide-react";
 import { CartIndicator } from "./CartIndicator";
 import { MobileMenu } from "./MobileMenu";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { UserMenu } from "./UserMenu";
+import { auth, signOut } from "@/auth";
+
+async function signOutFromHeader() {
+  "use server";
+  await signOut({ redirectTo: "/" });
+}
 
 export async function Header() {
-  const [s, categories, t] = await Promise.all([
+  const [s, categories, t, session] = await Promise.all([
     getSettings(),
     prisma.category.findMany({
       where: { visible: true, parentId: null },
@@ -17,7 +24,16 @@ export async function Header() {
       take: 6,
     }),
     getTranslations("nav"),
+    auth(),
   ]);
+
+  const u = session?.user
+    ? {
+        name: session.user.name ?? null,
+        email: session.user.email ?? "",
+        image: session.user.image ?? null,
+      }
+    : null;
 
   return (
     <header className="sticky top-0 z-40 backdrop-blur-md bg-white/85 border-b border-border">
@@ -57,9 +73,11 @@ export async function Header() {
             <ShoppingBag size={16} />
             <CartIndicator />
           </Link>
+          <UserMenu user={u} signOutAction={signOutFromHeader} />
           <MobileMenu
             brand={s.brandName}
             categories={categories.map((c) => ({ id: c.id, slug: c.slug, name: c.name }))}
+            user={u}
           />
         </div>
       </div>
