@@ -1,5 +1,7 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { formatPrice } from "@/lib/utils";
+import { PRODUCT_DEFAULTS } from "@/lib/content-defaults";
 import { LogoMark } from "./LogoMark";
 
 export type ProductCardData = {
@@ -20,7 +22,8 @@ export type ProductCardData = {
   highlightSavings?: boolean | null;
 };
 
-export function ProductCard({ p }: { p: ProductCardData }) {
+export async function ProductCard({ p }: { p: ProductCardData }) {
+  const t = await getTranslations("product");
   const hasCompare =
     !!p.compareAtPrice && p.compareAtPrice > p.basePrice;
   const discountPct = hasCompare
@@ -29,12 +32,31 @@ export function ProductCard({ p }: { p: ProductCardData }) {
   const savings = hasCompare ? p.compareAtPrice! - p.basePrice : null;
   // Auto-derived corner badge: NEW > BEST SELLER > custom badge string.
   // Order matters because "NEW" beats "BEST SELLER" when both are checked
-  // (newer products earn the spotlight).
-  const cornerBadge = p.newBadge
-    ? "NEW"
-    : p.bestSellerBadge
-      ? "BEST SELLER"
-      : p.badge ?? null;
+  // (newer products earn the spotlight). Built-in badges (boolean toggles or
+  // the free-form seed defaults "BEST SELLER" / "NEW") run through next-intl
+  // so /fr and /ar don't show English. Any other admin-entered badge string
+  // passes through unchanged (admin override wins).
+  let cornerBadge: string | null = null;
+  if (p.newBadge) {
+    cornerBadge = t("badgeNew");
+  } else if (p.bestSellerBadge) {
+    cornerBadge = t("badgeBestSeller");
+  } else if (p.badge === PRODUCT_DEFAULTS.badgeBestSeller) {
+    cornerBadge = t("badgeBestSeller");
+  } else if (p.badge === PRODUCT_DEFAULTS.badgeNew) {
+    cornerBadge = t("badgeNew");
+  } else if (p.badge) {
+    cornerBadge = p.badge;
+  }
+  // Same translate-by-default trick as Hero/tagline: when stored value still
+  // matches the seed default, we render the translation; otherwise the
+  // admin-customised string wins.
+  const scarcityLabel =
+    p.scarcityEnabled && p.scarcityText
+      ? p.scarcityText === PRODUCT_DEFAULTS.scarcityText
+        ? t("scarcityDefault")
+        : p.scarcityText
+      : null;
 
   return (
     <Link href={`/product/${p.slug}`} className="group">
@@ -54,12 +76,14 @@ export function ProductCard({ p }: { p: ProductCardData }) {
           )}
 
           {cornerBadge ? (
-            <span className="absolute top-3 left-3 chip chip-blue">{cornerBadge}</span>
+            <span className="absolute top-3 start-3 chip chip-blue">{cornerBadge}</span>
           ) : null}
           {hasCompare ? (
-            <span className="absolute top-3 right-3 chip">
+            <span className="absolute top-3 end-3 chip">
               {p.highlightSavings && savings != null
-                ? `Save ${formatPrice(savings, p.currency)}`
+                ? t("savePrefix", {
+                    amount: formatPrice(savings, p.currency),
+                  })
                 : `−${discountPct}%`}
             </span>
           ) : null}
@@ -79,9 +103,9 @@ export function ProductCard({ p }: { p: ProductCardData }) {
               </span>
             ) : null}
           </div>
-          {p.scarcityEnabled && p.scarcityText ? (
+          {scarcityLabel ? (
             <p className="mt-2 text-[11px] uppercase tracking-wide text-primary">
-              {p.scarcityText}
+              {scarcityLabel}
             </p>
           ) : null}
         </div>

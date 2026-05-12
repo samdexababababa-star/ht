@@ -11,19 +11,67 @@ datasource db {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Auth — minimal admin-only auth for now. Future: customer accounts.
+// Auth
+// - Admin auth (legacy): email + bcrypt passwordHash, single bootstrap admin.
+// - Customer auth (Phase B): Auth.js v5 with email magic link + Google OAuth.
+//   passwordHash is therefore optional (customers don't have one).
+// - The standard Auth.js tables (Account, Session, VerificationToken) below
+//   are required by @auth/prisma-adapter — schema must match exactly.
 // ─────────────────────────────────────────────────────────────────────────────
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  role         String   @default("admin") // "admin" | "vendor" (future) | "customer" (future)
-  name         String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
+  // Customer locale preference. Falls back to request locale if null.
+  locale        String?
+  // Legacy admin password (null for customers).
+  passwordHash  String?
+  role          String    @default("customer") // "admin" | "vendor" (future) | "customer"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   vendor   Vendor?
   orders   Order[]
+  accounts Account[]
+  sessions Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

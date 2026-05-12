@@ -11,7 +11,7 @@ export function LogoutButton() {
       disabled={pending}
       onClick={() =>
         start(async () => {
-          await fetch("/api/auth/logout", { method: "POST" });
+          await fetch("/api/admin/auth/logout", { method: "POST" });
           router.push("/admin/login");
           router.refresh();
         })

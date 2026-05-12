@@ -105,8 +105,10 @@ code change needed.
 
 ### API
 ```
-POST /api/auth/login           — admin login
-POST /api/auth/logout
+POST /api/admin/auth/login     — admin login (legacy JWT)
+POST /api/admin/auth/logout
+GET  /api/auth/[...nextauth]   — customer Auth.js v5 endpoints
+POST /api/auth/[...nextauth]
 GET/POST /api/admin/products
 PATCH/DELETE /api/admin/products/[id]
 …same for categories, orders, promotions, pages

@@ -1,14 +1,27 @@
 "use client";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X } from "lucide-react";
 import { LogoMark } from "./LogoMark";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 type Cat = { id: string; slug: string; name: string };
+type DrawerUser = { name: string | null; email: string; image: string | null };
 
-export function MobileMenu({ brand, categories }: { brand: string; categories: Cat[] }) {
+export function MobileMenu({
+  brand,
+  categories,
+  user,
+}: {
+  brand: string;
+  categories: Cat[];
+  user: DrawerUser | null;
+}) {
   const [open, setOpen] = useState(false);
+  const t = useTranslations("nav");
+  const tAuth = useTranslations("auth");
   // Track when we're mounted on the client so the portal target (document.body)
   // is available and we don't trip a hydration mismatch. The setState-in-effect
   // pattern is intentional here — it's the standard SSR-safe portal idiom.
@@ -34,16 +47,33 @@ export function MobileMenu({ brand, categories }: { brand: string; categories: C
   // with a uniform animation-delay step. Pairing nav links into one cascade
   // gives the drawer a deliberate, choreographed feel on mobile rather than
   // a single hard cut.
-  type Item = { kind: "header" } | { kind: "cta" } | { kind: "section"; label: string } | { kind: "link"; href: string; label: string };
+  type Item =
+    | { kind: "header" }
+    | { kind: "cta" }
+    | { kind: "section"; label: string }
+    | { kind: "link"; href: string; label: string }
+    | { kind: "language" };
   const items: Item[] = [
     { kind: "header" },
     { kind: "cta" },
     ...(categories.length
-      ? ([{ kind: "section", label: "Categories" }, ...categories.map<Item>((c) => ({ kind: "link", href: `/category/${c.slug}`, label: c.name }))] as Item[])
+      ? ([
+          { kind: "section", label: t("categories") },
+          ...categories.map<Item>((c) => ({
+            kind: "link",
+            href: `/category/${c.slug}`,
+            label: c.name,
+          })),
+        ] as Item[])
       : []),
-    { kind: "section", label: "Account" },
-    { kind: "link", href: "/cart", label: "Cart" },
-    { kind: "link", href: "/p/about", label: "How it works" },
+    { kind: "section", label: t("account") },
+    user
+      ? { kind: "link", href: "/account", label: t("account") }
+      : { kind: "link", href: "/sign-in", label: tAuth("signIn") },
+    { kind: "link", href: "/cart", label: t("cart") },
+    { kind: "link", href: "/affiliate", label: t("affiliate") },
+    { kind: "section", label: t("language") },
+    { kind: "language" },
   ];
 
   // The drawer is rendered through a portal directly under <body> so it
@@ -56,7 +86,7 @@ export function MobileMenu({ brand, categories }: { brand: string; categories: C
           so nothing competes with drawer content. */}
       <button
         type="button"
-        aria-label="Close menu"
+        aria-label={t("close")}
         onClick={() => setOpen(false)}
         className="absolute inset-0 drawer-backdrop"
         style={{
@@ -71,7 +101,7 @@ export function MobileMenu({ brand, categories }: { brand: string; categories: C
           Spring-in from the right (drawer-spring), then items cascade
           inside with a small per-item delay. */}
       <aside
-        className="absolute top-0 right-0 bottom-0 w-80 max-w-[88vw] p-5 flex flex-col drawer-spring"
+        className="absolute top-0 end-0 bottom-0 w-80 max-w-[88vw] p-5 flex flex-col drawer-spring"
         style={{
           background: "rgba(255, 255, 255, 0.82)",
           backdropFilter: "blur(28px) saturate(180%)",
@@ -99,7 +129,7 @@ export function MobileMenu({ brand, categories }: { brand: string; categories: C
                 </Link>
                 <button
                   type="button"
-                  aria-label="Close"
+                  aria-label={t("close")}
                   onClick={() => setOpen(false)}
                   className="h-9 w-9 inline-flex items-center justify-center rounded-full hover:bg-white/60 active:scale-95 transition"
                 >
@@ -117,8 +147,19 @@ export function MobileMenu({ brand, categories }: { brand: string; categories: C
                 className="mt-6 btn btn-primary w-full justify-center drawer-item"
                 style={{ animationDelay: delay }}
               >
-                Browse the catalog →
+                {t("browseCatalog")} →
               </Link>
+            );
+          }
+          if (it.kind === "language") {
+            return (
+              <div
+                key={`lang-${i}`}
+                className="drawer-item"
+                style={{ animationDelay: delay }}
+              >
+                <LanguageSwitcher variant="drawer" />
+              </div>
             );
           }
           if (it.kind === "section") {
@@ -153,7 +194,7 @@ export function MobileMenu({ brand, categories }: { brand: string; categories: C
     <>
       <button
         type="button"
-        aria-label="Open menu"
+        aria-label={t("openMenu")}
         onClick={() => setOpen(true)}
         className="md:hidden h-9 w-9 inline-flex items-center justify-center rounded-full hover:bg-muted-2 active:scale-90 transition"
       >
