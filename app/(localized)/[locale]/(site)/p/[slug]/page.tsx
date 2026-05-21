@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { safeJson } from "@/lib/utils";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 type Block =
   | { type: "hero"; eyebrow?: string; title: string; italicTail?: string; subtitle?: string; cta?: { label: string; href: string } }

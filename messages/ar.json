@@ -1,0 +1,319 @@
+{
+  "nav": {
+    "catalog": "الكتالوج",
+    "search": "بحث",
+    "cart": "السلة",
+    "menu": "القائمة",
+    "openMenu": "فتح القائمة",
+    "close": "إغلاق",
+    "account": "حسابي",
+    "signIn": "تسجيل الدخول",
+    "affiliate": "برنامج الشراكة",
+    "categories": "الفئات",
+    "language": "اللغة",
+    "browseCatalog": "تصفّح الكتالوج"
+  },
+  "home": {
+    "shopAll": "تصفح الكتالوج بالكامل",
+    "heroEyebrow": "جديد \u2022 صُمّم لإفريقيا، جاهز للعالم",
+    "hero": {
+      "title": "منصة واحدة. لكل اشتراك رقمي.",
+      "subtitle": "بث، ذكاء اصطناعي، ألعاب، تواصل — جودة فاخرة وتسليم فوري.",
+      "ctaLabel": "تصفّح الكتالوج"
+    },
+    "categories": "تصفّح حسب الفئة",
+    "categoriesSubtitle": "اعثر على ما تحتاجه بالضبط.",
+    "recent": "وصل حديثاً",
+    "recentSubtitle": "أحدث الإضافات إلى الكتالوج.",
+    "marquee": {
+      "instantDelivery": "تسليم فوري",
+      "refund24": "استرداد خلال 24 ساعة",
+      "humanSupport": "دعم بشري حقيقي",
+      "poweredByLS": "مدعوم من LemonSqueezy",
+      "builtForMENA": "مصمم للجزائر وأفريقيا",
+      "premiumQuality": "جودة فاخرة في كل طلب"
+    },
+    "featured": {
+      "eyebrow": "متوفّر الآن",
+      "title": "اختيارنا",
+      "italicTail": "لهذا الأسبوع"
+    },
+    "editorial": {
+      "title": "كل ما هو رقمي. دفع واحد بسيط.",
+      "body": "بث، أدوات ذكاء اصطناعي، شحن ألعاب، حزم نمو اجتماعي، وخدمات مخصّصة. ادفع مرة واحدة بالبطاقة أو المحفظة — ونحن نسلّم ونتابع شخصياً عبر واتساب.",
+      "browseCta": "تصفّح الكتالوج",
+      "affiliateCta": "كن شريكاً"
+    },
+    "fresh": {
+      "eyebrow": "المزيد",
+      "title": "جديد على"
+    },
+    "empty": {
+      "title": "لا توجد منتجات بعد.",
+      "hint": "سجّل الدخول إلى"
+    },
+    "proof": {
+      "delivered": "اشتراكات مُسلَّمة",
+      "refundWindow": "نافذة الاسترداد إن لم يُسلَّم",
+      "rating": "متوسط تقييم العملاء",
+      "trusted": "موثوق به من عملاء في الجزائر وأفريقيا والعالم. {brand} مصمَّم لتحصل بالضبط على ما طلبته — بسرعة، باحترافية، وبشكل شخصي."
+    },
+    "trustBadges": {
+      "instant": "تسليم فوري",
+      "support": "دعم بشري 7/7",
+      "secure": "دفع آمن",
+      "warranty": "ضمان مشمول"
+    }
+  },
+  "catalog": {
+    "eyebrow": "الكتالوج",
+    "title": "كل ما",
+    "italicTail": "نقدّمه",
+    "searchPlaceholder": "بحث…",
+    "searchButton": "بحث",
+    "all": "الكل",
+    "emptyTitle": "لا شيء هنا بعد.",
+    "emptyHint": "جرّب بحثاً آخر أو تصفّح فئة."
+  },
+  "product": {
+    "buyNow": "اشترِ الآن",
+    "addToCart": "أضف إلى السلة",
+    "added": "تمت الإضافة!",
+    "outOfStock": "نفد المخزون",
+    "from": "ابتداءً من",
+    "save": "وفّر",
+    "savePercent": "{percent}%",
+    "selectVariant": "اختر خياراً",
+    "choosePlan": "اختر خطتك",
+    "quantity": "الكمية",
+    "decreaseQty": "إنقاص الكمية",
+    "increaseQty": "زيادة الكمية",
+    "description": "الوصف",
+    "details": "تفاصيل",
+    "delivery": "التسليم",
+    "warranty": "الضمان",
+    "makeOffer": "قدّم عرضاً على هذا السعر",
+    "yourOffer": "عرضك",
+    "submitOffer": "إرسال العرض",
+    "scarcity": "مخزون محدود",
+    "endsIn": "ينتهي خلال {time}",
+    "bundleWith": "غالباً ما يُشترى مع",
+    "oftenBoughtWith": "غالباً ما يُشترى مع",
+    "trustLine": "دفع آمن 100%",
+    "trustInstant": "تسليم فوري",
+    "trustSecure": "دفع آمن",
+    "trustMoneyBack": "ضمان استرداد",
+    "related": "قد يعجبك أيضاً",
+    "relatedTitle": "قد يعجبك",
+    "relatedItalicTail": "أيضاً",
+    "badgeNew": "جديد",
+    "badgeBestSeller": "الأكثر مبيعاً",
+    "savePrefix": "وفّر {amount}",
+    "scarcityDefault": "كمية محدودة — آخر القطع المتاحة",
+    "total": "الإجمالي",
+    "liveViewers": "<b>{count}</b> أشخاص يشاهدون الآن",
+    "youSave": "توفّر {amount}"
+  },
+  "cart": {
+    "title": "سلتك",
+    "empty": "سلتك فارغة.",
+    "continueShopping": "متابعة التسوق",
+    "checkout": "إتمام الشراء",
+    "subtotal": "المجموع الفرعي",
+    "discount": "الخصم",
+    "total": "الإجمالي",
+    "remove": "إزالة",
+    "promoCode": "رمز الخصم",
+    "applyPromo": "تطبيق",
+    "removePromo": "إزالة",
+    "promoApplied": "تم تطبيق الرمز",
+    "promoInvalid": "رمز غير صالح",
+    "items": "{count, plural, =1 {عنصر واحد} =2 {عنصران} other {# عناصر}}"
+  },
+  "checkout": {
+    "title": "الخطوة الأخيرة",
+    "subtitle": "فقط بريدك الإلكتروني وسنتولّى الباقي.",
+    "yourDetails": "بياناتك",
+    "email": "البريد الإلكتروني",
+    "name": "الاسم الكامل",
+    "whatsapp": "واتساب (اختياري)",
+    "notes": "ملاحظات (اختياري)",
+    "review": "ملخّص الطلب",
+    "place": "تأكيد الطلب",
+    "processing": "جاري المعالجة…",
+    "viaWhatsApp": "متابعة عبر واتساب",
+    "viaCard": "ادفع بأمان",
+    "errorGeneric": "حدث خطأ ما. حاول مجدّداً.",
+    "success": {
+      "title": "شكراً",
+      "body": "تم تأكيد طلبك {order}. سنسلّمه قريباً — وسنراسلك إن احتجنا أي شيء.",
+      "whatsapp": "متابعة عبر واتساب",
+      "back": "العودة إلى الكتالوج"
+    }
+  },
+  "warranty": {
+    "eyebrow": "الضمان والمطالبات",
+    "title": "هل هناك مشكلة؟",
+    "subtitle": "هل لديك مشكلة في طلبك؟ سنحلّها.",
+    "intro": "نضمن كل طلب بنافذة {days} يوماً. أخبرنا بما حدث — رسالة قصيرة، بعض الصور إن لزم الأمر، وسنعود إليك بسرعة.",
+    "orderNumber": "رقم الطلب",
+    "email": "البريد المستخدم",
+    "lookup": "البحث عن طلبي",
+    "reason": "السبب",
+    "reasons": {
+      "notWorking": "لا يعمل",
+      "wrongItem": "منتج خاطئ",
+      "notReceived": "لم يصل",
+      "other": "أخرى"
+    },
+    "message": "رسالة (اختياري)",
+    "photos": "صور",
+    "photosHint": "حتى {max} صور",
+    "submit": "إرسال المطالبة",
+    "noOrderNumber": "ليس لديك رقم الطلب؟ <link>راسلنا</link> وسنساعدك.",
+    "success": {
+      "eyebrow": "تم استلام المطالبة",
+      "title": "تم — نحن نعمل عليها",
+      "reference": "المرجع",
+      "body": "سنرد عبر البريد الذي زوّدتنا به. معظم المطالبات تتلقى ردّاً أوّلياً خلال ساعات قليلة.",
+      "home": "العودة إلى الرئيسية"
+    },
+    "wizard": {
+      "findOrder": "ابحث عن طلبك",
+      "findOrderHelp": "نحتاج إلى تأكيد عملية الشراء قبل فتح مطالبة.",
+      "orderNumber": "رقم الطلب",
+      "emailLabel": "البريد المستخدم عند الدفع",
+      "continue": "متابعة",
+      "window": "خلال {days} يوماً من الشراء افتراضياً — يمكن للإدارة التمديد لكل منتج.",
+      "submitting": "جارٍ إرسال مطالبتك…",
+      "order": "الطلب {number}",
+      "placed": "تم في",
+      "noEmail": "بدون بريد",
+      "whichItem": "أي عنصر؟",
+      "reason": "السبب",
+      "reasonChoose": "اختر سبباً…",
+      "reasons": {
+        "notDelivered": "لم يُسلَّم",
+        "wrongItem": "منتج خاطئ تم تسليمه",
+        "notWorking": "لا يعمل",
+        "quality": "مشكلة في الجودة",
+        "other": "أخرى"
+      },
+      "tellMore": "أخبرنا بالمزيد",
+      "optional": "(اختياري)",
+      "required": "مطلوب",
+      "messagePlaceholder": "ماذا حدث، ومتى، وما الذي جرّبته…",
+      "photos": "صور",
+      "photosHint": "حتى {count} صور. نستخدمها للتحقيق بشكل أسرع.",
+      "removePhoto": "إزالة الصورة",
+      "addPhoto": "إضافة",
+      "name": "اسمك (اختياري)",
+      "phone": "هاتف / واتساب (اختياري)",
+      "submitClaim": "إرسال المطالبة",
+      "differentOrder": "طلب مختلف",
+      "errors": {
+        "missing": "أدخل رقم الطلب والبريد الإلكتروني.",
+        "notFound": "الطلب غير موجود.",
+        "fileRead": "تعذّر قراءة ملف أو أكثر.",
+        "reason": "اختر سبباً.",
+        "photo": "صورة واحدة على الأقل مطلوبة.",
+        "submit": "تعذّر إرسال مطالبتك."
+      }
+    }
+  },
+  "footer": {
+    "shop": "المتجر",
+    "support": "الدعم",
+    "company": "الشركة",
+    "allProducts": "جميع المنتجات",
+    "warrantyClaims": "الضمان والمطالبات",
+    "instantDelivery": "تسليم فوري أو سريع يدوي",
+    "humanSupport": "دعم بشري حقيقي",
+    "affiliate": "كن شريكاً",
+    "rights": "جميع الحقوق محفوظة.",
+    "language": "اللغة"
+  },
+  "auth": {
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "signOut": "تسجيل الخروج",
+    "withGoogle": "متابعة مع جوجل",
+    "withEmail": "متابعة بالبريد الإلكتروني",
+    "emailPlaceholder": "you@email.com",
+    "sendMagicLink": "إرسال رابط الدخول",
+    "magicLinkSent": "تحقق من بريدك.",
+    "or": "أو"
+  },
+  "account": {
+    "title": "حسابي",
+    "orders": "طلباتي",
+    "profile": "الملف الشخصي",
+    "affiliate": "الشراكة",
+    "noOrders": "لا توجد طلبات بعد."
+  },
+  "affiliate": {
+    "hero": {
+      "kicker": "برنامج الشراكة",
+      "title": "اربح حتى {percent}% على كل عملية بيع",
+      "subtitle": "مصمم للمبدعين من 1،000 إلى 50،000 متابع. مجاني، شفاف، بلا حد أدنى.",
+      "cta": "كن شريكاً",
+      "trust": "{count} مبدع معنا بالفعل"
+    },
+    "how": {
+      "title": "كيف تعمل",
+      "step1Title": "أنشئ حسابك",
+      "step1Body": "30 ثانية. بريد أو جوجل.",
+      "step2Title": "احصل على رابطك",
+      "step2Body": "رابط فريد + رمز QR جاهز لقصصك.",
+      "step3Title": "اقبض",
+      "step3Body": "تتبع لحظي. سحب الأرباح من 20$."
+    },
+    "tiers": {
+      "title": "كلما بعت أكثر، ربحت أكثر",
+      "subtitle": "مستويات دائمة — بمجرد بلوغها لا تنخفض.",
+      "bronze": "برونز",
+      "silver": "فضة",
+      "gold": "ذهب",
+      "platinum": "بلاتين",
+      "salesLabel": "مبيعات مؤكدة"
+    },
+    "calculator": {
+      "title": "احسب إمكانياتك",
+      "followers": "المتابعون",
+      "convertRate": "% الذين يشترون",
+      "monthlyEarnings": "الأرباح الشهرية المقدرة"
+    },
+    "faq": {
+      "title": "الأسئلة الشائعة"
+    },
+    "dashboard": {
+      "title": "لوحة الشريك",
+      "yourLink": "رابط شراكتك",
+      "copy": "نسخ",
+      "copied": "تم النسخ!",
+      "stats": {
+        "clicks": "النقرات (30 يوم)",
+        "conversions": "المبيعات (30 يوم)",
+        "rate": "معدل التحويل",
+        "pending": "قيد الانتظار",
+        "paid": "تم الدفع"
+      },
+      "nextTier": "{count} مبيعات إضافية للوصول إلى {tier}",
+      "streak": "{weeks, plural, =1 {أسبوع} =2 {أسبوعان} other {# أسابيع}} متتالية",
+      "requestPayout": "طلب سحب"
+    }
+  },
+  "common": {
+    "loading": "جاري التحميل…",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "next": "التالي",
+    "yes": "نعم",
+    "no": "لا",
+    "close": "إغلاق",
+    "tagline": "اشتراكات وخدمات رقمية فاخرة.",
+    "stickyPromoText": "تسليم فوري مجاني على كل طلب",
+    "exitIntentText": "انتظر — احصل على خصم 10٪ على طلبك الأول"
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useTransition, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { ImagePlus, X, ChevronRight, Loader2 } from "lucide-react";
 
 type OrderShape = {
@@ -27,6 +28,7 @@ export function ClaimWizard({
   warrantyDefaultDays: number;
 }) {
   const router = useRouter();
+  const t = useTranslations("warranty.wizard");
   const [step, setStep] = useState<Step>("lookup");
   const [order, setOrder] = useState<OrderShape | null>(null);
   const [orderNumber, setOrderNumber] = useState("");
@@ -44,7 +46,7 @@ export function ClaimWizard({
   async function lookup() {
     setError(null);
     if (!orderNumber || !email) {
-      setError("Please enter both order number and email.");
+      setError(t("errors.missing"));
       return;
     }
     start(async () => {
@@ -55,7 +57,7 @@ export function ClaimWizard({
       });
       const j = await r.json();
       if (!j.ok) {
-        setError(j.message || "Order not found.");
+        setError(j.message || t("errors.notFound"));
         return;
       }
       setOrder(j.order);
@@ -83,7 +85,7 @@ export function ClaimWizard({
       ),
     )
       .then((urls) => setPhotos((p) => [...p, ...urls].slice(0, maxPhotos)))
-      .catch(() => setError("One or more files could not be read."));
+      .catch(() => setError(t("errors.fileRead")));
   }
 
   function removePhoto(idx: number) {
@@ -93,11 +95,11 @@ export function ClaimWizard({
   async function submit() {
     setError(null);
     if (!reason.trim()) {
-      setError("Please choose a reason.");
+      setError(t("errors.reason"));
       return;
     }
     if (requirePhoto && photos.length === 0) {
-      setError("At least one photo is required.");
+      setError(t("errors.photo"));
       return;
     }
     setStep("submitting");
@@ -117,23 +119,21 @@ export function ClaimWizard({
     });
     const j = await r.json();
     if (!j.ok) {
-      setError(j.message || "Could not submit your claim.");
+      setError(j.message || t("errors.submit"));
       setStep("details");
       return;
     }
-    router.push(`/warranty/success?ref=${encodeURIComponent(j.claim.number)}`);
+    router.push({ pathname: "/warranty/success", query: { ref: j.claim.number } });
   }
 
   if (step === "lookup") {
     return (
       <div className="card p-6 space-y-4">
-        <h2 className="text-lg tracking-tight">Find your order</h2>
-        <p className="text-sm text-muted">
-          We need to confirm the purchase before opening a claim.
-        </p>
+        <h2 className="text-lg tracking-tight">{t("findOrder")}</h2>
+        <p className="text-sm text-muted">{t("findOrderHelp")}</p>
         <label className="block">
           <span className="text-xs uppercase tracking-[0.16em] text-muted">
-            Order number
+            {t("orderNumber")}
           </span>
           <input
             value={orderNumber}
@@ -144,7 +144,7 @@ export function ClaimWizard({
         </label>
         <label className="block">
           <span className="text-xs uppercase tracking-[0.16em] text-muted">
-            Email used at checkout
+            {t("emailLabel")}
           </span>
           <input
             type="email"
@@ -160,11 +160,10 @@ export function ClaimWizard({
           className="btn btn-primary inline-flex items-center gap-1"
         >
           {pending ? <Loader2 size={14} className="animate-spin" /> : null}
-          Continue <ChevronRight size={14} />
+          {t("continue")} <ChevronRight size={14} />
         </button>
         <p className="text-xs text-muted">
-          Within {warrantyDefaultDays} days of your purchase by default — admins can
-          extend per product.
+          {t("window", { days: warrantyDefaultDays })}
         </p>
       </div>
     );
@@ -174,7 +173,7 @@ export function ClaimWizard({
     return (
       <div className="card p-10 text-center">
         <Loader2 size={32} className="mx-auto animate-spin text-primary" />
-        <p className="mt-3 text-sm text-muted">Submitting your claim…</p>
+        <p className="mt-3 text-sm text-muted">{t("submitting")}</p>
       </div>
     );
   }
@@ -182,18 +181,18 @@ export function ClaimWizard({
   return (
     <div className="card p-6 space-y-5">
       <div className="rounded-xl bg-muted-2 p-4 text-sm">
-        <p className="font-medium">Order {order?.number}</p>
+        <p className="font-medium">{t("order", { number: order?.number ?? "" })}</p>
         <p className="text-muted text-xs mt-0.5">
-          Placed{" "}
+          {t("placed")}{" "}
           {order?.createdAt ? new Date(order.createdAt).toLocaleDateString() : ""} ·{" "}
-          {order?.email ?? "no email"}
+          {order?.email ?? t("noEmail")}
         </p>
       </div>
 
       {order && order.items.length > 1 ? (
         <fieldset className="space-y-2">
           <legend className="text-xs uppercase tracking-[0.16em] text-muted">
-            Which item?
+            {t("whichItem")}
           </legend>
           {order.items.map((it) => (
             <label
@@ -222,32 +221,32 @@ export function ClaimWizard({
 
       <label className="block">
         <span className="text-xs uppercase tracking-[0.16em] text-muted">
-          Reason
+          {t("reason")}
         </span>
         <select
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           className="mt-1 w-full h-10 rounded-xl border border-border px-3 text-sm bg-white"
         >
-          <option value="">Choose a reason…</option>
-          <option value="not_delivered">Not delivered</option>
-          <option value="wrong_item">Wrong item received</option>
-          <option value="not_working">Doesn&apos;t work</option>
-          <option value="quality_issue">Quality issue</option>
-          <option value="other">Other</option>
+          <option value="">{t("reasonChoose")}</option>
+          <option value="not_delivered">{t("reasons.notDelivered")}</option>
+          <option value="wrong_item">{t("reasons.wrongItem")}</option>
+          <option value="not_working">{t("reasons.notWorking")}</option>
+          <option value="quality_issue">{t("reasons.quality")}</option>
+          <option value="other">{t("reasons.other")}</option>
         </select>
       </label>
 
       {allowMessage ? (
         <label className="block">
           <span className="text-xs uppercase tracking-[0.16em] text-muted">
-            Tell us more {requirePhoto ? "" : "(optional)"}
+            {t("tellMore")} {requirePhoto ? "" : t("optional")}
           </span>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={4}
-            placeholder="What happened, when, what you tried…"
+            placeholder={t("messagePlaceholder")}
             className="mt-1 w-full rounded-xl border border-border px-3 py-2 text-sm leading-relaxed"
           />
         </label>
@@ -255,11 +254,14 @@ export function ClaimWizard({
 
       <div>
         <p className="text-xs uppercase tracking-[0.16em] text-muted">
-          Photos {requirePhoto ? <span className="text-red-500 normal-case">required</span> : <span className="normal-case">(optional)</span>}
+          {t("photos")}{" "}
+          {requirePhoto ? (
+            <span className="text-red-500 normal-case">{t("required")}</span>
+          ) : (
+            <span className="normal-case">{t("optional")}</span>
+          )}
         </p>
-        <p className="text-xs text-muted">
-          Up to {maxPhotos} images. We use them to investigate faster.
-        </p>
+        <p className="text-xs text-muted">{t("photosHint", { count: maxPhotos })}</p>
         <div className="mt-2 flex flex-wrap gap-2">
           {photos.map((p, i) => (
             <div
@@ -271,8 +273,8 @@ export function ClaimWizard({
               <button
                 type="button"
                 onClick={() => removePhoto(i)}
-                className="absolute top-1 right-1 rounded-full bg-black/70 text-white p-1 hover:bg-black"
-                aria-label="Remove photo"
+                className="absolute top-1 end-1 rounded-full bg-black/70 text-white p-1 hover:bg-black"
+                aria-label={t("removePhoto")}
               >
                 <X size={12} />
               </button>
@@ -285,7 +287,7 @@ export function ClaimWizard({
               className="h-20 w-20 rounded-xl border border-dashed border-border text-muted hover:border-foreground hover:text-foreground inline-flex flex-col items-center justify-center gap-1"
             >
               <ImagePlus size={18} />
-              <span className="text-[10px] uppercase tracking-wider">Add</span>
+              <span className="text-[10px] uppercase tracking-wider">{t("addPhoto")}</span>
             </button>
           ) : null}
         </div>
@@ -302,7 +304,7 @@ export function ClaimWizard({
       <div className="grid sm:grid-cols-2 gap-3">
         <label className="block">
           <span className="text-xs uppercase tracking-[0.16em] text-muted">
-            Your name (optional)
+            {t("name")}
           </span>
           <input
             value={name}
@@ -312,7 +314,7 @@ export function ClaimWizard({
         </label>
         <label className="block">
           <span className="text-xs uppercase tracking-[0.16em] text-muted">
-            Phone / WhatsApp (optional)
+            {t("phone")}
           </span>
           <input
             value={phone}
@@ -326,14 +328,14 @@ export function ClaimWizard({
 
       <div className="flex flex-wrap gap-2 items-center">
         <button onClick={submit} className="btn btn-primary">
-          Submit claim
+          {t("submitClaim")}
         </button>
         <button
           onClick={() => setStep("lookup")}
           className="btn btn-outline"
           type="button"
         >
-          Different order
+          {t("differentOrder")}
         </button>
       </div>
     </div>

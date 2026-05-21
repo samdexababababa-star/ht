@@ -1,9 +1,10 @@
 "use client";
 import { useState, useTransition, useMemo, useEffect } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice, safeJson } from "@/lib/utils";
+import { PRODUCT_DEFAULTS } from "@/lib/content-defaults";
 import {
   ShoppingBag,
   Sparkles,
@@ -83,6 +84,7 @@ export function ProductDetail({
   bundle?: BundleSuggestion | null;
 }) {
   const router = useRouter();
+  const t = useTranslations("product");
   const gallery = useMemo(() => safeJson<string[]>(product.gallery, []), [product.gallery]);
   const allImages = product.thumbnail ? [product.thumbnail, ...gallery] : gallery;
   const [active, setActive] = useState(0);
@@ -221,9 +223,13 @@ export function ProductDetail({
       <div>
         <div className="flex items-center gap-2 flex-wrap">
           {product.newBadge ? (
-            <span className="chip chip-blue">NEW</span>
+            <span className="chip chip-blue">{t("badgeNew")}</span>
           ) : product.bestSellerBadge ? (
-            <span className="chip chip-blue">BEST SELLER</span>
+            <span className="chip chip-blue">{t("badgeBestSeller")}</span>
+          ) : product.badge === PRODUCT_DEFAULTS.badgeBestSeller ? (
+            <span className="chip chip-blue">{t("badgeBestSeller")}</span>
+          ) : product.badge === PRODUCT_DEFAULTS.badgeNew ? (
+            <span className="chip chip-blue">{t("badgeNew")}</span>
           ) : product.badge ? (
             <span className="chip chip-blue">{product.badge}</span>
           ) : null}
@@ -254,7 +260,7 @@ export function ProductDetail({
           ) : null}
           {product.highlightSavings && compareAt && compareAt > price ? (
             <span className="text-[13px] text-primary font-medium">
-              You save {formatPrice(compareAt - price, product.currency)}
+              {t("youSave", { amount: formatPrice(compareAt - price, product.currency) })}
             </span>
           ) : null}
         </div>
@@ -284,7 +290,7 @@ export function ProductDetail({
         {product.variants.length > 0 ? (
           <div className="mt-6">
             <p className="text-[12px] uppercase tracking-[0.16em] text-muted mb-2">
-              Choose your plan
+              {t("choosePlan")}
             </p>
             <div className="variant-grid">
               {product.variants.map((v) => (
@@ -292,7 +298,7 @@ export function ProductDetail({
                   key={v.id}
                   type="button"
                   onClick={() => setVariantId(v.id)}
-                  className={`text-left p-4 rounded-2xl border transition active:scale-[0.98] ${
+                  className={`text-start p-4 rounded-2xl border transition active:scale-[0.98] ${
                     variantId === v.id
                       ? "border-foreground bg-muted-2"
                       : "border-border hover:border-muted"
@@ -302,7 +308,7 @@ export function ProductDetail({
                   <p className="mt-2 text-[15px]">
                     {formatPrice(v.price, product.currency)}
                     {v.compareAtPrice && v.compareAtPrice > v.price ? (
-                      <span className="ml-2 text-xs text-muted line-through">
+                      <span className="ms-2 text-xs text-muted line-through">
                         {formatPrice(v.compareAtPrice, product.currency)}
                       </span>
                     ) : null}
@@ -316,14 +322,14 @@ export function ProductDetail({
         {product.allowQuantity ? (
           <div className="mt-6">
             <p className="text-[12px] uppercase tracking-[0.16em] text-muted mb-2">
-              Quantity
+              {t("quantity")}
             </p>
             <div className="inline-flex items-center gap-2 rounded-2xl border border-border p-1 bg-white">
               <button
                 type="button"
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
                 className="h-9 w-9 rounded-xl text-muted hover:text-foreground active:scale-90 transition"
-                aria-label="Decrease quantity"
+                aria-label={t("decreaseQty")}
               >
                 −
               </button>
@@ -338,7 +344,7 @@ export function ProductDetail({
                 type="button"
                 onClick={() => setQty((q) => q + 1)}
                 className="h-9 w-9 rounded-xl text-muted hover:text-foreground active:scale-90 transition"
-                aria-label="Increase quantity"
+                aria-label={t("increaseQty")}
               >
                 +
               </button>
@@ -353,7 +359,7 @@ export function ProductDetail({
               onClick={() => setOfferOpen(true)}
               className="inline-flex items-center gap-2 text-sm text-primary hover:underline active:scale-95 transition"
             >
-              <Tag size={14} /> Make an offer on this price
+              <Tag size={14} /> {t("makeOffer")}
             </button>
           </div>
         ) : null}
@@ -362,7 +368,10 @@ export function ProductDetail({
           <div className="mt-6 flex flex-wrap gap-2">
             {product.scarcityEnabled && product.scarcityText ? (
               <span className="chip chip-blue">
-                <Sparkles size={12} /> {product.scarcityText}
+                <Sparkles size={12} />{" "}
+                {product.scarcityText === PRODUCT_DEFAULTS.scarcityText
+                  ? t("scarcityDefault")
+                  : product.scarcityText}
               </span>
             ) : null}
             {product.urgencyEndsAt ? (
@@ -377,10 +386,10 @@ export function ProductDetail({
             disabled={pending}
             className="btn btn-outline"
           >
-            <ShoppingBag size={16} /> {added ? "Added!" : "Add to cart"}
+            <ShoppingBag size={16} /> {added ? t("added") : t("addToCart")}
           </button>
           <button onClick={buyNow} disabled={pending} className="btn btn-primary">
-            Buy now →
+            {t("buyNow")} →
           </button>
         </div>
 
@@ -388,9 +397,9 @@ export function ProductDetail({
             Master toggle lives in /admin/growth → Trust badges. */}
         {settings?.trustBadgesEnabled ? (
           <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3 text-[11px] sm:text-[12px]">
-            <TrustChip icon={<Zap size={14} />} label="Instant delivery" />
-            <TrustChip icon={<ShieldCheck size={14} />} label="Secure payment" />
-            <TrustChip icon={<RotateCcw size={14} />} label="Money-back" />
+            <TrustChip icon={<Zap size={14} />} label={t("trustInstant")} />
+            <TrustChip icon={<ShieldCheck size={14} />} label={t("trustSecure")} />
+            <TrustChip icon={<RotateCcw size={14} />} label={t("trustMoneyBack")} />
           </div>
         ) : null}
 
@@ -430,7 +439,7 @@ export function ProductDetail({
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[10px] uppercase tracking-[0.18em] text-primary">
-                Often bought with
+                {t("oftenBoughtWith")}
               </p>
               <p className="text-sm font-medium truncate">{bundle.name}</p>
               <p className="text-[12px] text-muted">
@@ -452,23 +461,23 @@ export function ProductDetail({
       >
         <div className="flex-1 min-w-0">
           <p className="text-[11px] uppercase tracking-wider text-muted">
-            {qty > 1 ? `Total · ×${qty}` : "Total"}
+            {qty > 1 ? `${t("total")} · ×${qty}` : t("total")}
           </p>
           <p className="text-lg font-semibold leading-tight truncate">
             {formatPrice(price * qty, product.currency)}
-            {variant ? <span className="text-xs text-muted font-normal ml-2">{variant.name}</span> : null}
+            {variant ? <span className="text-xs text-muted font-normal ms-2">{variant.name}</span> : null}
           </p>
         </div>
         <button
           onClick={add}
           disabled={pending}
           className="btn btn-outline shrink-0 px-3"
-          aria-label="Add to cart"
+          aria-label={t("addToCart")}
         >
           <ShoppingBag size={16} />
         </button>
         <button onClick={buyNow} disabled={pending} className="btn btn-primary shrink-0">
-          Buy now →
+          {t("buyNow")} →
         </button>
       </div>
       {negotiableOn ? (
@@ -510,6 +519,7 @@ function TrustChip({
 // jumps wildly when shared. The point is to remind visitors the page is
 // active, not to invent metrics.
 function LiveVisitorCount({ productId }: { productId: string }) {
+  const t = useTranslations("product");
   const [n, setN] = useState<number | null>(null);
   useEffect(() => {
     function compute() {
@@ -531,14 +541,13 @@ function LiveVisitorCount({ productId }: { productId: string }) {
   return (
     <span className="inline-flex items-center gap-1.5 text-foreground/70">
       <Eye size={12} className="text-emerald-600" />
-      <span>
-        <strong className="font-semibold">{n}</strong> people viewing right now
-      </span>
+      <span>{t.rich("liveViewers", { count: n, b: (c) => <strong className="font-semibold">{c}</strong> })}</span>
     </span>
   );
 }
 
 function CountdownChip({ endsAt }: { endsAt: Date | string }) {
+  const t = useTranslations("product");
   const target = useMemo(() => new Date(endsAt).getTime(), [endsAt]);
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
@@ -550,11 +559,12 @@ function CountdownChip({ endsAt }: { endsAt: Date | string }) {
   const hours = Math.floor(diff / 3_600_000);
   const minutes = Math.floor((diff % 3_600_000) / 60_000);
   const seconds = Math.floor((diff % 60_000) / 1000);
+  const countdown = `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   return (
     <span className="chip">
-      <Clock size={12} /> Ends in {hours.toString().padStart(2, "0")}:
-      {minutes.toString().padStart(2, "0")}:
-      {seconds.toString().padStart(2, "0")}
+      <Clock size={12} /> {t("endsIn", { time: countdown })}
     </span>
   );
 }

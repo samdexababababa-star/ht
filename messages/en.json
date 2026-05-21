@@ -1,0 +1,319 @@
+{
+  "nav": {
+    "catalog": "Catalog",
+    "search": "Search",
+    "cart": "Cart",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "close": "Close",
+    "account": "My account",
+    "signIn": "Sign in",
+    "affiliate": "Affiliate program",
+    "categories": "Categories",
+    "language": "Language",
+    "browseCatalog": "Browse the catalog"
+  },
+  "home": {
+    "shopAll": "Shop the full catalog",
+    "heroEyebrow": "New \u2022 Built for Africa, ready worldwide",
+    "hero": {
+      "title": "One platform. Every digital subscription.",
+      "subtitle": "Streaming, AI, gaming, social — premium quality, instant delivery.",
+      "ctaLabel": "Browse the catalog"
+    },
+    "categories": "Browse by category",
+    "categoriesSubtitle": "Find exactly what you need.",
+    "recent": "Just landed",
+    "recentSubtitle": "The latest additions to the catalog.",
+    "marquee": {
+      "instantDelivery": "Instant delivery",
+      "refund24": "Refund within 24h",
+      "humanSupport": "Real human support",
+      "poweredByLS": "Powered by LemonSqueezy",
+      "builtForMENA": "Built for Algeria & Africa",
+      "premiumQuality": "Premium quality, every order"
+    },
+    "featured": {
+      "eyebrow": "Now live",
+      "title": "Hand-picked",
+      "italicTail": "this week"
+    },
+    "editorial": {
+      "title": "Everything digital. One simple checkout.",
+      "body": "Streaming, AI tools, gaming top-ups, social growth packs, and bespoke services. Pay once with card or wallet — we deliver, track and follow up personally on WhatsApp.",
+      "browseCta": "Browse the catalog",
+      "affiliateCta": "Become an affiliate"
+    },
+    "fresh": {
+      "eyebrow": "More",
+      "title": "Fresh on"
+    },
+    "empty": {
+      "title": "No products yet.",
+      "hint": "Sign in to"
+    },
+    "proof": {
+      "delivered": "Subscriptions delivered",
+      "refundWindow": "Refund window if undelivered",
+      "rating": "Average customer rating",
+      "trusted": "Trusted by clients across Algeria, Africa & worldwide. {brand} is built so you get exactly what you ordered — fast, clean, and personal."
+    },
+    "trustBadges": {
+      "instant": "Instant delivery",
+      "support": "Human support 7/7",
+      "secure": "Secure payment",
+      "warranty": "Warranty included"
+    }
+  },
+  "catalog": {
+    "eyebrow": "Catalog",
+    "title": "Everything we",
+    "italicTail": "offer",
+    "searchPlaceholder": "Search…",
+    "searchButton": "Search",
+    "all": "All",
+    "emptyTitle": "Nothing here yet.",
+    "emptyHint": "Try a different search or browse a category."
+  },
+  "product": {
+    "buyNow": "Buy now",
+    "addToCart": "Add to cart",
+    "added": "Added!",
+    "outOfStock": "Out of stock",
+    "from": "From",
+    "save": "Save",
+    "savePercent": "{percent}%",
+    "selectVariant": "Select an option",
+    "choosePlan": "Choose your plan",
+    "quantity": "Quantity",
+    "decreaseQty": "Decrease quantity",
+    "increaseQty": "Increase quantity",
+    "description": "Description",
+    "details": "Details",
+    "delivery": "Delivery",
+    "warranty": "Warranty",
+    "makeOffer": "Make an offer on this price",
+    "yourOffer": "Your offer",
+    "submitOffer": "Submit offer",
+    "scarcity": "Limited stock",
+    "endsIn": "Ends in {time}",
+    "bundleWith": "Frequently bought with",
+    "oftenBoughtWith": "Often bought with",
+    "trustLine": "100% secure checkout",
+    "trustInstant": "Instant delivery",
+    "trustSecure": "Secure payment",
+    "trustMoneyBack": "Money-back",
+    "related": "You may also like",
+    "relatedTitle": "You might also",
+    "relatedItalicTail": "like",
+    "badgeNew": "NEW",
+    "badgeBestSeller": "BEST SELLER",
+    "savePrefix": "Save {amount}",
+    "scarcityDefault": "Limited stock — last few left",
+    "total": "Total",
+    "liveViewers": "<b>{count}</b> people viewing right now",
+    "youSave": "You save {amount}"
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty.",
+    "continueShopping": "Continue shopping",
+    "checkout": "Checkout",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "total": "Total",
+    "remove": "Remove",
+    "promoCode": "Promo code",
+    "applyPromo": "Apply",
+    "removePromo": "Remove",
+    "promoApplied": "Promo applied",
+    "promoInvalid": "Invalid code",
+    "items": "{count, plural, =1 {1 item} other {# items}}"
+  },
+  "checkout": {
+    "title": "Final step",
+    "subtitle": "Just your email and we'll handle the rest.",
+    "yourDetails": "Your details",
+    "email": "Email",
+    "name": "Full name",
+    "whatsapp": "WhatsApp (optional)",
+    "notes": "Notes (optional)",
+    "review": "Review",
+    "place": "Place order",
+    "processing": "Processing…",
+    "viaWhatsApp": "Continue on WhatsApp",
+    "viaCard": "Pay securely",
+    "errorGeneric": "Something went wrong. Try again.",
+    "success": {
+      "title": "Thank you",
+      "body": "Your order {order} has been placed. We'll deliver it shortly — and pop into your inbox if we need anything.",
+      "whatsapp": "Continue on WhatsApp",
+      "back": "Back to catalog"
+    }
+  },
+  "warranty": {
+    "eyebrow": "Warranty & claims",
+    "title": "Something off?",
+    "subtitle": "Issue with your order? We'll fix it.",
+    "intro": "We back every order with a {days}-day window. Tell us what happened — short message, a few photos if needed, we'll come back fast.",
+    "orderNumber": "Order number",
+    "email": "Email used",
+    "lookup": "Find my order",
+    "reason": "Reason",
+    "reasons": {
+      "notWorking": "Not working",
+      "wrongItem": "Wrong item",
+      "notReceived": "Not received",
+      "other": "Other"
+    },
+    "message": "Message (optional)",
+    "photos": "Photos",
+    "photosHint": "Up to {max} photos",
+    "submit": "Submit claim",
+    "noOrderNumber": "Don't have your order number? <link>Email us</link> and we'll help.",
+    "success": {
+      "eyebrow": "Claim received",
+      "title": "Got it — we're on it",
+      "reference": "Reference",
+      "body": "We'll come back at the email you provided. Most claims get a first reply within a few hours.",
+      "home": "Back home"
+    },
+    "wizard": {
+      "findOrder": "Find your order",
+      "findOrderHelp": "We need to confirm the purchase before opening a claim.",
+      "orderNumber": "Order number",
+      "emailLabel": "Email used at checkout",
+      "continue": "Continue",
+      "window": "Within {days} days of your purchase by default — admins can extend per product.",
+      "submitting": "Submitting your claim…",
+      "order": "Order {number}",
+      "placed": "Placed",
+      "noEmail": "no email",
+      "whichItem": "Which item?",
+      "reason": "Reason",
+      "reasonChoose": "Choose a reason…",
+      "reasons": {
+        "notDelivered": "Not delivered",
+        "wrongItem": "Wrong item received",
+        "notWorking": "Doesn't work",
+        "quality": "Quality issue",
+        "other": "Other"
+      },
+      "tellMore": "Tell us more",
+      "optional": "(optional)",
+      "required": "required",
+      "messagePlaceholder": "What happened, when, what you tried…",
+      "photos": "Photos",
+      "photosHint": "Up to {count} images. We use them to investigate faster.",
+      "removePhoto": "Remove photo",
+      "addPhoto": "Add",
+      "name": "Your name (optional)",
+      "phone": "Phone / WhatsApp (optional)",
+      "submitClaim": "Submit claim",
+      "differentOrder": "Different order",
+      "errors": {
+        "missing": "Please enter both order number and email.",
+        "notFound": "Order not found.",
+        "fileRead": "One or more files could not be read.",
+        "reason": "Please choose a reason.",
+        "photo": "At least one photo is required.",
+        "submit": "Could not submit your claim."
+      }
+    }
+  },
+  "footer": {
+    "shop": "Shop",
+    "support": "Support",
+    "company": "Company",
+    "allProducts": "All products",
+    "warrantyClaims": "Warranty & claims",
+    "instantDelivery": "Instant or fast manual delivery",
+    "humanSupport": "Real human support",
+    "affiliate": "Become an affiliate",
+    "rights": "All rights reserved.",
+    "language": "Language"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Create an account",
+    "signOut": "Sign out",
+    "withGoogle": "Continue with Google",
+    "withEmail": "Continue with email",
+    "emailPlaceholder": "you@email.com",
+    "sendMagicLink": "Send magic link",
+    "magicLinkSent": "Check your inbox.",
+    "or": "or"
+  },
+  "account": {
+    "title": "My account",
+    "orders": "My orders",
+    "profile": "Profile",
+    "affiliate": "Affiliate",
+    "noOrders": "No orders yet."
+  },
+  "affiliate": {
+    "hero": {
+      "kicker": "Affiliate program",
+      "title": "Earn up to {percent}% on every sale you bring",
+      "subtitle": "Built for creators with 1,000 to 50,000 followers. Free, transparent, no minimum.",
+      "cta": "Become an affiliate",
+      "trust": "Already {count} creators with us"
+    },
+    "how": {
+      "title": "How it works",
+      "step1Title": "Create your account",
+      "step1Body": "30 seconds. Email or Google.",
+      "step2Title": "Get your link",
+      "step2Body": "A unique link + a QR code ready for your stories.",
+      "step3Title": "Cash out",
+      "step3Body": "Real-time tracking. Payout on demand from $20."
+    },
+    "tiers": {
+      "title": "The more you sell, the more you earn",
+      "subtitle": "Lifetime tiers — once reached, they never drop.",
+      "bronze": "Bronze",
+      "silver": "Silver",
+      "gold": "Gold",
+      "platinum": "Platinum",
+      "salesLabel": "confirmed sales"
+    },
+    "calculator": {
+      "title": "Calculate your potential",
+      "followers": "Followers",
+      "convertRate": "% who buy",
+      "monthlyEarnings": "Estimated monthly earnings"
+    },
+    "faq": {
+      "title": "Frequently asked questions"
+    },
+    "dashboard": {
+      "title": "Affiliate dashboard",
+      "yourLink": "Your affiliate link",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "stats": {
+        "clicks": "Clicks (30d)",
+        "conversions": "Sales (30d)",
+        "rate": "Conversion rate",
+        "pending": "Pending",
+        "paid": "Paid out"
+      },
+      "nextTier": "{count} more sales to reach {tier}",
+      "streak": "{weeks, plural, =1 {1 week} other {# weeks}} streak",
+      "requestPayout": "Request payout"
+    }
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "close": "Close",
+    "tagline": "Premium digital subscriptions, services & boosts.",
+    "stickyPromoText": "Free instant delivery on every order",
+    "exitIntentText": "Wait — get 10% off your first order"
+  }
+}

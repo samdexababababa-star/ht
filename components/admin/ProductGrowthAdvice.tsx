@@ -337,6 +337,7 @@ export function ProductGrowthAdvice({
       {tips.length === 0 ? (
         <p className="text-sm text-muted">
           All recommended levers are configured. You can revisit{" "}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a href="/admin/growth" className="text-primary hover:underline">
             /admin/growth
           </a>{" "}
@@ -358,6 +359,7 @@ export function ProductGrowthAdvice({
 
       <p className="text-[11px] text-muted pt-2 border-t border-border">
         Need more levers? Visit{" "}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a href="/admin/growth" className="text-primary hover:underline">
           Growth &amp; advice
         </a>{" "}

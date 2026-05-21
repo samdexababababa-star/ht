@@ -41,7 +41,7 @@ export function CartIndicator() {
   return (
     <span
       key={bump}
-      className="cart-bump absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-white text-[10px] font-semibold flex items-center justify-center"
+      className="cart-bump absolute -top-0.5 -end-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-white text-[10px] font-semibold flex items-center justify-center"
     >
       {count}
     </span>
